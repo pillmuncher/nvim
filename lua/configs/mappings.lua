@@ -123,4 +123,3 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist,
 -- nnoremap <C-x> :Bdelete<cr> - Delete the current buffer.
 -- nnoremap <C-s> :w<cr> - Save the current file.
 -- nnoremap <C-z> u - Undo the last change.
--- nnoremap <C-r> <C-r> - Redo t
