@@ -29,7 +29,7 @@ vim.keymap.set({ "i", "n" }, "<C-p>", "<CMD> term python <CR>",
 vim.keymap.set({ "i", "n" }, "<C-t>", "<CMD> term <CR>", { desc = "New terminal", noremap = true, silent = true })
 
 -- Quickfix
-vim.keymap.set("n", "<leader>qf", ":copen<CR>", { desc = "Open QuickFix window" })
+vim.keymap.set("n", "<leader>qf", "<CMD> copen <CR>", { desc = "Open QuickFix window" })
 
 vim.keymap.set("n", '<M-Up>', "<CMD> wincmd k<CR>:resize -2 <CR>",
     { desc = "Increase lower window size", noremap = true })
@@ -42,8 +42,8 @@ vim.keymap.set("n", "<leader>cb", "<CMD> enew <CR>", { desc = "New buffer", nore
 vim.keymap.set("n", "<Esc>", "<CMD> noh <CR>", { desc = "Clear highlights", noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>n", "<CMD> set nu! <CR>", { desc = "Toggle line number", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>rn", "<CMD> set rnu! <CR>",
-    { desc = "Toggle relative number", noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>rn", "<CMD> set rnu! <CR>",
+--     { desc = "Toggle relative number", noremap = true, silent = true })
 
 vim.keymap.set("n", "ya", "<CMD> %y+ <CR>", { desc = "Yank current buffer", noremap = true, silent = true })
 vim.keymap.set("n", "yw", "mcviwy`c", { desc = "Yank current word", noremap = true, silent = true })

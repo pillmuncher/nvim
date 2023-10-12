@@ -1,4 +1,4 @@
--- These must be 
+-- These must be
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 return {
@@ -11,14 +11,14 @@ return {
     opts = {},
     {
         "<C-e>",
-        "<CMD> NvimTreeToggle <CR>", 
+        "<CMD> NvimTreeToggle <CR>",
         desc = "Toggle nvimtree",
-        mode = { "n", "i" } 
+        mode = { "n", "i" }
     },
     {
-        "<leader>e", 
-        "<CMD> NvimTreeFocus <CR>", 
+        "<leader>e",
+        "<CMD> NvimTreeFocus <CR>",
         desc = "Focus nvimtree",
-        mode = { "n" } 
+        mode = { "n" }
     },
 }

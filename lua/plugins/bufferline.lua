@@ -9,6 +9,6 @@ return {
     keys = {
         -- cycle through buffers
         { "<C-PageDown>", "<CMD> BufferLineCycleNext <CR>", mode = { "n", "i" } },
-        { "<C-PageUp>", "<CMD> BufferLineCyclePrev <CR>", mode = { "n", "i" } },
+        { "<C-PageUp>",   "<CMD> BufferLineCyclePrev <CR>", mode = { "n", "i" } },
     },
 }

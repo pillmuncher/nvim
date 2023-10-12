@@ -10,7 +10,7 @@ return {
                 vim.cmd("WhichKey " .. input)
             end,
             desc = "Which-key query lookup",
-            mode = { "n" } 
+            mode = { "n" }
         },
         {
             "<leader>wK",
@@ -18,7 +18,7 @@ return {
                 vim.cmd "WhichKey"
             end,
             desc = "Which-key all keymaps",
-            mode = { "n" } 
+            mode = { "n" }
         },
     },
 }

@@ -131,7 +131,7 @@ vim.opt.updatetime = 250 -- interval for writing swap file to disk, also used by
 -- 19 command line editing
 --
 vim.opt.wildignore =
-'*.o,*.obj,eggs/**,*.egg-info/**,.git,*.pyc,*.pyo,*.old'                      -- Ignore specific patterns in file completion.
+'*.o,*.obj,eggs/**,*.egg-info/**,.git,*.pyc,*.pyo,*.old' -- Ignore specific patterns in file completion.
 
 
 -- 20 executing external commands

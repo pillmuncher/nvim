@@ -3,14 +3,14 @@ return {
     'numToStr/Comment.nvim',
     opts = {},
     keys = {
-        { 
-            "<leader>/", 
+        {
+            "<leader>/",
             "<ESC><CMD>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
             desc = "Toggle comment",
             mode = { "v" },
         },
         {
-            "<leader>/", 
+            "<leader>/",
             function()
                 require("Comment.api").toggle.linewise.current()
             end,
