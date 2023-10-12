@@ -14,13 +14,13 @@ return {
             "<C-e>",
             "<CMD> NvimTreeToggle <CR>",
             desc = "Toggle nvimtree",
-            mode = { "n", "i" }
+            mode = { "n" },
         },
         {
             "<leader>e",
             "<CMD> NvimTreeFocus <CR>",
             desc = "Focus nvimtree",
-            mode = { "n" }
+            mode = { "n" },
         },
     }
 }
