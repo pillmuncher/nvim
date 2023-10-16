@@ -11,7 +11,13 @@ return {
         -- Additional lua configuration, makes nvim stuff amazing!
         { 'folke/neodev.nvim',                 opts = {} },
     },
-    opts = {},
+    opts = {
+        on_attach = function(client, bufnr)
+            if client.server_capabilities['documentSymbolProvider'] then
+                require('nvim-navic').attach(client, bufnr)
+            end
+        end,
+    },
     config = function()
         -- Switch for controlling whether you want autoformatting.
         --  Use :KickstartFormatToggle to toggle autoformatting on or off
@@ -80,100 +86,100 @@ return {
     end,
     keys = {
         {
-            "gD",
+            'gD',
             function()
                 vim.lsp.buf.declaration()
             end,
-            desc = "LSP declaration",
-            mode = { "n" }
+            desc = 'LSP declaration',
+            mode = { 'n' }
         },
         {
-            "gd",
+            'gd',
             function()
                 vim.lsp.buf.definition()
             end,
-            desc = "LSP definition",
-            mode = { "n" }
+            desc = '[G]oto [D]efinition',
+            mode = { 'n' }
         },
         {
-            "gi",
+            'gi',
             function()
                 vim.lsp.buf.implementation()
             end,
-            desc = "LSP implementation",
-            mode = { "n" }
+            desc = 'LSP implementation',
+            mode = { 'n' }
         },
         {
-            "gr",
+            'gr',
             function()
                 vim.lsp.buf.references()
             end,
-            desc = "LSP references",
-            mode = { "n" }
+            desc = 'LSP references',
+            mode = { 'n' }
         },
         {
-            "K",
+            'K',
             function()
                 vim.lsp.buf.hover()
             end,
-            desc = "LSP hover",
-            mode = { "n" }
+            desc = 'LSP hover',
+            mode = { 'n' }
         },
         {
-            "<leader>ca",
+            '<leader>ca',
             function()
                 vim.lsp.buf.code_action()
             end,
-            desc = "LSP code action",
-            mode = { "n" }
+            desc = 'LSP code action',
+            mode = { 'n' }
         },
         {
-            "<leader>D",
+            '<leader>gt',
             function()
                 vim.lsp.buf.type_definition()
             end,
-            desc = "LSP definition type",
-            mode = { "n" }
+            desc = '[G]oto Type',
+            mode = { 'n' }
         },
         {
-            "<leader>fm",
+            '<leader>lf',
             function()
                 vim.lsp.buf.format { async = true }
             end,
-            desc = "LSP formatting",
-            mode = { "n" }
+            desc = '[L]SP [F]ormat',
+            mode = { 'n' }
         },
         {
-            "<leader>ls",
+            '<leader>ls',
             function()
                 vim.lsp.buf.signature_help()
             end,
-            desc = "LSP signature help",
-            mode = { "n" }
+            desc = '[L]SP [S]ignature',
+            mode = { 'n' }
         },
         {
-            "<leader>wa",
+            '<leader>wa',
             function()
                 vim.lsp.buf.add_workspace_folder()
             end,
-            desc = "New workspace folder",
-            mode = { "n" }
+            desc = 'New workspace folder',
+            mode = { 'n' }
         },
         {
-            "<leader>wl",
+            '<leader>wl',
             function()
                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end,
-            desc = "Show workspace folders",
-            mode = { "n" }
+            desc = 'Show workspace folders',
+            mode = { 'n' }
         },
         {
-            "<leader>wr",
+            '<leader>wr',
             function()
                 vim.lsp.buf.remove_workspace_folder()
             end,
-            desc = "Delete workspace folders",
-            mode = { "n" }
+            desc = 'Delete workspace folders',
+            mode = { 'n' }
         },
     },
 }

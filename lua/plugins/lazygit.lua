@@ -1,15 +1,15 @@
 return {
-    "kdheepak/lazygit.nvim",
+    'kdheepak/lazygit.nvim',
     -- optional for floating window border decoration
     dependencies = {
-        { "nvim-lua/plenary.nvim" },
+        { 'nvim-lua/plenary.nvim' },
     },
     keys = {
         {
-            "<leader>gg",
-            "<CMD> LazyGit <CR>",
-            desc = "Open LazyGit",
-            mode = { "n" },
+            '<C-g>',
+            '<CMD> LazyGit <CR>',
+            desc = '[O]pen [L]azyGit',
+            mode = { 'n' },
         },
     },
 }

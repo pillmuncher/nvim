@@ -1,5 +1,7 @@
 return {
     'williamboman/mason-lspconfig.nvim',
-    dependencies = { { 'williamboman/mason.nvim', opts = {} }, },
+    dependencies = {
+        { 'williamboman/mason.nvim', opts = {} },
+    },
     opts = {},
 }

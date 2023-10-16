@@ -7,9 +7,9 @@ return {
     opts = {},
     keys = {
         {
-            "<leader>cc",
+            '<leader>cc',
             function()
-                local ok, start = require("indent_blankline.utils").get_current_context(
+                local ok, start = require('indent_blankline.utils').get_current_context(
                     vim.g.indent_blankline_context_patterns,
                     vim.g.indent_blankline_use_treesitter_scope
                 )
@@ -18,8 +18,8 @@ return {
                     vim.cmd [[normal! _]]
                 end
             end,
-            desc = "Jump to current context",
-            mode = { "n" },
+            desc = 'Jump to current context',
+            mode = { 'n' },
         },
     },
 }

@@ -1,15 +1,15 @@
 return {
-    "smjonas/inc-rename.nvim",
+    'smjonas/inc-rename.nvim',
     opts = {},
     keys = {
         {
-            "<leader>lr",
+            '<leader>lr',
             function()
-                local line = ":IncRename " .. vim.fn.expand("<cword>")
-                vim.api.nvim_feedkeys(line, "n", true)
+                return ':IncRename ' .. vim.fn.expand('<cword>')
             end,
-            desc = "[L]SP [R]ename",
-            mode = { "n" },
+            desc = '[L]SP [R]ename',
+            mode = { 'n' },
+            expr = true,
         },
     },
 }

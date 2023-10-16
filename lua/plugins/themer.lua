@@ -1,17 +1,25 @@
 return {
-    "ThemerCorp/themer.lua",
-    config = function()
-        require("telescope").load_extension("themes")
-        vim.cmd("colorscheme themer_nightlamp")
-    end,
+    'themercorp/themer.lua',
+    dependencies = {
+        'nvim-telescope/telescope.nvim',
+    },
     opts = {
+        colorscheme = 'nightlamp',
         enable_installer = true,
         styles = {
-            ["function"]    = { style = 'italic' },
+            ['function']    = { style = 'italic' },
             functionbuiltin = { style = 'italic' },
             variable        = { style = 'italic' },
             variableBuiltIn = { style = 'italic' },
             parameter       = { style = 'italic' },
         },
-    }
+    },
+    keys = {
+        {
+            '<C-t>',
+            '<CMD> Telescope themes <CR>',
+            desc = '[O]pen [C]olorschemes',
+            mode = { 'n' },
+        },
+    },
 }
