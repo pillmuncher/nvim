@@ -24,22 +24,6 @@ cmd.cnoreabbrev('wqA', 'wqa')
 -- leader is space, so we can set it to Nop.
 map(n + v, '<Space>', '<Nop>', { desc = '' })
 
--- Add descritions to nvim builtins:
--- map(n, 'Y', 'y$',
---     { desc = 'Yank until end of line'})
--- map(n, '<C-l>', '<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>',
---     { desc = 'Refresh screen'})
--- map(i, '<C-u>', '<C-G>u<C-U>',
---     { desc = 'Delete to beginning of line'})
--- map(i, '<C-w>', '<C-G>u<C-W>',
---     { desc = 'Delete to beginning of word'})
--- map(x, '*', 'y/\\V<C-R>"<CR>',
---     { desc = 'Search forward for word under cursor'})
--- map(x, '#', 'y?\\V<C-R>"<CR>',
---     { desc = 'Search backward for word under cursor'})
--- map(n, '&', ':&&<CR>',
---     { desc = 'Repeat last substitution'})
-
 -- Window navigation:
 map(n, '<C-PageUp>', '<CMD> bprev! <CR>', { desc = 'Change to previous buffer' })
 map(n, '<C-PageDown>', '<CMD> bnext! <CR>', { desc = 'Change to next buffer' })
