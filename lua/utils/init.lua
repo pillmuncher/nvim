@@ -32,18 +32,10 @@ x = setmetatable({ x = true }, Set)
 t = setmetatable({ t = true }, Set)
 
 
-function require_all(target_dir)
-    local config_path = vim.fn.stdpath("config")
-    local full_target_dir = config_path .. "/lua/" .. target_dir
-
-    -- Iterate through the files in the directory
-    for _, filename in ipairs(vim.fn.readdir(full_target_dir)) do
-        local full_path = full_target_dir .. "/" .. filename
-
-        -- Check if the file is a Lua file
-        if vim.loop.fs_stat(full_path).type == "file" and filename:match("%.lua$") then
-            -- Require the Lua file
-            require(target_dir .. "." .. filename:gsub("%.lua$", ""))
-        end
+function require_all(folder)
+    local pattern = vim.fn.stdpath('config') .. '/lua/' .. folder .. '/*.lua'
+    local files = vim.fn.glob(pattern, false, true)
+    for _, file in ipairs(files) do
+        pcall(dofile, file)
     end
 end
