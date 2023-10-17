@@ -9,7 +9,7 @@ return {
             '<C-G>',
             '<CMD> LazyGit <CR>',
             desc = 'Open LazyGit',
-            mode = { 'n' },
+            mode = 'n',
         },
     },
 }

@@ -12,7 +12,7 @@ return {
             '<C-#>',
             '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
             desc = 'Toggle comment',
-            mode = { 'v' },
+            mode = 'v',
         },
     },
 }

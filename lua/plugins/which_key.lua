@@ -10,7 +10,7 @@ return {
                 vim.cmd('WhichKey ' .. input)
             end,
             desc = 'WhichKey',
-            mode = { 'n' },
+            mode = 'n',
         },
     },
 }

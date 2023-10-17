@@ -15,7 +15,7 @@ return {
             '<leader>hv',
             function() require('gitsigns').preview_hunk() end,
             desc = 'Preview hunk',
-            { mode = { 'n' }, },
+            { mode = 'n', },
         },
         {
             '<leader>hn',
@@ -27,7 +27,7 @@ return {
                 return '<Ignore>'
             end,
             desc = 'Jump to Next Hunk',
-            { mode = { 'n' }, },
+            { mode = 'n', },
         },
         {
             '<leader>hN',
@@ -39,25 +39,25 @@ return {
                 return '<Ignore>'
             end,
             desc = 'Jump to Previous Hunk',
-            { mode = { 'n' }, },
+            { mode = 'n', },
         },
         {
             '<leader>hd',
             function() require('gitsigns').toggle_deleted() end,
             desc = 'Toggle Deleted',
-            { mode = { 'n' }, },
+            { mode = 'n', },
         },
         {
             '<leader>hr',
             function() require('gitsigns').reset_hunk() end,
             desc = 'Reset Hunk',
-            { mode = { 'n' }, },
+            { mode = 'n', },
         },
         {
             '<leader>gb',
             function() package.loaded.gitsigns.blame_line() end,
             desc = 'Git Blame',
-            { mode = { 'n' }, },
+            { mode = 'n', },
         },
     },
 }

@@ -8,7 +8,7 @@ return {
                 return ':IncRename ' .. vim.fn.expand('<cword>')
             end,
             desc = 'LSP Rename',
-            mode = { 'n' },
+            mode = 'n',
             expr = true,
         },
     },

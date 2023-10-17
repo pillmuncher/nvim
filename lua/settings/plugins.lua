@@ -114,7 +114,7 @@ mason_lspconfig.setup_handlers {
 
 
 
------------------------------------- cmp ---------------------------------------
+------------------------------------ CMP ---------------------------------------
 
 
 local cmp = require('cmp')
@@ -164,10 +164,10 @@ cmp.setup({
 
 
 
------------------------------------- CMP ---------------------------------------
+------------------------------------ DAP ---------------------------------------
 
 
-local dap = require("dap")
+local dap = require('dap')
 
 -- Create a new configuration for Python debugging
 dap.adapters.python = {
@@ -181,16 +181,16 @@ dap.configurations.python = {
         type = 'python',
         request = 'launch',
         name = 'Launch file',
-        program = "${file}",
+        program = '${file}',
         pythonPath = function()
-            return "python"
+            return 'python'
         end,
     },
 }
 
 local dap_python = require('dap-python')
 
-dap_python.setup("python")
+dap_python.setup('python')
 
 
 

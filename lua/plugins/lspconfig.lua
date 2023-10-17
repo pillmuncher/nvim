@@ -87,7 +87,7 @@ return {
                 vim.lsp.buf.declaration()
             end,
             desc = 'Jump to Declaration',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>jd',
@@ -95,7 +95,7 @@ return {
                 vim.lsp.buf.definition()
             end,
             desc = 'Jump to Definition',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>ji',
@@ -103,7 +103,7 @@ return {
                 vim.lsp.buf.implementation()
             end,
             desc = 'Jump to Implementation',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>or',
@@ -111,7 +111,7 @@ return {
                 vim.lsp.buf.references()
             end,
             desc = 'Open references',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             'K',
@@ -119,7 +119,7 @@ return {
                 vim.lsp.buf.hover()
             end,
             desc = 'LSP hover',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>ca',
@@ -127,7 +127,7 @@ return {
                 vim.lsp.buf.code_action()
             end,
             desc = 'LSP code action',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>jt',
@@ -135,7 +135,7 @@ return {
                 vim.lsp.buf.type_definition()
             end,
             desc = 'Goto Type',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>lf',
@@ -143,7 +143,7 @@ return {
                 vim.lsp.buf.format { async = true }
             end,
             desc = 'LSP Format',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>ls',
@@ -151,7 +151,7 @@ return {
                 vim.lsp.buf.signature_help()
             end,
             desc = 'LSP Signature',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>wa',
@@ -159,7 +159,7 @@ return {
                 vim.lsp.buf.add_workspace_folder()
             end,
             desc = 'New workspace folder',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>wl',
@@ -167,7 +167,7 @@ return {
                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end,
             desc = 'Show workspace folders',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>wr',
@@ -175,7 +175,7 @@ return {
                 vim.lsp.buf.remove_workspace_folder()
             end,
             desc = 'Delete workspace folders',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>ws',
@@ -183,7 +183,7 @@ return {
                 require('telescope.builtin').lsp_dynamic_workspace_symbols()
             end,
             desc = 'Delete workspace folders',
-            mode = { 'n' }
+            mode = 'n'
         },
         {
             '<leader>ds',
@@ -191,7 +191,7 @@ return {
                 require('telescope.builtin').lsp_document_symbols({ show_line = true })
             end,
             desc = 'Delete workspace folders',
-            mode = { 'n' }
+            mode = 'n'
         },
     },
 }

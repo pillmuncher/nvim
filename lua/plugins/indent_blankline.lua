@@ -14,7 +14,7 @@ return {
             '<leader>ti',
             '<CMD> IBLToggle <CR>',
             desc = 'Toggle IndentLines',
-            mode = { 'n' },
+            mode = 'n',
         },
     },
 }

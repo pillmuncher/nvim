@@ -1,12 +1,10 @@
--------------------------------------- autocmds ------------------------------------------
-
 -- close terminal window on <c-d>
 vim.api.nvim_create_autocmd(
     'TermOpen',
     {
         pattern = '*',
         callback = function()
-            map(t, '<c-d>', '<CMD> bd! <CR>', { buffer = 0 })
+            map('t', '<c-d>', '<CMD> bd! <CR>', { buffer = 0 })
         end,
     }
 )
@@ -16,7 +14,7 @@ vim.api.nvim_create_autocmd(
     'FileType',
     {
         pattern = 'qf',
-        callback = function() vim.opt_local.buflisted = false end,
+        callback = function() opt_local.buflisted = false end,
     }
 )
 
