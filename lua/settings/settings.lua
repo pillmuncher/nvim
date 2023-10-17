@@ -1,3 +1,5 @@
+require('utils')
+
 -------------------------------------- autocmds ------------------------------------------
 
 -- close terminal window on <c-d>
@@ -6,16 +8,7 @@ vim.api.nvim_create_autocmd(
     {
         pattern = '*',
         callback = function()
-            vim.keymap.set({ 't' }, '<c-d>', '<CMD> bd! <CR>', { buffer = 0 })
-        end,
-    }
-)
-vim.api.nvim_create_autocmd(
-    'TermOpen',
-    {
-        pattern = '*',
-        callback = function()
-            vim.cmd.setlocal('nomodified')
+            map(t, '<c-d>', '<CMD> bd! <CR>', { buffer = 0 })
         end,
     }
 )
@@ -25,75 +18,28 @@ vim.api.nvim_create_autocmd(
     'FileType',
     {
         pattern = 'qf',
-        callback = function()
-            vim.opt_local.buflisted = false
-        end,
+        callback = function() vim.opt_local.buflisted = false end,
     }
 )
 
 vim.api.nvim_create_autocmd({
-    'WinResized', -- or on NVIM-v0.9 and higher
+    'BufModifiedSet', -- include this if you have set `show_modified` to `true`
     'BufWinEnter',
     'CursorHold',
     'InsertLeave',
-
-    -- include this if you have set `show_modified` to `true`
-    'BufModifiedSet',
+    'WinResized',
 }, {
     group = vim.api.nvim_create_augroup('barbecue.updater', {}),
-    callback = function()
-        require('barbecue.ui').update()
-    end,
+    callback = function() require('barbecue.ui').update() end,
 })
 
--- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
-    callback = function()
-        vim.highlight.on_yank()
-    end,
-    group = highlight_group,
     pattern = '*',
+    group = highlight_group,
+    callback = function() vim.highlight.on_yank() end,
 })
 
-require('telescope').load_extension('themes')
-
--- document existing key chains
-require('which-key').register {
-    ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-    ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-    ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-    ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
-    -- ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-    ['<leader>o'] = { name = '[O]pen', _ = 'which_key_ignore' },
-    ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
-
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
-
--- See `:help telescope.builtin`
--- vim.keymap.set({ 'n' }, '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
--- vim.keymap.set({ 'n' }, '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
--- vim.keymap.set({ 'n' }, '<leader>/', function()
---   -- You can pass additional configuration to telescope to change theme, layout, etc.
---   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
---     winblend = 10,
---     previewer = false,
---   })
--- end, { desc = '[/] Fuzzily search in current buffer' })
---
--- vim.keymap.set({ 'n' }, '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
--- vim.keymap.set({ 'n' }, '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
--- vim.keymap.set({ 'n' }, '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
--- vim.keymap.set({ 'n' }, '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
--- vim.keymap.set({ 'n' }, '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
--- vim.keymap.set({ 'n' }, '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
--- vim.keymap.set({ 'n' }, '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
--- [[ Configure Treesitter ]]
--- See `:help nvim-treesitter`
--- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
     require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
@@ -107,10 +53,10 @@ vim.defer_fn(function()
         incremental_selection = {
             enable = true,
             keymaps = {
-                init_selection = '<c-space>',
-                node_incremental = '<c-space>',
-                scope_incremental = '<c-s>',
-                node_decremental = '<M-space>',
+                init_selection = '<C-Space>',
+                node_incremental = '<C-Space>',
+                scope_incremental = '<C-S>',
+                node_decremental = '<M-Space>',
             },
         },
         textobjects = {
@@ -160,52 +106,19 @@ vim.defer_fn(function()
     }
 end, 0)
 
--- [[ Configure LSP ]]
---  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
-    -- NOTE: Remember that lua is a real programming language, and as such it is possible
-    -- to define small helper and utility functions so you don't have to repeat yourself
-    -- many times.
-    --
-    -- In this case, we create a function that lets us more easily define mappings specific
-    -- for LSP related items. It sets the mode, buffer and description for us each time.
-    local nmap = function(keys, func, desc)
-        if desc then
-            desc = 'LSP: ' .. desc
-        end
-
-        vim.keymap.set({ 'n' }, keys, func, { buffer = bufnr, desc = desc })
-    end
-
-    -- nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-    nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-    nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-    -- See `:help K` for why this keymap
-    nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
         vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
 end
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
---
---  If you want to override the default filetypes that your language server will attach to you can
---  define the property 'filetypes' to the map in question.
 local servers = {
     clangd = {},
-    pylsp = {},
+    clojure_lsp = { filetypes = { 'clj', 'cljs' } },
+    csharp_ls = { filetypes = { 'cs' } },
     html = { filetypes = { 'html', 'twig', 'hbs' } },
+    ruff_lsp = { filetypes = { 'py' } },
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -214,16 +127,15 @@ local servers = {
     },
 }
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Ensure the servers above are installed
 local mason_lspconfig = require('mason-lspconfig')
 
 mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
 }
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 mason_lspconfig.setup_handlers {
     function(server_name)
@@ -236,12 +148,9 @@ mason_lspconfig.setup_handlers {
     end,
 }
 
--- [[ Configure nvim-cmp ]]
--- See `:help cmp`
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
 
 cmp.setup({
     snippet = {
@@ -283,6 +192,22 @@ cmp.setup({
         { name = 'luasnip' },
     },
 })
+
+-- Enable telescope fzf native, if installed
+pcall(require('telescope').load_extension, 'fzf')
+-- Enable telescope Themer support, if installed
+pcall(require('telescope').load_extension, 'themes')
+
+-- document existing key chains
+require('which-key').register {
+    ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
+    ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
+    ['<leader>g'] = { name = 'Git', _ = 'which_key_ignore' },
+    ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
+    -- ['<leader>r'] = { name = 'Rename', _ = 'which_key_ignore' },
+    ['<leader>o'] = { name = 'Open', _ = 'which_key_ignore' },
+    ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
+}
 
 vim.cmd.colorscheme('mellifluous')
 vim.cmd.nohlsearch()

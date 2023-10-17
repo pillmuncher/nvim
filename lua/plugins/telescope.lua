@@ -1,5 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
+    -- enabled = false,
     branch = '0.1.x',
     dependencies = {
         { 'nvim-lua/plenary.nvim' },
@@ -29,57 +30,57 @@ return {
     },
     keys = {
         {
-            '<leader>cm',
+            '<leader>gc',
             '<CMD> Telescope git_commits <CR>',
-            desc = 'Git commits',
+            desc = 'Git Commits',
             mode = { 'n' },
         },
         {
             '<leader>fa',
             '<CMD> Telescope find_files follow=true no_ignore=true hidden=true <CR>',
-            desc = '[F]ind [A]ll',
+            desc = 'Find All',
             mode = { 'n' },
         },
         {
             '<leader>fb',
             '<CMD> Telescope buffers <CR>',
-            desc = '[F]ind [B]uffers',
+            desc = 'Find Buffers',
             mode = { 'n' },
         },
         {
             '<leader>of',
             '<CMD> Telescope find_files <CR>',
-            desc = '[O]pen [F]ile',
+            desc = 'Open File',
             mode = { 'n' },
         },
         {
             '<leader>gf',
-            '<CMD> Telescope find_files <CR>',
-            desc = '[G]it [F]iles',
+            '<CMD> Telescope git_files <CR>',
+            desc = 'Git Files',
             mode = { 'n' },
         },
         {
             '<leader>fh',
             '<CMD> Telescope help_tags <CR>',
-            desc = '[F]ind [H]elp',
+            desc = 'Find Help',
             mode = { 'n' },
         },
         {
             '<leader>fr',
             '<CMD> Telescope oldfiles <CR>',
-            desc = '[F]ind [R]ecent Files',
+            desc = 'Find Recent Files',
             mode = { 'n' },
         },
         {
             '<leader>og',
             '<CMD> Telescope live_grep <CR>',
-            desc = '[O]pen [G]rep',
+            desc = 'Open Grep',
             mode = { 'n' },
         },
         {
             '<leader>gt',
             '<CMD> Telescope git_status <CR>',
-            desc = '[G]it [S]tatus',
+            desc = 'Git Status',
             mode = { 'n' },
         },
         {
@@ -97,7 +98,7 @@ return {
                     previewer = false,
                 })
             end,
-            desc = '[F]ind [F]uzzily in current buffer',
+            desc = 'Find Fuzzily in current buffer',
         },
     },
 }

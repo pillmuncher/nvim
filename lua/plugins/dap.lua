@@ -1,12 +1,10 @@
 return {
     'mfussenegger/nvim-dap',
+    -- enabled = false,
     dependencies = {
-        -- Creates a beautiful debugger UI
-        'rcarriga/nvim-dap-ui',
-
-        -- Installs the debug adapters for you
-        'williamboman/mason.nvim',
-        'jay-babu/mason-nvim-dap.nvim',
+        { 'jay-babu/mason-nvim-dap.nvim', opts = {} },
+        { 'rcarriga/nvim-dap-ui',         opts = {} },
+        { 'williamboman/mason.nvim',      opts = {} },
     },
     opts = {},
     config = function()
@@ -89,7 +87,7 @@ return {
             },
         }
 
-        -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
+        -- -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
         vim.keymap.set(
             { 'n' },
             '<C-b>',

@@ -1,13 +1,11 @@
--- 'gc' to comment visual regions/lines
 return {
     'numToStr/Comment.nvim',
+    -- enabled = true,
     opts = {},
     keys = {
         {
             '<C-#>',
-            function()
-                require('Comment.api').toggle.linewise.current()
-            end,
+            function() require('Comment.api').toggle.linewise.current() end,
             desc = 'Toggle comment',
             mode = { 'i', 'n' },
         },

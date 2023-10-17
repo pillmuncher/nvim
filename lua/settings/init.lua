@@ -1,7 +1,14 @@
+-- vim.keymap.set = function(...) end
+-- vim.api.nvim_set_keymap = function(...) end
+
+-- we don't want to think about two different leader keys:
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+-- prevent Python plugins from using a current virtualenv:
 vim.g.python3_host_prog = '/usr/bin/python3'
 
+-- bootstrap lazy.nvim:
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system {
@@ -15,8 +22,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- load the config:
 require('lazy').setup('plugins')
 require('utils')
-require('configs.settings')
-require('configs.options')
-require('configs.mappings')
+require('settings.settings')
+require('settings.options')
+require('settings.mappings')

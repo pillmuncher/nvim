@@ -1,7 +1,6 @@
 -------------------------------------- Neovim Options ------------------------------------------
 -- (same order as in :options, mostly)
 
-
 -- 1 important
 --
 
@@ -30,9 +29,6 @@ vim.opt.relativenumber = true -- Show current line as 0.
 vim.opt.listchars = (         -- What to show on ':list'.
     'tab:▸ ,eol:¬,nbsp:·,trail:·,precedes:<,extends:>'
 )
-
--- 4.1 displaying text
---
 vim.opt.fillchars = { -- characters to use for the status line, folds and filler lines
     vert = '|', -- vertical split separators
     fold = ' ', -- folded lines
@@ -54,9 +50,10 @@ vim.opt.colorcolumn = '+1'   -- Show color column.
 
 -- 6 multiple windows
 --
-vim.opt.laststatus = 3    -- global statusline
-vim.opt.splitbelow = true -- Splits are opened below the current window.
-vim.opt.splitright = true -- Splits are opened to the right of the current window.
+vim.opt.laststatus = 3      -- global statusline
+vim.opt.equalalways = false -- make all windows the same size when adding/removing windows
+vim.opt.splitbelow = true   -- Splits are opened below the current window.
+vim.opt.splitright = true   -- Splits are opened to the right of the current window.
 
 
 -- 7 multiple tab pages

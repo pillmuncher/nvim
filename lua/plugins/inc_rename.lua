@@ -1,5 +1,6 @@
 return {
     'smjonas/inc-rename.nvim',
+    -- enabled = false,
     opts = {},
     keys = {
         {
@@ -7,7 +8,7 @@ return {
             function()
                 return ':IncRename ' .. vim.fn.expand('<cword>')
             end,
-            desc = '[L]SP [R]ename',
+            desc = 'LSP Rename',
             mode = { 'n' },
             expr = true,
         },

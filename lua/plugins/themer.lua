@@ -1,7 +1,8 @@
 return {
     'themercorp/themer.lua',
+    -- enabled = false,
     dependencies = {
-        'nvim-telescope/telescope.nvim',
+        { 'nvim-telescope/telescope.nvim', opts = {} },
     },
     opts = {
         colorscheme = 'nightlamp',
@@ -18,7 +19,7 @@ return {
         {
             '<C-t>',
             '<CMD> Telescope themes <CR>',
-            desc = '[O]pen [C]olorschemes',
+            desc = 'Open Colorschemes',
             mode = { 'n' },
         },
     },

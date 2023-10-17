@@ -1,10 +1,11 @@
 return {
     'utilyre/barbecue.nvim',
+    -- enabled = false,
     name = 'barbecue',
     version = '*',
     dependencies = {
-        { 'SmiteshP/nvim-navic',         opts = {}, dependencies = { 'neovim/nvim-lspconfig' } },
-        { 'nvim-tree/nvim-web-devicons', opts = {}, },
+        { 'SmiteshP/nvim-navic',         opts = {} },
+        { 'nvim-tree/nvim-web-devicons', opts = {} },
     },
     opts = {
         show_dirname = false,

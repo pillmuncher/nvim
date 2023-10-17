@@ -2,14 +2,11 @@ return {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
-        -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-        -- Automatically install LSPs to stdpath for neovim
-        { 'williamboman/mason.nvim',           opts = {} },
-        { 'williamboman/mason-lspconfig.nvim', opts = {} },
-        -- Useful status updates for LSP
-        { 'j-hui/fidget.nvim',                 tag = 'legacy', opts = {} },
-        -- Additional lua configuration, makes nvim stuff amazing!
+        { 'SmiteshP/nvim-navic',               opts = {}, },
         { 'folke/neodev.nvim',                 opts = {} },
+        { 'j-hui/fidget.nvim',                 opts = {}, tag = 'legacy' },
+        { 'williamboman/mason-lspconfig.nvim', opts = {} },
+        { 'williamboman/mason.nvim',           opts = {} },
     },
     opts = {
         on_attach = function(client, bufnr)
@@ -86,35 +83,35 @@ return {
     end,
     keys = {
         {
-            'gD',
+            '<leader>jD',
             function()
                 vim.lsp.buf.declaration()
             end,
-            desc = 'LSP declaration',
+            desc = 'Jump to Declaration',
             mode = { 'n' }
         },
         {
-            'gd',
+            '<leader>jd',
             function()
                 vim.lsp.buf.definition()
             end,
-            desc = '[G]oto [D]efinition',
+            desc = 'Jump to Definition',
             mode = { 'n' }
         },
         {
-            'gi',
+            '<leader>ji',
             function()
                 vim.lsp.buf.implementation()
             end,
-            desc = 'LSP implementation',
+            desc = 'Jump to Implementation',
             mode = { 'n' }
         },
         {
-            'gr',
+            '<leader>or',
             function()
                 vim.lsp.buf.references()
             end,
-            desc = 'LSP references',
+            desc = 'Open references',
             mode = { 'n' }
         },
         {
@@ -134,11 +131,11 @@ return {
             mode = { 'n' }
         },
         {
-            '<leader>gt',
+            '<leader>jt',
             function()
                 vim.lsp.buf.type_definition()
             end,
-            desc = '[G]oto Type',
+            desc = 'Goto Type',
             mode = { 'n' }
         },
         {
@@ -146,7 +143,7 @@ return {
             function()
                 vim.lsp.buf.format { async = true }
             end,
-            desc = '[L]SP [F]ormat',
+            desc = 'LSP Format',
             mode = { 'n' }
         },
         {
@@ -154,7 +151,7 @@ return {
             function()
                 vim.lsp.buf.signature_help()
             end,
-            desc = '[L]SP [S]ignature',
+            desc = 'LSP Signature',
             mode = { 'n' }
         },
         {
@@ -181,5 +178,22 @@ return {
             desc = 'Delete workspace folders',
             mode = { 'n' }
         },
+        {
+            '<leader>ws',
+            function()
+                require('telescope.builtin').lsp_dynamic_workspace_symbols()
+            end,
+            desc = 'Delete workspace folders',
+            mode = { 'n' }
+        },
+        {
+            '<leader>ds',
+            function()
+                require('telescope.builtin').lsp_document_symbols({ show_line = true })
+            end,
+            desc = 'Delete workspace folders',
+            mode = { 'n' }
+        },
     },
 }
+-- nmap('<leader>rn', vim.lsp.buf.rename, 'Rename')
