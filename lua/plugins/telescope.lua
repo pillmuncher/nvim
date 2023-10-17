@@ -20,8 +20,8 @@ return {
         defaults = {
             mappings = {
                 i = {
-                    ['<C-u>'] = false,
-                    ['<C-d>'] = false,
+                    ['<C-U>'] = false,
+                    ['<C-D>'] = false,
                 },
             },
             sorting_strategy = 'ascending',
@@ -98,6 +98,5 @@ return {
                 })
             end,
             desc = 'Find Fuzzily in current buffer',
-        },
-    },
+        },    },
 }

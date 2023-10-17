@@ -4,14 +4,13 @@ vim.g.loaded_netrwPlugin = 1
 return {
     'nvim-tree/nvim-tree.lua',
     version = '*',
-    lazy = false,
     dependencies = {
         { 'nvim-tree/nvim-web-devicons', opts = {}, },
     },
     opts = {},
     keys = {
         {
-            '<C-n>',
+            '<C-N>',
             '<CMD> NvimTreeToggle <CR>',
             desc = 'Toggle NvimTree',
             mode = { 'i', 'n' },

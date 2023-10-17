@@ -8,7 +8,7 @@ return {
     enabled = true,
     keys = {
         {
-            '<C-u>',
+            '<C-U>',
             '<CMD> UndotreeToggle <CR>',
             desc = 'Toggle UndoTree',
             mode = { 'i', 'n' },

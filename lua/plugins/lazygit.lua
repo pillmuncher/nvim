@@ -6,7 +6,7 @@ return {
     },
     keys = {
         {
-            '<C-g>',
+            '<C-G>',
             '<CMD> LazyGit <CR>',
             desc = 'Open LazyGit',
             mode = { 'n' },

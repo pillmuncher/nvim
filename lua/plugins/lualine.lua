@@ -13,14 +13,13 @@ return {
         options = {
             component_separators = { left = '', right = '' },
             section_separators = { left = '', right = '' },
-            -- globalstatus = true,
         },
         sections = {
             lualine_c = {
                 {
                     'filetype',
-                    icon_only = true,           -- Display only an icon for filetype
-                    icon = { align = 'right' }, -- Display filetype icon on the right hand side
+                    icon_only = true,
+                    icon = { align = 'right' },
                 },
                 {
                     'filename',
@@ -32,10 +31,9 @@ return {
                         readonly = '[]',
                     }
                 },
-                'selectioncount',
             },
             lualine_x = {
-                -- 'hostname',
+                'selectioncount',
                 'searchcount',
             },
             lualine_y = {

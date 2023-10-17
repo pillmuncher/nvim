@@ -89,7 +89,7 @@ return {
         -- -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
         vim.keymap.set(
             { 'n' },
-            '<C-b>',
+            '<C-B>',
             dapui.toggle,
             { desc = 'Debug: See last session result.' }
         )

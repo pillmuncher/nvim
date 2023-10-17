@@ -8,9 +8,9 @@ end
 local servers = {
     clangd = {},
     clojure_lsp = { filetypes = { 'clj', 'cljs' } },
-    csharp_ls = { filetypes = { 'cs' } },
+    omnisharp = { filetypes = { 'cs' } },
     html = { filetypes = { 'html', 'twig', 'hbs' } },
-    -- ruff_lsp = { filetypes = { 'py' } },
+    ruff_lsp = { filetypes = { 'py' } },
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },

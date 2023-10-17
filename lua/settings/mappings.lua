@@ -27,10 +27,10 @@ map(n + v, '<Space>', '<Nop>', { desc = '' })
 -- Window navigation:
 map(n, '<C-PageUp>', '<CMD> bprev! <CR>', { desc = 'Change to previous buffer' })
 map(n, '<C-PageDown>', '<CMD> bnext! <CR>', { desc = 'Change to next buffer' })
-map(n, '<C-Up>', '<C-w>k', { desc = 'Change to window above' })
-map(n, '<C-Down>', '<C-w>j', { desc = 'Change to window below' })
-map(n, '<C-Left>', '<C-w>h', { desc = 'Change to window on the left' })
-map(n, '<C-Right>', '<C-w>l', { desc = 'Change to window on the right' })
+map(n, '<C-Up>', '<C-W>k', { desc = 'Change to window above' })
+map(n, '<C-Down>', '<C-W>j', { desc = 'Change to window below' })
+map(n, '<C-Left>', '<C-W>h', { desc = 'Change to window on the left' })
+map(n, '<C-Right>', '<C-W>l', { desc = 'Change to window on the right' })
 
 -- Window manipulation:
 map(n, '<M-Up>', '<CMD> wincmd k <CR>:resize -2 <CR>', { desc = 'Increase lower window size' })
@@ -40,7 +40,7 @@ map(n, '<M-Down>', '<CMD> wincmd k <CR>:resize +2 <CR>', { desc = 'Increase uppe
 map(n, '<leader>cb', '<CMD> enew <CR>', { desc = 'New buffer' })
 map(n, '<leader>db', '<CMD> bd <CR>', { desc = 'Close current buffer' })
 
-map(i + n + v + t, '<C-d>',
+map(i + n + v + t, '<C-D>',
     function()
         if #vim.api.nvim_list_wins() > 1 then
             vim.api.nvim_win_close(0, true)
@@ -51,7 +51,7 @@ map(i + n + v + t, '<C-d>',
     { desc = 'Close window' })
 
 -- System Shell
-map(i + n + v, '<C-s>',
+map(i + n + v, '<C-S>',
     function()
         cmd.split()
         cmd.startinsert()
@@ -61,7 +61,7 @@ map(i + n + v, '<C-s>',
 )
 
 -- Python Shell
-map(i + n + v, '<C-p>',
+map(i + n + v, '<C-P>',
     function()
         cmd.split()
         cmd.startinsert()
@@ -90,7 +90,7 @@ map(n, 'y.', '<CMD> %y+ <CR>', { desc = 'Yank current buffer' })
 map(x, '<leader>p', 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = 'Paste w/o replacing register' })
 
 -- Open QuickFix window:
-map(i + n + v + t, '<C-q>', '<CMD> copen <CR>', { desc = 'Open QuickFix' })
+map(i + n + v + t, '<C-Q>', '<CMD> copen <CR>', { desc = 'Open QuickFix' })
 
 -- cd to folder of current file:
 map(n, '<leader>wd', '<CMD> lcd %:p:h<CR>', { desc = '`cd` to folder of current file' })
