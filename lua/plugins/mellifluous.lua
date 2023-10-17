@@ -1,5 +1,6 @@
 return {
     'ramojus/mellifluous.nvim',
+    lazy = false,
     priority = 1000,
     opts = {
         color_set = 'mountain',

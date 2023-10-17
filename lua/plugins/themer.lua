@@ -1,6 +1,5 @@
 return {
     'themercorp/themer.lua',
-    -- enabled = false,
     dependencies = {
         { 'nvim-telescope/telescope.nvim', opts = {} },
     },

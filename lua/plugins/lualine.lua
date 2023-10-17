@@ -1,6 +1,5 @@
 return {
     'nvim-lualine/lualine.nvim',
-    -- enabled = false,
     dependencies = {
         { 'nvim-tree/nvim-web-devicons', opts = {} },
     },
@@ -19,8 +18,13 @@ return {
         sections = {
             lualine_c = {
                 {
+                    'filetype',
+                    icon_only = true,           -- Display only an icon for filetype
+                    icon = { align = 'right' }, -- Display filetype icon on the right hand side
+                },
+                {
                     'filename',
-                    path = 3,
+                    path = 4,
                     file_status = true,
                     newfile_status = true,
                     symbols = {

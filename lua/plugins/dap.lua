@@ -1,6 +1,5 @@
 return {
     'mfussenegger/nvim-dap',
-    -- enabled = false,
     dependencies = {
         { 'jay-babu/mason-nvim-dap.nvim', opts = {} },
         { 'rcarriga/nvim-dap-ui',         opts = {} },

@@ -1,16 +1,26 @@
+-- Add indentation guides even on blank lines
+-- See `:help ibl
 return {
-    -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
-    -- enabled = false,
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
+    lazy = false,
     main = 'ibl',
-    opts = {},
+    opts = {
+        enabled = false,
+        indent = { char = "▏" },
+        scope = { enabled = true },
+        whitespace = { remove_blankline_trail = true },
+    },
     keys = {
+        {
+            '<leader>ti',
+            '<CMD> IBLToggle <CR>',
+            desc = 'Toggle IndentLines',
+            mode = { 'n' },
+        },
         {
             '<leader>cc',
             function()
-                local ok, start = require('indent_blankline.utils').get_current_context(
+                local ok, start = require('ibl.utils').get_current_context(
                     vim.g.indent_blankline_context_patterns,
                     vim.g.indent_blankline_use_treesitter_scope
                 )
