@@ -20,6 +20,7 @@ vim.api.nvim_create_autocmd(
     }
 )
 
+-- keep the winbar updated:
 vim.api.nvim_create_autocmd({
     'BufModifiedSet', -- include this if you have set `show_modified` to `true`
     'BufWinEnter',

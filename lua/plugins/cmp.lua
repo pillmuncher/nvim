@@ -1,3 +1,5 @@
+vim.keymap.set('n', 'gb', '<Nop>', { desc = '' })
+vim.keymap.set('n', 'gc', '<Nop>', { desc = '' })
 return {
     'hrsh7th/nvim-cmp',
     dependencies = {

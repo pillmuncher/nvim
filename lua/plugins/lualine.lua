@@ -7,8 +7,12 @@ return {
         extensions = {
             'fzf',
             'lazy',
+            'man',
+            'nvim-dap-ui',
             'nvim-tree',
             'quickfix',
+            'symbols-outline',
+            'toggleterm',
         },
         options = {
             component_separators = { left = '', right = '' },

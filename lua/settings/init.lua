@@ -5,7 +5,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- prevent Python plugins from using a current virtualenv:
+-- prevent Python plugins from using a currently active virtualenv:
 vim.g.python3_host_prog = '/usr/bin/python3'
 
 -- bootstrap lazy.nvim:
@@ -23,12 +23,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- load the config:
-require('lazy').setup('plugins')
 require('utils')
+require('lazy').setup('plugins')
 require_all('settings/plugins')
 require('settings.autocmds')
 require('settings.options')
 require('settings.mappings')
 
 vim.cmd.colorscheme('mellifluous')
-vim.cmd.nohlsearch()
