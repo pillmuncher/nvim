@@ -4,6 +4,7 @@ return {
         { 'jay-babu/mason-nvim-dap.nvim', opts = {} },
         { 'rcarriga/nvim-dap-ui',         opts = {} },
         { 'williamboman/mason.nvim',      opts = {} },
+        { 'mfussenegger/nvim-dap-python', },
     },
     opts = {},
     config = function()

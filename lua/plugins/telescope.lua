@@ -47,7 +47,7 @@ return {
             mode = { 'n' },
         },
         {
-            '<leader>of',
+            '<leader>ff',
             '<CMD> Telescope find_files <CR>',
             desc = 'Open File',
             mode = { 'n' },

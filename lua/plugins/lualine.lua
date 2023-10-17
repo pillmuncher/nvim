@@ -8,6 +8,7 @@ return {
             'fzf',
             'lazy',
             'man',
+            'mason',
             'nvim-dap-ui',
             'nvim-tree',
             'quickfix',
