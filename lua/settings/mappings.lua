@@ -1,3 +1,7 @@
+-- be more concise:
+local map = vim.keymap.set
+local cmd = vim.cmd
+
 -- Seriously, guys. It's not like :W or :Q are mapped to anything anyway.
 cmd.cnoreabbrev('Q', 'q')
 cmd.cnoreabbrev('QA', 'qa')
@@ -17,7 +21,6 @@ cmd.cnoreabbrev('Wqa', 'wqa')
 cmd.cnoreabbrev('wQA', 'wqa')
 cmd.cnoreabbrev('wQa', 'wqa')
 cmd.cnoreabbrev('wqA', 'wqa')
-
 
 -- leader is space, so we can set it to Nop.
 map({ 'n', 'v' }, '<Space>', '<Nop>', { desc = '' })

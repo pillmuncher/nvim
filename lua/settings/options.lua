@@ -1,3 +1,6 @@
+-- be more concise:
+local opt = vim.opt
+
 -- same order as in :options, mostly
 
 -- 1 important

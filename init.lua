@@ -1,8 +1,3 @@
--- be more concise:
-map = vim.keymap.set
-cmd = vim.cmd
-opt = vim.opt
-
 -- we don't want to think about two different leader keys:
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -22,7 +17,7 @@ if not vim.loop.fs_stat(lazypath) then
         lazypath,
     }
 end
-opt.rtp:prepend(lazypath)
+vim.opt.rtp:prepend(lazypath)
 
 -- load the config:
 require('lazy').setup('plugins')
@@ -32,4 +27,4 @@ require('settings.options')
 require('settings.mappings')
 
 -- make it look pretty:
-cmd.colorscheme('mellifluous')
+vim.cmd.colorscheme('mellifluous')

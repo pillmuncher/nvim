@@ -159,6 +159,29 @@ vim.defer_fn(function()
                 },
             },
         },
+        playground = {
+            enable = true,
+            disable = {},
+            updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
+            persist_queries = false, -- Whether the query persists across vim sessions
+            keybindings = {
+                toggle_query_editor = 'o',
+                toggle_hl_groups = 'i',
+                toggle_injected_languages = 't',
+                toggle_anonymous_nodes = 'a',
+                toggle_language_display = 'I',
+                focus_language = 'f',
+                unfocus_language = 'F',
+                update = 'R',
+                goto_node = '<cr>',
+                show_help = '?',
+            },
+            query_linter = {
+                enable = true,
+                use_virtual_text = true,
+                lint_events = { "BufWrite", "CursorHold" },
+            },
+        },
     }
 end, 0)
 
@@ -201,7 +224,11 @@ dap.configurations.cs = {
         name = "launch - netcoredbg",
         request = "launch",
         program = function()
-            return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/net7.0/', 'file')
+            return vim.fn.input(
+                'Path to dll: ' ..
+                vim.fn.getcwd() .. '/bin/Debug/net7.0/' ..
+                'file'
+            )
         end,
     },
 }
@@ -210,9 +237,24 @@ dap.configurations.cs = {
 ----------------------------------- Neodev -------------------------------------
 
 
-require("neodev").setup({
-    library = { plugins = { "nvim-dap-ui" }, types = true },
+require('neotest').setup {
+    adapters = {
+        require("neotest-python")
+    }
+}
+
+
+
+----------------------------------- Neodev -------------------------------------
+
+
+require('neodev').setup({
+    library = {
+        plugins = { 'nvim-dap-ui', 'neotest' },
+        types = true,
+    },
 })
+
 
 
 ---------------------------------- Telesope ------------------------------------
@@ -220,8 +262,6 @@ require("neodev").setup({
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-
-
 
 --------------------------------- Which-Key ------------------------------------
 
