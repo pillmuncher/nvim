@@ -22,6 +22,10 @@ cmd.cnoreabbrev('wqA', 'wqa')
 -- leader is space, so we can set it to Nop.
 map({ 'n', 'v' }, '<Space>', '<Nop>', { desc = '' })
 
+-- make Shift-Up/Down keys not behave stupid in visual mode:
+map({ 'n', 'v' }, '<S-Up>', '<Up>', { desc = '', silent = true })
+map({ 'n', 'v' }, '<S-Down>', '<Down>', { desc = '', silent = true })
+
 -- Window navigation:
 map('n', '<C-PageUp>', '<CMD> bprev! <CR>', { desc = 'Change to previous buffer' })
 map('n', '<C-PageDown>', '<CMD> bnext! <CR>', { desc = 'Change to next buffer' })
@@ -75,10 +79,6 @@ map('v', '>', '>gv', { desc = 'Indent line', noremap = true, })
 -- Formatting:
 map('n', 'W', 'gwip', { desc = 'Wrap paragraph' })
 map('v', 'W', 'gw', { desc = 'Wrap paragraph' })
-
--- Selection:
-map('n', '<S-Home>', 'Vgg', { desc = 'Go to beginning of line' })
-map('n', '<S-End>', 'VG', { desc = 'Go to end of line' })
 
 -- Yanking & Pasting:
 --
