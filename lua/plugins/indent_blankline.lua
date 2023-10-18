@@ -2,11 +2,12 @@
 -- See `:help ibl
 return {
     'lukas-reineke/indent-blankline.nvim',
+    lazy = false,
     main = 'ibl',
     opts = {
         enabled = false,
         indent = { char = "▏" },
-        scope = { enabled = true },
+        scope = { enabled = false },
         whitespace = { remove_blankline_trail = true },
     },
     keys = {
@@ -14,6 +15,12 @@ return {
             '<leader>ti',
             '<CMD> IBLToggle <CR>',
             desc = 'Toggle IndentLines',
+            mode = 'n',
+        },
+        {
+            '<leader>ts',
+            '<CMD> IBLToggleScope <CR>',
+            desc = 'Toggle ScopeLines',
             mode = 'n',
         },
     },

@@ -42,9 +42,9 @@ return {
             { mode = 'n', },
         },
         {
-            '<leader>hd',
+            '<leader>td',
             function() require('gitsigns').toggle_deleted() end,
-            desc = 'Toggle Deleted',
+            desc = 'Toggle Deleted Lines',
             { mode = 'n', },
         },
         {

@@ -33,7 +33,7 @@ return {
                     newfile_status = true,
                     symbols = {
                         modified = '[✗]',
-                        readonly = '[]',
+                        readonly = '[]',
                     }
                 },
             },

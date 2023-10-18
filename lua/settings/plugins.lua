@@ -121,7 +121,7 @@ local cmp = require('cmp')
 local luasnip = require('luasnip')
 require('luasnip.loaders.from_vscode').lazy_load()
 
-cmp.setup({
+cmp.setup {
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -160,7 +160,7 @@ cmp.setup({
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
     },
-})
+}
 
 
 
@@ -213,5 +213,6 @@ require('which-key').register {
     ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
     -- ['<leader>r'] = { name = 'Rename', _ = 'which_key_ignore' },
     ['<leader>o'] = { name = 'Open', _ = 'which_key_ignore' },
+    ['<leader>t'] = { name = 'Toggle', _ = 'which_key_ignore' },
     ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
 }

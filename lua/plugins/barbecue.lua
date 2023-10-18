@@ -7,7 +7,8 @@ return {
         { 'nvim-tree/nvim-web-devicons', opts = {} },
     },
     opts = {
-        show_dirname = false,
         context_follow_icon_color = true,
+        create_autocmd = false,
+        show_dirname = false,
     },
 }

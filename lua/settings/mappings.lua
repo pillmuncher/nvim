@@ -100,9 +100,9 @@ map('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnos
 map('n', '<leader>od', vim.diagnostic.setloclist, { desc = 'Open Diagnostics' })
 
 -- Misc:
-map('n', '<leader>tl', '<CMD> set list!<CR>', { desc = 'Toggle listchars' })
-map('n', '<leader>tn', '<CMD> set nu! <CR>', { desc = 'Toggle line numbers' })
-map('n', '<leader>tr', '<CMD> set rnu! <CR>', { desc = 'Toggle relative numbers' })
+map('n', '<leader>tl', '<CMD> set list!<CR>', { desc = 'Toggle Listchars' })
+map('n', '<leader>tn', '<CMD> set nu! <CR>', { desc = 'Toggle Line Numbers' })
+map('n', '<leader>tr', '<CMD> set rnu! <CR>', { desc = 'Toggle Relative Numbers' })
 map('n', '<Esc>', '<CMD> noh <CR>', { desc = 'Clear highlights' })
 map('t', '<Esc>', vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true),
     { desc = 'Escape terminal mode', noremap = true })

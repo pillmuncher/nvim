@@ -1,3 +1,4 @@
+-- be more concise:
 map = vim.keymap.set
 cmd = vim.cmd
 opt = vim.opt
@@ -30,4 +31,5 @@ require('settings.autocmds')
 require('settings.options')
 require('settings.mappings')
 
+-- make it look pretty:
 cmd.colorscheme('mellifluous')

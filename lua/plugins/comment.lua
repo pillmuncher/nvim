@@ -5,13 +5,13 @@ return {
         {
             '<C-#>',
             function() require('Comment.api').toggle.linewise.current() end,
-            desc = 'Toggle comment',
+            desc = 'Toggle Comment',
             mode = { 'i', 'n' },
         },
         {
             '<C-#>',
             '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
-            desc = 'Toggle comment',
+            desc = 'Toggle Comment',
             mode = 'v',
         },
     },
