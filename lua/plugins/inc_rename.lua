@@ -3,11 +3,11 @@ return {
     opts = {},
     keys = {
         {
-            '<leader>lr',
+            '<leader>cr',
             function()
                 return ':IncRename ' .. vim.fn.expand('<cword>')
             end,
-            desc = 'LSP Rename',
+            desc = 'Rename',
             mode = 'n',
             expr = true,
         },

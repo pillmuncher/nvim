@@ -1,10 +1,11 @@
 return {
     'mfussenegger/nvim-dap',
     dependencies = {
+        { 'folke/neodev.nvim',            opts = {} },
         { 'jay-babu/mason-nvim-dap.nvim', opts = {} },
+        { 'mfussenegger/nvim-dap-python', },
         { 'rcarriga/nvim-dap-ui',         opts = {} },
         { 'williamboman/mason.nvim',      opts = {} },
-        { 'mfussenegger/nvim-dap-python', },
     },
     opts = {},
     config = function()
@@ -85,13 +86,13 @@ return {
         )
         vim.keymap.set(
             'n',
-            '<leader>b',
+            '<F6>',
             dap.toggle_breakpoint,
             { desc = 'Debug: Toggle Breakpoint' }
         )
         vim.keymap.set(
             'n',
-            '<leader>B',
+            '<F7>',
             function()
                 dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
             end,

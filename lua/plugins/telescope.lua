@@ -47,7 +47,7 @@ return {
             mode = 'n',
         },
         {
-            '<leader>ff',
+            '<leader>of',
             '<CMD> Telescope find_files <CR>',
             desc = 'Open File',
             mode = 'n',
@@ -83,9 +83,9 @@ return {
             mode = 'n',
         },
         {
-            '<leader>ma',
+            '<leader>om',
             '<CMD> Telescope marks <CR>',
-            desc = 'Find bookmarks',
+            desc = 'Open Marks',
             mode = 'n',
         },
     },

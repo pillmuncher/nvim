@@ -1,7 +1,6 @@
-vim.keymap.set('n', 'gb', '<Nop>', { desc = '' })
-vim.keymap.set('n', 'gc', '<Nop>', { desc = '' })
 return {
     'hrsh7th/nvim-cmp',
+    lazy = false,
     dependencies = {
         { 'hrsh7th/cmp-nvim-lsp',        opts = {} },
         { 'L3MON4D3/LuaSnip',            opts = {} },

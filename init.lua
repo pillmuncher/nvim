@@ -8,7 +8,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- prevent Python plugins from using a currently active virtualenv:
-vim.g.python3_host_prog = '/usr/bin/python'
+vim.g.python3_host_prog = '/usr/bin/python3'
 
 -- bootstrap lazy.nvim:
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'

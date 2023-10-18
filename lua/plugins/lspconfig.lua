@@ -7,13 +7,6 @@ return {
         { 'williamboman/mason-lspconfig.nvim', opts = {} },
         { 'williamboman/mason.nvim',           opts = {} },
     },
-    opts = {
-        on_attach = function(client, bufnr)
-            if client.server_capabilities['documentSymbolProvider'] then
-                require('nvim-navic').attach(client, bufnr)
-            end
-        end,
-    },
     config = function()
         -- Switch for controlling whether you want autoformatting.
         --  Use :KickstartFormatToggle to toggle autoformatting on or off
@@ -80,6 +73,13 @@ return {
             end,
         })
     end,
+    opts = {
+        on_attach = function(client, bufnr)
+            if client.server_capabilities['documentSymbolProvider'] then
+                require('nvim-navic').attach(client, bufnr)
+            end
+        end,
+    },
     keys = {
         {
             '<leader>jD',
@@ -110,15 +110,15 @@ return {
             function()
                 vim.lsp.buf.references()
             end,
-            desc = 'Open references',
+            desc = 'Open References',
             mode = 'n'
         },
         {
-            'K',
+            '<leader>sd',
             function()
                 vim.lsp.buf.hover()
             end,
-            desc = 'LSP hover',
+            desc = 'Show Documentation',
             mode = 'n'
         },
         {
@@ -126,7 +126,7 @@ return {
             function()
                 vim.lsp.buf.code_action()
             end,
-            desc = 'LSP code action',
+            desc = 'Code Action',
             mode = 'n'
         },
         {
@@ -134,23 +134,23 @@ return {
             function()
                 vim.lsp.buf.type_definition()
             end,
-            desc = 'Goto Type',
+            desc = 'Jump to Type',
             mode = 'n'
         },
         {
-            '<leader>lf',
+            '<leader>cf',
             function()
                 vim.lsp.buf.format { async = true }
             end,
-            desc = 'LSP Format',
+            desc = 'Code Format',
             mode = 'n'
         },
         {
-            '<leader>ls',
+            '<leader>ss',
             function()
                 vim.lsp.buf.signature_help()
             end,
-            desc = 'LSP Signature',
+            desc = 'Show Signature',
             mode = 'n'
         },
         {
@@ -158,15 +158,15 @@ return {
             function()
                 vim.lsp.buf.add_workspace_folder()
             end,
-            desc = 'New workspace folder',
+            desc = 'New Workspace Folder',
             mode = 'n'
         },
         {
-            '<leader>wl',
+            '<leader>sw',
             function()
                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end,
-            desc = 'Show workspace folders',
+            desc = 'Show Workspace Folders',
             mode = 'n'
         },
         {
@@ -174,23 +174,23 @@ return {
             function()
                 vim.lsp.buf.remove_workspace_folder()
             end,
-            desc = 'Delete workspace folders',
+            desc = 'Delete Workspace Folders',
             mode = 'n'
         },
         {
-            '<leader>ws',
+            '<leader>ow',
             function()
                 require('telescope.builtin').lsp_dynamic_workspace_symbols()
             end,
-            desc = 'Delete workspace folders',
+            desc = 'Open Workspace Symbols',
             mode = 'n'
         },
         {
-            '<leader>ds',
+            '<leader>os',
             function()
                 require('telescope.builtin').lsp_document_symbols({ show_line = true })
             end,
-            desc = 'Delete workspace folders',
+            desc = 'Open Document Symbols',
             mode = 'n'
         },
     },

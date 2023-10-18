@@ -35,8 +35,8 @@ map('n', '<M-Up>', '<CMD> wincmd k <CR>:resize -2 <CR>', { desc = 'Increase lowe
 map('n', '<M-Down>', '<CMD> wincmd k <CR>:resize +2 <CR>', { desc = 'Increase upper window size' })
 
 -- Buffer Management:
-map('n', '<leader>cb', '<CMD> enew <CR>', { desc = 'New buffer' })
-map('n', '<leader>db', '<CMD> bd <CR>', { desc = 'Close current buffer' })
+map('n', '<leader>bn', '<CMD> enew <CR>', { desc = 'New buffer' })
+map('n', '<leader>bd', '<CMD> bd <CR>', { desc = 'Close Current Buffer' })
 
 map({ 'i', 'n', 'v', 't' }, '<C-D>',
     function()
@@ -48,8 +48,8 @@ map({ 'i', 'n', 'v', 't' }, '<C-D>',
     end,
     { desc = 'Close window' })
 
--- System Shell
-map({ 'i', 'n', 'v' }, '<C-S>',
+-- Shell Terminal
+map({ 'i', 'n', 'v' }, '<C-T>',
     function()
         cmd.split()
         cmd.startinsert()
@@ -58,7 +58,7 @@ map({ 'i', 'n', 'v' }, '<C-S>',
     { desc = 'New Shell' }
 )
 
--- Python Shell
+-- Python Terminal
 map({ 'i', 'n', 'v' }, '<C-P>',
     function()
         cmd.split()
