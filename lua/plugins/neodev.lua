@@ -6,12 +6,10 @@ return {
         { 'antoinemadec/FixCursorHold.nvim' },
         { 'nvim-neotest/neotest-python' },
     },
-    config = function()
-        require('neodev').setup({
-            library = {
-                plugins = { 'nvim-dap-ui', 'neotest' },
-                types = true,
-            },
-        })
-    end,
+    opts = {
+        library = {
+            plugins = { 'nvim-dap-ui', 'neotest' },
+            types = true,
+        },
+    }
 }

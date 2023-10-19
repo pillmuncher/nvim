@@ -4,7 +4,7 @@ return {
         { 'SmiteshP/nvim-navic',               opts = {}, },
         { 'folke/neodev.nvim',                 opts = {} },
         { 'j-hui/fidget.nvim',                 opts = {}, tag = 'legacy' },
-        { 'williamboman/mason-lspconfig.nvim', opts = {} },
+        { 'williamboman/mason-lspconfig.nvim', opts = {}, dependencies = 'williamboman/mason.nvim', },
         { 'williamboman/mason.nvim',           opts = {} },
     },
 
@@ -235,4 +235,3 @@ return {
         }
     end,
 }
--- nmap('<leader>rn', vim.lsp.buf.rename, 'Rename')
