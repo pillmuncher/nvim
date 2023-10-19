@@ -21,7 +21,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- load the config:
 require('lazy').setup('plugins')
-require('settings.plugins')
 require('settings.autocmds')
 require('settings.options')
 require('settings.mappings')
