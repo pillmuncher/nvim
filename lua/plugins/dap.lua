@@ -98,5 +98,46 @@ return {
             end,
             { desc = 'Debug: Set Breakpoint' }
         )
+
+        -- Python:
+        dap.adapters.python = {
+            type = 'executable',
+            command = 'python3',
+            args = { '-m', 'debugpy.adapter' },
+        }
+
+        dap.configurations.python = {
+            {
+                type = 'python',
+                request = 'launch',
+                name = 'Launch file',
+                cwd = '.',
+                program = '${file}',
+            },
+        }
+
+        require('dap-python').setup('python3')
+
+        -- C#:
+        dap.adapters.coreclr = {
+            type = 'executable',
+            command = '/usr/local/bin/netcoredbg/netcoredbg',
+            args = { '--interpreter=vscode' }
+        }
+
+        dap.configurations.cs = {
+            {
+                type = "coreclr",
+                name = "launch - netcoredbg",
+                request = "launch",
+                program = function()
+                    return vim.fn.input(
+                        'Path to dll: ' ..
+                        vim.fn.getcwd() .. '/bin/Debug/net7.0/' ..
+                        'file'
+                    )
+                end,
+            },
+        }
     end,
 }
