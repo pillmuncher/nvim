@@ -20,9 +20,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- load the config:
-require('settings.options') -- in case some plugin caches options values
+require('settings.options')
 require('lazy').setup('plugins')
-require('settings.options') -- in case some plugin tries to overwrite any
 require('settings.mappings')
 require('settings.autocmds')
 
