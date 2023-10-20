@@ -42,8 +42,8 @@ map('n', '<M-Up>', '<CMD> wincmd k <CR>:resize -2 <CR>', { desc = 'Increase lowe
 map('n', '<M-Down>', '<CMD> wincmd k <CR>:resize +2 <CR>', { desc = 'Increase upper window size' })
 
 -- Buffer Management:
-map('n', '<leader>bn', '<CMD> enew <CR>', { desc = 'New buffer' })
-map('n', '<leader>bd', '<CMD> bd <CR>', { desc = 'Close Current Buffer' })
+map('n', '<leader>bb', '<CMD> enew <CR>', { desc = 'New Buffer' })
+map('n', '<leader>bc', '<CMD> bd <CR>', { desc = 'Close Current Buffer' })
 
 map({ 'i', 'n', 'v', 't' }, '<C-D>',
     function()
@@ -91,7 +91,7 @@ map('n', 'y.', '<CMD> %y+ <CR>', { desc = 'Yank current buffer' })
 map('x', '<leader>p', 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = 'Paste w/o replacing register' })
 
 -- Open QuickFix window:
-map({ 'i', 'n', 'v', 't' }, '<C-Q>', '<CMD> copen <CR>', { desc = 'Open QuickFix' })
+map({ 'n', 'v' }, '<leader>oq', '<CMD> copen <CR>', { desc = 'Open QuickFix' })
 
 -- cd to folder of current file:
 map('n', '<leader>wd', '<CMD> lcd %:p:h<CR>', { desc = '`cd` to folder of current file' })
@@ -103,7 +103,7 @@ map('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnos
 map('n', '<leader>od', vim.diagnostic.setloclist, { desc = 'Open Diagnostics' })
 
 -- Misc:
-map('n', '<leader>tl', '<CMD> set list!<CR>', { desc = 'Toggle Listchars' })
+map('n', '<leader>tc', '<CMD> set list!<CR>', { desc = 'Toggle Listchars' })
 map('n', '<leader>tn', '<CMD> set nu! <CR>', { desc = 'Toggle Line Numbers' })
 map('n', '<leader>tr', '<CMD> set rnu! <CR>', { desc = 'Toggle Relative Numbers' })
 map('n', '<Esc>', '<CMD> noh <CR>', { desc = 'Clear highlights' })

@@ -4,7 +4,7 @@ return {
         -- optional for floating window border decoration
         { 'nvim-lua/plenary.nvim' },
     },
-    keys = {
+    keys         = {
         {
             '<C-G>',
             '<CMD> LazyGit <CR>',

@@ -141,7 +141,7 @@ opt.backupdir = vim.fn.expand(   -- Always write backup file.
 
 -- 18 the swap file
 --
-opt.updatetime = 250 -- interval for writing swap file to disk, also used by gitsigns
+opt.updatetime = 200 -- interval for writing swap file to disk, also used by gitsigns
 
 
 -- 19 command line editing

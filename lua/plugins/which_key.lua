@@ -1,13 +1,12 @@
 return {
     'folke/which-key.nvim',
-    lazy = false,
-    opts = {},
-    keys = {
+    lazy   = false,
+    opts   = {},
+    keys   = {
         {
             '<leader>:',
             function()
-                local input = vim.fn.input 'WhichKey: '
-                vim.cmd('WhichKey ' .. input)
+                vim.cmd('WhichKey ' .. vim.fn.input 'WhichKey: ')
             end,
             desc = 'WhichKey',
             mode = 'n',
@@ -16,11 +15,12 @@ return {
     config = function()
         -- document existing key chains
         require('which-key').register {
+            ['<leader>b'] = { name = 'Buffer', _ = 'which_key_ignore' },
             ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
-            ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
+            -- ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
             ['<leader>f'] = { name = 'Find', _ = 'which_key_ignore' },
-            ['<leader>g'] = { name = 'Git', _ = 'which_key_ignore' },
-            ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
+            ['<leader>h'] = { name = 'Git', _ = 'which_key_ignore' },
+            -- ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
             -- ['<leader>r'] = { name = 'Rename', _ = 'which_key_ignore' },
             ['<leader>j'] = { name = 'Jump', _ = 'which_key_ignore' },
             ['<leader>o'] = { name = 'Open', _ = 'which_key_ignore' },

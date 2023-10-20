@@ -55,9 +55,9 @@ return {
             { mode = 'n', },
         },
         {
-            '<leader>gb',
+            '<leader>sb',
             function() package.loaded.gitsigns.blame_line() end,
-            desc = 'Git Blame',
+            desc = 'Show Git Blame',
             { mode = 'n', },
         },
     },

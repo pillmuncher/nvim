@@ -16,7 +16,13 @@ api.nvim_create_autocmd('FileType', {
 })
 
 -- keep the winbar updated:
-api.nvim_create_autocmd({ 'BufWinEnter', 'CursorHold', 'InsertLeave', 'WinResized' }, {
+api.nvim_create_autocmd({
+    'WinScrolled',
+    'WinResized',
+    'InsertLeave',
+    'CursorHold',
+    'BufWinEnter',
+}, {
     group = api.nvim_create_augroup('barbecue.updater', {}),
     callback = function() require('barbecue.ui').update() end,
 })

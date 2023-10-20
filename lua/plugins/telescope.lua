@@ -1,6 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
+    branch       = '0.1.x',
     dependencies = {
         { 'nvim-lua/plenary.nvim' },
         -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -16,7 +16,7 @@ return {
             end,
         },
     },
-    opts = {
+    opts         = {
         defaults = {
             mappings = {
                 i = {
@@ -27,35 +27,35 @@ return {
             sorting_strategy = 'ascending',
         },
     },
-    keys = {
-        {
-            '<leader>gc',
-            '<CMD> Telescope git_commits <CR>',
-            desc = 'Git Commits',
-            mode = 'n',
-        },
+    keys         = {
         {
             '<leader>fa',
             '<CMD> Telescope find_files follow=true no_ignore=true hidden=true <CR>',
-            desc = 'Find All',
+            desc = 'Find Any',
             mode = 'n',
         },
         {
             '<leader>fb',
             '<CMD> Telescope buffers <CR>',
-            desc = 'Find Buffers',
+            desc = 'Find Buffer',
             mode = 'n',
         },
         {
-            '<leader>of',
+            '<leader>fc',
+            '<CMD> Telescope git_commits <CR>',
+            desc = 'Find Git Commit',
+            mode = 'n',
+        },
+        {
+            '<leader>ff',
             '<CMD> Telescope find_files <CR>',
-            desc = 'Open File',
+            desc = 'Find File',
             mode = 'n',
         },
         {
-            '<leader>gf',
+            '<leader>fg',
             '<CMD> Telescope git_files <CR>',
-            desc = 'Git Files',
+            desc = 'Find Git File',
             mode = 'n',
         },
         {
@@ -65,31 +65,31 @@ return {
             mode = 'n',
         },
         {
+            '<leader>fm',
+            '<CMD> Telescope marks <CR>',
+            desc = 'Find Marks',
+            mode = 'n',
+        },
+        {
             '<leader>fr',
             '<CMD> Telescope oldfiles <CR>',
-            desc = 'Find Recent Files',
+            desc = 'Find Recent',
             mode = 'n',
         },
         {
-            '<leader>og',
+            '<leader>fx',
             '<CMD> Telescope live_grep <CR>',
-            desc = 'Open Grep',
+            desc = 'Find Regex',
             mode = 'n',
         },
         {
-            '<leader>gt',
+            '<leader>fs',
             '<CMD> Telescope git_status <CR>',
             desc = 'Git Status',
             mode = 'n',
         },
-        {
-            '<leader>om',
-            '<CMD> Telescope marks <CR>',
-            desc = 'Open Marks',
-            mode = 'n',
-        },
     },
-    config = function()
+    config       = function()
         -- Enable telescope fzf native, if installed
         pcall(require('telescope').load_extension, 'fzf')
     end

@@ -7,8 +7,8 @@ return {
         { 'rcarriga/nvim-dap-ui',         opts = {} },
         { 'williamboman/mason.nvim',      opts = {} },
     },
-    opts = {},
-    config = function()
+    opts         = {},
+    config       = function()
         local dap = require 'dap'
         local dapui = require 'dapui'
 

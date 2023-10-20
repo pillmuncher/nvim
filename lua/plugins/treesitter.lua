@@ -4,9 +4,9 @@ return {
         { 'nvim-treesitter/nvim-treesitter-textobjects', },
         { 'nvim-treesitter/playground', },
     },
-    opts = {},
-    build = ':TSUpdate',
-    config = function()
+    opts         = {},
+    build        = ':TSUpdate',
+    config       = function()
         vim.defer_fn(function()
             require('nvim-treesitter.configs').setup {
                 -- Add languages to be installed here that you want installed for treesitter

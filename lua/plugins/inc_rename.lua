@@ -1,7 +1,7 @@
 return {
     'smjonas/inc-rename.nvim',
-    opts = {},
-    keys = {
+    opts    = {},
+    keys    = {
         {
             '<leader>cr',
             function()
