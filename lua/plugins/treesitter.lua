@@ -8,7 +8,7 @@ return {
     build        = ':TSUpdate',
     config       = function()
         vim.defer_fn(function()
-            require('nvim-treesitter.configs').setup {
+            require('nvim-treesitter.configs').setup({
                 -- Add languages to be installed here that you want installed for treesitter
                 ensure_installed = { 'c', 'lua', 'python', 'clojure', 'vimdoc', 'vim' },
 
@@ -90,10 +90,10 @@ return {
                     query_linter = {
                         enable = true,
                         use_virtual_text = true,
-                        lint_events = { "BufWrite", "CursorHold" },
+                        lint_events = { 'BufWrite', 'CursorHold' },
                     },
                 },
-            }
+            })
         end, 0)
     end,
 }

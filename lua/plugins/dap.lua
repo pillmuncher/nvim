@@ -12,7 +12,7 @@ return {
         local dap = require 'dap'
         local dapui = require 'dapui'
 
-        require('mason-nvim-dap').setup {
+        require('mason-nvim-dap').setup({
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
             automatic_setup = true,
@@ -24,11 +24,11 @@ return {
             -- You'll need to check that you have the required things installed
             -- online, please don't ask me how to install them :)
             ensure_installed = {},
-        }
+        })
 
         -- Dap UI setup
         -- For more information, see |:help nvim-dap-ui|
-        dapui.setup {
+        dapui.setup({
             -- Set icons to characters that are more likely to work in every terminal.
             --    Feel free to remove or use ones that you like more! :)
             --    Don't feel like these are good choices.
@@ -46,7 +46,7 @@ return {
                     disconnect = '⏏',
                 },
             },
-        }
+        })
 
         dap.listeners.after.event_initialized['dapui_config'] = dapui.open
         dap.listeners.before.event_terminated['dapui_config'] = dapui.close
@@ -127,14 +127,12 @@ return {
 
         dap.configurations.cs = {
             {
-                type = "coreclr",
-                name = "launch - netcoredbg",
-                request = "launch",
+                type = 'coreclr',
+                name = 'launch - netcoredbg',
+                request = 'launch',
                 program = function()
                     return vim.fn.input(
-                        'Path to dll: ' ..
-                        vim.fn.getcwd() .. '/bin/Debug/net7.0/' ..
-                        'file'
+                        'Path to dll: ' .. vim.fn.getcwd() .. '/bin/Debug/net7.0/'
                     )
                 end,
             },

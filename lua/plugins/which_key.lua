@@ -14,7 +14,7 @@ return {
     },
     config = function()
         -- document existing key chains
-        require('which-key').register {
+        require('which-key').register({
             ['<leader>b'] = { name = 'Buffer', _ = 'which_key_ignore' },
             ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
             -- ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
@@ -27,6 +27,6 @@ return {
             ['<leader>s'] = { name = 'Show', _ = 'which_key_ignore' },
             ['<leader>t'] = { name = 'Toggle', _ = 'which_key_ignore' },
             ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
-        }
+        })
     end
 }
