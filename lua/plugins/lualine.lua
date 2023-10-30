@@ -28,7 +28,7 @@ return {
                 },
                 {
                     'filename',
-                    path = 3,
+                    path = 4,
                     file_status = true,
                     newfile_status = true,
                     symbols = {
@@ -40,6 +40,7 @@ return {
             lualine_x = {
                 'selectioncount',
                 'searchcount',
+                '%{"AI:"}%3{codeium#GetStatusString()}',
             },
             lualine_y = {
                 'fileformat',
