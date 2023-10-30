@@ -28,7 +28,7 @@ return {
                 },
                 {
                     'filename',
-                    path = 4,
+                    path = 3,
                     file_status = true,
                     newfile_status = true,
                     symbols = {
