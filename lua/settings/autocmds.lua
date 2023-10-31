@@ -18,13 +18,13 @@ api.nvim_create_autocmd('FileType', {
 -- set textwidth for csharp
 api.nvim_create_autocmd('FileType', {
     pattern = 'cs',
-    callback = function() vim.opt.textwidth = 98 end,
+    callback = function() vim.opt_local.textwidth = 98 end,
 })
 
 -- set textwidth for python
 api.nvim_create_autocmd('FileType', {
     pattern = 'python',
-    callback = function() vim.opt.textwidth = 79 end,
+    callback = function() vim.opt_local.textwidth = 79 end,
 })
 -- keep the winbar updated:
 api.nvim_create_autocmd({
