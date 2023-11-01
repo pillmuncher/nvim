@@ -16,6 +16,11 @@ return {
             end,
         },
     },
+    config       = function()
+        -- Enable telescope fzf native and git-worktree, if installed
+        pcall(require('telescope').load_extension, 'fzf')
+        pcall(require('telescope').load_extension, 'git_worktree')
+    end,
     opts         = {
         defaults = {
             mappings = {
@@ -89,8 +94,4 @@ return {
             mode = 'n',
         },
     },
-    config       = function()
-        -- Enable telescope fzf native, if installed
-        pcall(require('telescope').load_extension, 'fzf')
-    end
 }
