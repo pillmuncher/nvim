@@ -3,7 +3,8 @@ return {
     dependencies = {
         { 'folke/neodev.nvim',            opts = {} },
         { 'jay-babu/mason-nvim-dap.nvim', opts = {} },
-        { 'mfussenegger/nvim-dap-python', },
+        { 'mfussenegger/nvim-dap-python' },
+        { 'nvim-neotest/nvim-nio' },
         { 'rcarriga/nvim-dap-ui',         opts = {} },
         { 'williamboman/mason.nvim',      opts = {} },
     },
