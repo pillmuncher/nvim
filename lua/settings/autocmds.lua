@@ -15,6 +15,12 @@ api.nvim_create_autocmd('FileType', {
     callback = function() vim.opt_local.buflisted = false end,
 })
 
+-- set textwidth for lua
+api.nvim_create_autocmd('FileType', {
+    pattern = 'lua',
+    callback = function() vim.opt_local.textwidth = 98 end,
+})
+
 -- set textwidth for csharp
 api.nvim_create_autocmd('FileType', {
     pattern = 'cs',
