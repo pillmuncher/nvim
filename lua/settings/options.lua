@@ -24,14 +24,19 @@ opt.smartcase = true          -- Use smartcase unless uppercase letters are used
 --
 opt.scrolloff = 1         -- Keep 1 context line above and below the cursor.
 opt.wrap = false          -- Don't display lines as wrapped.
-opt.sidescrolloff = 1     -- Only scroll sideways when one column from windo frame.
+opt.sidescrolloff = 1     -- Only scroll sideways when one column from window frame.
 opt.lazyredraw = true     -- Redraw only when we need to.
 opt.number = true         -- Show line numbers.
 opt.relativenumber = true -- Show current line as 0.
-opt.listchars = (         -- What to show on ':list'.
-    'tab:▸ ,eol:¬,nbsp:·,trail:·,precedes:<,extends:>'
-)
-opt.fillchars = { -- characters to use for the status line, folds and filler lines
+opt.listchars = {         -- What to show on ':list'.
+    tab = '▸ ',
+    eol = '¬',
+    nbsp = '·',
+    trail = '·',
+    precedes = '<',
+    extends = '>',
+}
+opt.fillchars = { -- status line, folds and filler line characters:
     vert = '|', -- vertical split separators
     fold = ' ', -- folded lines
     eob = ' ', -- End Of Buffer area

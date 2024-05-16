@@ -19,9 +19,11 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- load the config:
-require('settings.options')
+-- load the plugins:
 require('lazy').setup('plugins')
+
+-- configure settings:
+require('settings.options')
 require('settings.mappings')
 require('settings.autocmds')
 

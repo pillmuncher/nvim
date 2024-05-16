@@ -3,7 +3,7 @@ return {
     lazy         = false,
     dependencies = {
         { 'hrsh7th/cmp-nvim-lsp',        opts = {} },
-        { 'L3MON4D3/LuaSnip',            opts = {} },
+        { 'L3MON4D3/LuaSnip',            opts = {}, build = "make install_jsregexp" },
         { 'saadparwaiz1/cmp_luasnip' },
         { 'rafamadriz/friendly-snippets' },
     },
