@@ -32,6 +32,7 @@ api.nvim_create_autocmd('FileType', {
     pattern = 'python',
     callback = function() vim.opt_local.textwidth = 79 end,
 })
+
 -- keep the winbar updated:
 api.nvim_create_autocmd({
     'WinScrolled',
