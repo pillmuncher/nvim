@@ -109,3 +109,6 @@ map('n', '<leader>tr', '<CMD> set rnu! <CR>', { desc = 'Toggle Relative Numbers'
 map('n', '<Esc>', '<CMD> noh <CR>', { desc = 'Clear highlights' })
 map('t', '<Esc>', vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true),
     { desc = 'Escape terminal mode', noremap = true })
+
+-- unmap gc to remove annoying :checkhealth message:
+map('n', 'gc', '')
