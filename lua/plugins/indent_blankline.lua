@@ -3,24 +3,11 @@ return {
     -- See `:help ibl
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
+    keys = {},
     opts = {
         enabled = false,
         indent = { char = '▏' },
         scope = { enabled = false },
         whitespace = { remove_blankline_trail = true },
-    },
-    keys = {
-        {
-            '<leader>ti',
-            '<CMD> IBLToggle <CR>',
-            desc = 'Toggle IndentLines',
-            mode = 'n',
-        },
-        {
-            '<leader>ts',
-            '<CMD> IBLToggleScope <CR>',
-            desc = 'Toggle ScopeLines',
-            mode = 'n',
-        },
     },
 }

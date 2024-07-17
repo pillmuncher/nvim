@@ -15,6 +15,7 @@ return {
                     'c',
                     'c_sharp',
                     'clojure',
+                    'fennel',
                     'lua',
                     'python',
                     'racket',

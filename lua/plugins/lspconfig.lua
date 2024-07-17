@@ -1,139 +1,58 @@
 return {
     'neovim/nvim-lspconfig',
-    lazy         = false,
+    lazy = false,
     dependencies = {
-        { 'SmiteshP/nvim-navic',               opts = {}, },
+        { 'SmiteshP/nvim-navic',               opts = {} },
         { 'folke/neodev.nvim',                 opts = {} },
         { 'j-hui/fidget.nvim',                 opts = {}, tag = 'legacy' },
-        { 'williamboman/mason-lspconfig.nvim', opts = {}, dependencies = 'williamboman/mason.nvim', },
+        { 'williamboman/mason-lspconfig.nvim', opts = {}, dependencies = 'williamboman/mason.nvim' },
         { 'williamboman/mason.nvim',           opts = {} },
     },
-    opts         = {
-        on_attach = function(client, bufnr)
-            if client.server_capabilities['documentSymbolProvider'] then
-                require('nvim-navic').attach(client, bufnr)
-            end
-        end,
-    },
-    keys         = {
-        {
-            '<leader>jD',
-            function()
-                vim.lsp.buf.declaration()
-            end,
-            desc = 'Jump to Declaration',
-            mode = 'n'
-        },
-        {
-            '<leader>jd',
-            function()
-                vim.lsp.buf.definition()
-            end,
-            desc = 'Jump to Definition',
-            mode = 'n'
-        },
-        {
-            '<leader>ji',
-            function()
-                vim.lsp.buf.implementation()
-            end,
-            desc = 'Jump to Implementation',
-            mode = 'n'
-        },
-        {
-            '<leader>or',
-            function()
-                vim.lsp.buf.references()
-            end,
-            desc = 'Open References',
-            mode = 'n'
-        },
-        {
-            '<leader>sd',
-            function()
-                vim.lsp.buf.hover()
-            end,
-            desc = 'Show Documentation',
-            mode = 'n'
-        },
-        {
-            '<leader>ca',
-            function()
-                vim.lsp.buf.code_action()
-            end,
-            desc = 'Code Action',
-            mode = 'n'
-        },
-        {
-            '<leader>jt',
-            function()
-                vim.lsp.buf.type_definition()
-            end,
-            desc = 'Jump to Type',
-            mode = 'n'
-        },
-        {
-            '<leader>cf',
-            function()
-                vim.lsp.buf.format({ async = true })
-            end,
-            desc = 'Code Format',
-            mode = 'n'
-        },
-        {
-            '<leader>ss',
-            function()
-                vim.lsp.buf.signature_help()
-            end,
-            desc = 'Show Signature',
-            mode = 'n'
-        },
-        {
-            '<leader>wa',
-            function()
-                vim.lsp.buf.add_workspace_folder()
-            end,
-            desc = 'New Workspace Folder',
-            mode = 'n'
-        },
-        {
-            '<leader>sw',
-            function()
-                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            end,
-            desc = 'Show Workspace Folders',
-            mode = 'n'
-        },
-        {
-            '<leader>wr',
-            function()
-                vim.lsp.buf.remove_workspace_folder()
-            end,
-            desc = 'Delete Workspace Folders',
-            mode = 'n'
-        },
-        {
-            '<leader>fw',
-            function()
-                require('telescope.builtin').lsp_dynamic_workspace_symbols()
-            end,
-            desc = 'Find Workspace Symbols',
-            mode = 'n'
-        },
-        {
-            '<leader>fd',
-            function()
-                require('telescope.builtin').lsp_document_symbols({ show_line = true })
-            end,
-            desc = 'Find Document Symbols',
-            mode = 'n'
-        },
-    },
-    config       = function()
+    on_attach = function(client, bufnr)
+        if client.server_capabilities['documentSymbolProvider'] then
+            require('nvim-navic').attach(client, bufnr)
+        end
+        -- Add key mappings for LSP functions
+        local opts = {
+            noremap = true,
+            silent = true,
+        }
+        local buf_set_keymap = vim.api.nvim_buf_set_keymap
+        buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
+            opts)
+        buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+        buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
+    end,
+    keys = {},
+    config = function()
         local servers = {
             -- add LSP servers here:
             clangd = {},
-            clojure_lsp = { filetypes = { 'clj', 'cljs' } },
+            clojure_lsp = {
+                filetypes = { 'clj', 'cljs' },
+                settings = {
+                    clojure_lsp = {
+                        completion = {
+                            snippets = true,
+                            locals = true,
+                        },
+                    },
+                },
+            },
             omnisharp = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
             ruff_lsp = { filetypes = { 'py' } },
@@ -157,10 +76,12 @@ return {
                         vim.lsp.protocol.make_client_capabilities()
                     ),
                     -- Create a command `:Format` local to the LSP buffer
-                    on_attach = function(_, bufnr)
+                    on_attach = function(client, bufnr)
                         vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
                             vim.lsp.buf.format()
                         end, { desc = 'Format current buffer with LSP' })
+                        -- Use the user-defined on_attach function to set up additional mappings
+                        -- require('lspconfig').on_attach(client, bufnr)
                     end,
                     settings = servers[server_name],
                     filetypes = (servers[server_name] or {}).filetypes,
@@ -207,7 +128,7 @@ return {
                     return
                 end
                 -- Create an autocmd that will run *before* we save the buffer.
-                --  Run the formatting command for the LSP that has just attached.
+                -- Run the formatting command for the LSP that has just attached.
                 vim.api.nvim_create_autocmd('BufWritePre', {
                     group = get_augroup(client),
                     buffer = bufnr,

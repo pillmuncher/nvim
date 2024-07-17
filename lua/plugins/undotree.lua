@@ -5,12 +5,5 @@ vim.g.undotree_WindowLayout = 4
 
 return {
     'mbbill/undotree',
-    keys = {
-        {
-            '<C-U>',
-            '<CMD> UndotreeToggle <CR>',
-            desc = 'Toggle UndoTree',
-            mode = { 'i', 'n' },
-        },
-    },
+    keys = {},
 }

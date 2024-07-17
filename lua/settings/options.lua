@@ -177,3 +177,7 @@ opt.grepprg = 'rg --vimgrep' -- Replace the default grep program with ripgrep.
 --
 opt.virtualedit = 'block' -- Let cursor move past the last char in v mode.
 opt.signcolumn = 'yes'    -- When and how to draw the signcolumn.
+
+
+-- disable luarocks:
+-- opt.rocks.enabled = false

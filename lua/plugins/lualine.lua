@@ -40,7 +40,7 @@ return {
             lualine_x = {
                 'selectioncount',
                 'searchcount',
-                '%{"AI:"}%3{codeium#GetStatusString()}',
+                -- '%{"AI:"}%3{codeium#GetStatusString()}',
             },
             lualine_y = {
                 'fileformat',

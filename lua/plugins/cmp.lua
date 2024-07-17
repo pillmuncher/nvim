@@ -1,13 +1,25 @@
+local has_words_before = function()
+    unpack = unpack or table.unpack
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+end
+
 return {
     'hrsh7th/nvim-cmp',
     lazy         = false,
     dependencies = {
-        { 'hrsh7th/cmp-nvim-lsp',        opts = {} },
+        { "Olical/conjure" },
         { 'L3MON4D3/LuaSnip',            opts = {}, build = "make install_jsregexp" },
-        { 'saadparwaiz1/cmp_luasnip' },
+        { 'PaterJason/cmp-conjure' },
+        { 'hrsh7th/cmp-nvim-lsp',        opts = {} },
         { 'rafamadriz/friendly-snippets' },
+        { 'saadparwaiz1/cmp_luasnip' },
     },
-    opts         = {},
+    opts         = function(_, opts)
+        if type(opts.sources) == "table" then
+            vim.list_extend(opts.sources, { name = "conjure" })
+        end
+    end,
     config       = function()
         local cmp = require('cmp')
         local luasnip = require('luasnip')
@@ -29,6 +41,24 @@ return {
                     behavior = cmp.ConfirmBehavior.Replace,
                     select = true,
                 }),
+                ['<Tab>'] = function(fallback)
+                    if not cmp.select_next_item() then
+                        if vim.bo.buftype ~= 'prompt' and has_words_before() then
+                            cmp.complete()
+                        else
+                            fallback()
+                        end
+                    end
+                end,
+                ['<S-Tab>'] = function(fallback)
+                    if not cmp.select_prev_item() then
+                        if vim.bo.buftype ~= 'prompt' and has_words_before() then
+                            cmp.complete()
+                        else
+                            fallback()
+                        end
+                    end
+                end,
                 ['<M-Down>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
@@ -48,15 +78,17 @@ return {
                     end
                 end, { 'i', 's' }),
             }),
-            sources = {
+            sources = cmp.config.sources({
                 { name = 'buffer' },
+                { name = 'conjure' },
+                { name = 'clojure' },
                 { name = 'luasnip' },
                 { name = 'nvim_lsp' },
                 { name = 'nvim_lsp_signature_help' },
                 { name = 'path' },
                 { name = 'spell' },
                 { name = 'vsnip' },
-            }
+            })
         })
     end,
 }

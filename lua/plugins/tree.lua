@@ -6,13 +6,6 @@ return {
     dependencies = {
         { 'nvim-tree/nvim-web-devicons', opts = {}, },
     },
-    opts         = {},
-    keys         = {
-        {
-            '<C-N>',
-            '<CMD> NvimTreeToggle <CR>',
-            desc = 'OpenExplorer',
-            mode = { 'i', 'n' },
-        },
-    },
+    opts = {},
+    keys = {},
 }

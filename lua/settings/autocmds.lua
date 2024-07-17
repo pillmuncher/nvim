@@ -27,6 +27,18 @@ api.nvim_create_autocmd('FileType', {
     callback = function() vim.opt_local.textwidth = 98 end,
 })
 
+-- set textwidth for clojure
+api.nvim_create_autocmd('FileType', {
+    pattern = 'clojure',
+    callback = function() vim.opt_local.textwidth = 98 end,
+})
+
+-- remove trainilng whitespace in Clojure files:
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.clj",
+    command = "%s/\\s\\+$//e"
+})
+
 -- set textwidth for python
 api.nvim_create_autocmd('FileType', {
     pattern = 'python',
