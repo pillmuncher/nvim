@@ -4,5 +4,5 @@ return {
         -- optional for floating window border decoration
         { 'nvim-lua/plenary.nvim' },
     },
-    keys = {},
+    -- keys = {},
 }
