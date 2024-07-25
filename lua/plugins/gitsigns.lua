@@ -1,7 +1,6 @@
 return {
     'lewis6991/gitsigns.nvim',
     lazy = false,
-    keys = {},
     opts = {
         -- See `:help gitsigns.txt`
         signs = {

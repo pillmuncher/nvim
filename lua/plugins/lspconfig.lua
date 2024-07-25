@@ -37,7 +37,6 @@ return {
         buf_set_keymap(bufnr, 'n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
         buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
     end,
-    keys = {},
     config = function()
         local servers = {
             -- add LSP servers here:
