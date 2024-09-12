@@ -181,3 +181,8 @@ opt.signcolumn = 'yes'    -- When and how to draw the signcolumn.
 
 -- disable luarocks:
 -- opt.rocks.enabled = false
+
+
+-- GUI options:
+
+vim.opt.guifont = "Liga Hasklug Nerd Font Mono:11"
