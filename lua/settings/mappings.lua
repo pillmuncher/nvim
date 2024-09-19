@@ -50,7 +50,7 @@ map({ 'i', 'n', 'v', 't' }, '<C-D>',
         if #vim.api.nvim_list_wins() > 1 then
             vim.api.nvim_win_close(0, true)
         else
-            vim.cmd('bd')
+            cmd('bd')
         end
     end,
     { desc = 'Close window' })
@@ -118,7 +118,7 @@ require("which-key").add({
     {
         '<leader>:',
         function()
-            vim.cmd('WhichKey ' .. vim.fn.input 'WhichKey: ')
+            cmd('WhichKey ' .. vim.fn.input 'WhichKey: ')
         end,
         desc = 'WhichKey',
         mode = 'n',

@@ -3,7 +3,7 @@ return {
     lazy = false,
     dependencies = {
         { 'SmiteshP/nvim-navic',               opts = {} },
-        { 'folke/neodev.nvim',                 opts = {} },
+        { 'folke/lazydev.nvim',                opts = {} },
         { 'j-hui/fidget.nvim',                 opts = {}, tag = 'legacy' },
         { 'williamboman/mason-lspconfig.nvim', opts = {}, dependencies = 'williamboman/mason.nvim' },
         { 'williamboman/mason.nvim',           opts = {} },
