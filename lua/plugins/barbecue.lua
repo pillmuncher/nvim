@@ -19,8 +19,8 @@ return {
     lazy         = false,
     name         = 'barbecue',
     dependencies = {
-        { 'SmiteshP/nvim-navic',         opts = {} },
-        { 'nvim-tree/nvim-web-devicons', opts = {} },
+        { 'SmiteshP/nvim-navic' },
+        { 'nvim-tree/nvim-web-devicons' },
     },
     opts         = {
         create_autocmd = false,

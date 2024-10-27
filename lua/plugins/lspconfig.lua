@@ -2,10 +2,10 @@ return {
     'neovim/nvim-lspconfig',
     lazy = false,
     dependencies = {
-        { 'SmiteshP/nvim-navic',               opts = {} },
-        { 'folke/lazydev.nvim',                opts = {} },
-        { 'j-hui/fidget.nvim',                 opts = {}, tag = 'legacy' },
-        { 'williamboman/mason-lspconfig.nvim', opts = {}, dependencies = 'williamboman/mason.nvim' },
+        { 'SmiteshP/nvim-navic' },
+        { 'folke/lazydev.nvim' },
+        { 'j-hui/fidget.nvim',                 tag = 'legacy' },
+        { 'williamboman/mason-lspconfig.nvim', dependencies = 'williamboman/mason.nvim' },
         { 'williamboman/mason.nvim',           opts = {} },
     },
     on_attach = function(client, bufnr)

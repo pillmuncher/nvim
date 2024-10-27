@@ -9,9 +9,9 @@ return {
     lazy         = false,
     dependencies = {
         { "Olical/conjure" },
-        { 'L3MON4D3/LuaSnip',            opts = {}, build = "make install_jsregexp" },
+        { 'L3MON4D3/LuaSnip',            build = "make install_jsregexp" },
         { 'PaterJason/cmp-conjure' },
-        { 'hrsh7th/cmp-nvim-lsp',        opts = {} },
+        { 'hrsh7th/cmp-nvim-lsp' },
         { 'rafamadriz/friendly-snippets' },
         { 'saadparwaiz1/cmp_luasnip' },
     },
