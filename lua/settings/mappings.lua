@@ -226,18 +226,18 @@ require("which-key").add({
         desc = 'Toggle ScopeLines',
         mode = 'n',
     },
-    {
-        '<leader>gD',
-        function() vim.lsp.buf.declaration() end,
-        desc = 'Jump to Declaration',
-        mode = 'n'
-    },
-    {
-        '<leader>gd',
-        function() vim.lsp.buf.definition() end,
-        desc = 'Jump to Definition',
-        mode = 'n'
-    },
+    -- {
+    --     '<leader>gD',
+    --     function() vim.lsp.buf.declaration() end,
+    --     desc = 'Jump to Declaration',
+    --     mode = 'n'
+    -- },
+    -- {
+    --     '<leader>gd',
+    --     function() vim.lsp.buf.definition() end,
+    --     desc = 'Jump to Definition',
+    --     mode = 'n'
+    -- },
     {
         '<leader>gi',
         function() vim.lsp.buf.implementation() end,

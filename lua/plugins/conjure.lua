@@ -1,6 +1,11 @@
+vim.g["conjure#filetypes"] = {
+    "clojure",
+    "fennel",
+    "hy",
+    "racket"
+}
 return {
     "Olical/conjure",
-    ft = { "clojure", "fennel", "hy", "racket", "python" },
     dependencies = {
         { "Olical/nfnl",           ft = "fennel" },
         { "Olical/aniseed" },
@@ -11,6 +16,6 @@ return {
         require("conjure.mapping")["on-filetype"]()
     end,
     init = function()
-        vim.g["conjure#debug"] = true
+        vim.g["conjure#debug"] = false
     end,
 }
