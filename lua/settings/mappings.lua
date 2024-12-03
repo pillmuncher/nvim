@@ -70,7 +70,7 @@ map({ 'i', 'n', 'v' }, '<C-P>',
     function()
         cmd.split()
         cmd.startinsert()
-        cmd.terminal('python')
+        cmd.terminal('python3')
     end,
     { desc = 'New Python Shell', }
 )
