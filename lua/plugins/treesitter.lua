@@ -17,6 +17,7 @@ return {
                     'clojure',
                     'fennel',
                     'lua',
+                    'markdown',
                     'python',
                     'racket',
                     'vim',
