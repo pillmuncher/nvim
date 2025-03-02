@@ -186,4 +186,5 @@ opt.signcolumn = 'yes'    -- When and how to draw the signcolumn.
 
 -- GUI options:
 
-vim.opt.guifont = "Liga Hasklug Nerd Font Mono:11"
+opt.guifont = "Liga Hasklug Nerd Font:Light:14"
+vim.g.neovide_transparency = 0.707

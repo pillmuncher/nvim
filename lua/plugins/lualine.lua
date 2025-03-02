@@ -1,10 +1,18 @@
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = { { 'nvim-tree/nvim-web-devicons' }, },
-    opts
-                 = {
-        extensions = { 'fzf', 'lazy', 'man', 'mason', 'nvim-dap-ui', 'nvim-tree', 'quickfix',
-            'symbols-outline', 'toggleterm', },
+    opts         = {
+        extensions = {
+            'fzf',
+            'lazy',
+            'man',
+            'mason',
+            'nvim-dap-ui',
+            'nvim-tree',
+            'quickfix',
+            'symbols-outline',
+            'toggleterm',
+        },
         options = {
             component_separators = { left = '', right = '' },
             section_separators = { left = '', right = '' },
