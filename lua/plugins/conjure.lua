@@ -4,6 +4,7 @@ vim.g["conjure#filetypes"] = {
     "hy",
     "racket"
 }
+vim.g["conjure#mapping#doc_word"] = false
 return {
     "Olical/conjure",
     dependencies = {

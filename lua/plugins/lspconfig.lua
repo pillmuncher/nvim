@@ -53,7 +53,7 @@ return {
                     },
                 },
             },
-            omnisharp = { filetypes = { 'cs' } },
+            csharp_ls = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
             lua_ls = {
                 Lua = {
