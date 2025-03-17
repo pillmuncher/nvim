@@ -113,8 +113,14 @@ map('t', '<Esc>', vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true
 -- unmap gc to remove annoying :checkhealth message:
 map('n', 'gc', '')
 
+local comment = require('Comment')
+local commentapi = require('Comment.api')
+local gitsigns = require('gitsigns')
+local telescope = require('telescope')
+local whichkey = require('which-key')
+
 -- which-key config:
-require("which-key").add({
+whichkey.add({
     {
         '<leader>:',
         function()
@@ -134,19 +140,19 @@ require("which-key").add({
     { '<leader>w', group = 'Workspace' },
     {
         '<C-#>',
-        function() require('Comment.api').toggle.linewise.current() end,
+        function() commentapi.toggle.linewise.current() end,
         desc = 'Toggle Comment',
         mode = { 'i', 'n' },
     },
     {
         '<C-#>',
-        '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
+        '<ESC><CMD>lua comment.api.toggle.linewise(vim.fn.visualmode())<CR>',
         desc = 'Toggle Comment',
         mode = 'v',
     },
     {
         '<leader>hv',
-        function() require('gitsigns').preview_hunk() end,
+        function() gitsigns.preview_hunk() end,
         desc = 'Preview hunk',
         { mode = 'n', },
     },
@@ -156,7 +162,7 @@ require("which-key").add({
             if vim.wo.diff then
                 return 'hn'
             end
-            vim.schedule(function() require('gitsigns').next_hunk() end)
+            vim.schedule(function() gitsigns.nav_hunk('next') end)
             return '<Ignore>'
         end,
         desc = 'Jump to Next Hunk',
@@ -168,7 +174,7 @@ require("which-key").add({
             if vim.wo.diff then
                 return 'hN'
             end
-            vim.schedule(function() require('gitsigns').prev_hunk() end)
+            vim.schedule(function() gitsigns.nav_hunk('prev') end)
             return '<Ignore>'
         end,
         desc = 'Jump to Previous Hunk',
@@ -176,13 +182,13 @@ require("which-key").add({
     },
     {
         '<leader>td',
-        function() require('gitsigns').toggle_deleted() end,
+        function() gitsigns.toggle_deleted() end,
         desc = 'Toggle Deleted Lines',
         { mode = 'n', },
     },
     {
         '<leader>hr',
-        function() require('gitsigns').reset_hunk() end,
+        function() gitsigns.reset_hunk() end,
         desc = 'Reset Hunk',
         { mode = 'n', },
     },
@@ -201,7 +207,7 @@ require("which-key").add({
     {
         '<leader>ft',
         function()
-            require('telescope').extensions.git_worktree.git_worktrees()
+            telescope.extensions.git_worktree.git_worktrees()
         end,
         desc = 'Find Git Worktree',
     },
@@ -300,13 +306,13 @@ require("which-key").add({
     },
     {
         '<leader>fw',
-        function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,
+        function() telescope.builtin.lsp_dynamic_workspace_symbols() end,
         desc = 'Find Workspace Symbols',
         mode = 'n'
     },
     {
         '<leader>fd',
-        function() require('telescope.builtin').lsp_document_symbols({ show_line = true }) end,
+        function() telescope.builtin.lsp_document_symbols({ show_line = true }) end,
         desc = 'Find Document Symbols',
         mode = 'n'
     },
