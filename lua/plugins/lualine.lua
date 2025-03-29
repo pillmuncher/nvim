@@ -18,23 +18,35 @@ return {
             section_separators = { left = '', right = '' },
         },
         sections = {
-            lualine_c = { { 'filetype', icon_only = true, icon = { align = 'right' },
-            }, {
-                'filename',
-                path = 4,
-                file_status = true,
-                newfile_status = true,
-                symbols = {
-                    modified
-                             = '[✗]',
-                    readonly = '[]',
-                }
-            }, },
-            lualine_x = { 'selectioncount', 'searchcount',
+            lualine_c = {
+                {
+                    'filetype',
+                    icon_only = true,
+                    icon = { align = 'right' },
+                },
+                {
+                    'filename',
+                    path = 4,
+                    file_status = true,
+                    newfile_status = true,
+                    symbols = {
+                        modified = '[✗]',
+                        readonly = '[]',
+                    }
+                }, },
+            lualine_x = {
+                'selectioncount',
+                'searchcount',
                 -- '%{"AI:"}%3{codeium#GetStatusString()}',
             },
-            lualine_y = { 'fileformat', 'encoding', },
-            lualine_z = { 'progress', 'location', },
+            lualine_y = {
+                'fileformat',
+                'encoding',
+            },
+            lualine_z = {
+                'progress',
+                'location',
+            },
         },
     },
 }

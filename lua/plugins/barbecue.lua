@@ -1,6 +1,10 @@
 local function split(input, delimiter)
     local arr = {}
-    local _ = string.gsub(input, '[^' .. delimiter .. ']+', function(w) table.insert(arr, w) end)
+    local _ = string.gsub(
+        input,
+        '[^' .. delimiter .. ']+',
+        function(w) table.insert(arr, w) end
+    )
     return arr
 end
 
