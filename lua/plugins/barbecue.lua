@@ -21,6 +21,7 @@ return {
     dependencies = {
         { 'SmiteshP/nvim-navic' },
         { 'nvim-tree/nvim-web-devicons' },
+        { 'ramojus/mellifluous.nvim' },
     },
     opts         = {
         create_autocmd = false,
