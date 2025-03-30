@@ -11,7 +11,7 @@ end
 local function get_venv()
     local venv = vim.env.VIRTUAL_ENV
     if venv then
-        local params = split(venv, '/')
+        local params = split(venv, '-')
         return params[#params] .. ' '
     else
         return ''
