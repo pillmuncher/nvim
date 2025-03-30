@@ -146,7 +146,7 @@ whichkey.add({
     },
     {
         '<C-#>',
-        '<ESC><CMD>lua comment.api.toggle.linewise(vim.fn.visualmode())<CR>',
+        '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
         desc = 'Toggle Comment',
         mode = 'v',
     },
