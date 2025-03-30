@@ -1,7 +1,13 @@
 return {
     'nvim-lualine/lualine.nvim',
-    dependencies = { { 'nvim-tree/nvim-web-devicons' }, },
+    dependencies = {
+        -- { 'ramojus/mellifluous.nvim' },
+        { 'nvim-tree/nvim-web-devicons' },
+    },
+    lazy         = false,
+    priority     = 100000,
     opts         = {
+        theme = 'mellifluous',
         extensions = {
             'fzf',
             'lazy',
@@ -33,7 +39,8 @@ return {
                         modified = '[✗]',
                         readonly = '[]',
                     }
-                }, },
+                },
+            },
             lualine_x = {
                 'selectioncount',
                 'searchcount',

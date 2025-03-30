@@ -21,11 +21,12 @@ end
 return {
     'utilyre/barbecue.nvim',
     lazy         = false,
+    priority     = 100000,
     name         = 'barbecue',
     dependencies = {
+        { 'ramojus/mellifluous.nvim' },
         { 'SmiteshP/nvim-navic' },
         { 'nvim-tree/nvim-web-devicons' },
-        { 'ramojus/mellifluous.nvim' },
     },
     opts         = {
         create_autocmd = false,
