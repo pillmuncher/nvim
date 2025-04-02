@@ -31,6 +31,7 @@ return {
     opts         = {
         create_autocmd = false,
         show_dirname = false,
+        show_basename = false,
         custom_section = get_venv,
     },
 }
