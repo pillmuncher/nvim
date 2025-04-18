@@ -124,3 +124,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, { desc = "Format current buffer with LSP" })
     end,
 })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.py",
+    callback = function()
+        -- Run black formatter before saving the buffer
+        vim.fn.jobstart("black " .. vim.fn.shellescape(vim.fn.expand("%")), {
+            stdout_buffered = true,
+            on_exit = function(_, _, _)
+                -- Optionally, you can reload the file to see the changes
+                vim.cmd("edit")
+            end,
+        })
+    end,
+})
