@@ -1,8 +1,8 @@
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = {
-        -- { 'ramojus/mellifluous.nvim' },
         { 'nvim-tree/nvim-web-devicons' },
+        { 'ramojus/mellifluous.nvim' },
     },
     lazy         = false,
     priority     = 100000,

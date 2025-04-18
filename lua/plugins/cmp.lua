@@ -8,16 +8,17 @@ return {
     'hrsh7th/nvim-cmp',
     lazy         = false,
     dependencies = {
-        { "Olical/conjure" },
+        -- { "Olical/conjure" },
         { 'L3MON4D3/LuaSnip',            build = "make install_jsregexp" },
-        { 'PaterJason/cmp-conjure' },
+        -- { 'PaterJason/cmp-conjure' },
         { 'hrsh7th/cmp-nvim-lsp' },
         { 'rafamadriz/friendly-snippets' },
         { 'saadparwaiz1/cmp_luasnip' },
     },
     opts         = function(_, opts)
         if type(opts.sources) == "table" then
-            vim.list_extend(opts.sources, { name = "conjure" })
+            return
+            -- vim.list_extend(opts.sources, { name = "conjure" })
         end
     end,
     config       = function()
@@ -28,8 +29,8 @@ return {
         cmp.setup({
             sources = cmp.config.sources({
                 { name = 'buffer' },
-                { name = 'conjure' },
-                { name = 'clojure' },
+                -- { name = 'conjure' },
+                -- { name = 'clojure' },
                 { name = 'luasnip' },
                 { name = 'nvim_lsp' },
                 { name = 'nvim_lsp_signature_help' },

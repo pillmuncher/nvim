@@ -22,97 +22,12 @@ cmd.cnoreabbrev('wQA', 'wqa')
 cmd.cnoreabbrev('wQa', 'wqa')
 cmd.cnoreabbrev('wqA', 'wqa')
 
--- leader is space, so we can set it to Nop.
+-- -- leader is space, so we can set it to Nop.
 map({ 'n', 'v' }, '<Space>', '<Nop>', { desc = '' })
-
--- make Shift-Up/Down keys not behave stupid in visual mode:
-map({ 'n', 'v' }, '<S-Up>', '<Up>', { desc = '', silent = true })
-map({ 'n', 'v' }, '<S-Down>', '<Down>', { desc = '', silent = true })
-
--- Window navigation:
-map('n', '<C-PageUp>', '<CMD> bprev! <CR>', { desc = 'Change to previous buffer' })
-map('n', '<C-PageDown>', '<CMD> bnext! <CR>', { desc = 'Change to next buffer' })
-map('n', '<C-Up>', '<C-W>k', { desc = 'Change to window above' })
-map('n', '<C-Down>', '<C-W>j', { desc = 'Change to window below' })
-map('n', '<C-Left>', '<C-W>h', { desc = 'Change to window on the left' })
-map('n', '<C-Right>', '<C-W>l', { desc = 'Change to window on the right' })
-
--- Window manipulation:
-map('n', '<M-Up>', '<CMD> wincmd k <CR>:resize -2 <CR>', { desc = 'Increase lower window size' })
-map('n', '<M-Down>', '<CMD> wincmd k <CR>:resize +2 <CR>', { desc = 'Increase upper window size' })
-
--- Buffer Management:
-map('n', '<leader>bb', '<CMD> enew <CR>', { desc = 'New Buffer' })
-map('n', '<leader>bc', '<CMD> bd <CR>', { desc = 'Close Current Buffer' })
-
-map({ 'i', 'n', 'v', 't' }, '<C-D>',
-    function()
-        if #vim.api.nvim_list_wins() > 1 then
-            vim.api.nvim_win_close(0, true)
-        else
-            cmd('bd')
-        end
-    end,
-    { desc = 'Close window' })
-
--- Shell Terminal
-map({ 'i', 'n', 'v' }, '<C-T>',
-    function()
-        cmd.split()
-        cmd.startinsert()
-        cmd.terminal()
-    end,
-    { desc = 'New Shell' }
-)
-
--- Python Terminal
-map({ 'i', 'n', 'v' }, '<C-P>',
-    function()
-        cmd.split()
-        cmd.startinsert()
-        cmd.terminal('python3')
-    end,
-    { desc = 'New Python Shell', }
-)
-
--- Indenting:
-map('v', '<', '<gv', { desc = 'Dedent line', noremap = true, })
-map('v', '>', '>gv', { desc = 'Indent line', noremap = true, })
-
--- Formatting:
-map('n', 'W', 'gwip', { desc = 'Wrap paragraph' })
-map('v', 'W', 'gw', { desc = 'Wrap paragraph' })
-
--- Yanking & Pasting:
 --
--- yank whole buffer:
-map('n', 'y.', '<CMD> %y+ <CR>', { desc = 'Yank current buffer' })
--- paste and replace selection, but don't yank it:
-map('x', '<leader>p', 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = 'Paste w/o replacing register' })
-
--- Open QuickFix window:
-map({ 'n', 'v' }, '<leader>oq', '<CMD> copen <CR>', { desc = 'Open QuickFix' })
-
--- cd to folder of current file:
-map('n', '<leader>wd', '<CMD> lcd %:p:h<CR>', { desc = '`cd` to folder of current file' })
-
--- Diagnostics keymaps:
-map('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-map('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-map('n', '<leader>of', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-map('n', '<leader>od', vim.diagnostic.setloclist, { desc = 'Open Diagnostics' })
-
--- Misc:
-map('n', '<leader>tc', '<CMD> set list!<CR>', { desc = 'Toggle Listchars' })
-map('n', '<leader>tn', '<CMD> set nu! <CR>', { desc = 'Toggle Line Numbers' })
-map('n', '<leader>tr', '<CMD> set rnu! <CR>', { desc = 'Toggle Relative Numbers' })
-map('n', '<Esc>', '<CMD> noh <CR>', { desc = 'Clear highlights' })
-map('t', '<Esc>', vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true),
-    { desc = 'Escape terminal mode', noremap = true })
-
--- unmap gc to remove annoying :checkhealth message:
+-- -- unmap gc to remove annoying :checkhealth message:
 map('n', 'gc', '')
-
+--
 local comment = require('Comment')
 local commentapi = require('Comment.api')
 local gitsigns = require('gitsigns')
@@ -150,9 +65,248 @@ whichkey.add({
         desc = 'Toggle Comment',
         mode = 'v',
     },
+
+    -- make Shift-Up/Down keys not behave stupid in visual mode
+    {
+        '<S-Up>',
+        '<Up>',
+        desc = '',
+        mode = { 'n', 'v' },
+        silent = true,
+    },
+    {
+        '<S-Down>',
+        '<Down>',
+        desc = '',
+        mode = { 'n', 'v' },
+        silent = true,
+    },
+
+    -- Window navigation
+    {
+        '<C-PageUp>',
+        '<CMD> bprev! <CR>',
+        desc = 'Change to previous buffer',
+        mode = 'n',
+    },
+    {
+        '<C-PageDown>',
+        '<CMD> bnext! <CR>',
+        desc = 'Change to next buffer',
+        mode = 'n',
+    },
+    {
+        '<C-Up>',
+        '<C-W>k',
+        desc = 'Change to window above',
+        mode = 'n',
+    },
+    {
+        '<C-Down>',
+        '<C-W>j',
+        desc = 'Change to window below',
+        mode = 'n',
+    },
+    {
+        '<C-Left>',
+        '<C-W>h',
+        desc = 'Change to window on the left',
+        mode = 'n',
+    },
+    {
+        '<C-Right>',
+        '<C-W>l',
+        desc = 'Change to window on the right',
+        mode = 'n',
+    },
+
+    -- Window manipulation
+    {
+        '<M-Up>',
+        '<CMD> wincmd k <CR>:resize -2 <CR>',
+        desc = 'Increase lower window size',
+        mode = 'n',
+    },
+    {
+        '<M-Down>',
+        '<CMD> wincmd k <CR>:resize +2 <CR>',
+        desc = 'Increase upper window size',
+        mode = 'n',
+    },
+
+    -- Buffer Management
+    {
+        '<leader>bb',
+        '<CMD> enew <CR>',
+        desc = 'New Buffer',
+        mode = 'n',
+    },
+    {
+        '<leader>bc',
+        '<CMD> bd <CR>',
+        desc = 'Close Current Buffer',
+        mode = 'n',
+    },
+
+    -- Close window if only one window exists, else close buffer
+    {
+        '<C-D>',
+        function()
+            if #vim.api.nvim_list_wins() > 1 then
+                vim.api.nvim_win_close(0, true)
+            else
+                vim.cmd('bd')
+            end
+        end,
+        desc = 'Close window',
+        mode = { 'i', 'n', 'v', 't' },
+    },
+
+    -- Shell Terminal
+    {
+        '<C-T>',
+        function()
+            vim.cmd.split()
+            vim.cmd.startinsert()
+            vim.cmd.terminal()
+        end,
+        desc = 'New Shell',
+        mode = { 'n', 'v' },
+    },
+
+    -- Python Terminal
+    {
+        '<C-P>',
+        function()
+            vim.cmd.split()
+            vim.cmd.startinsert()
+            vim.cmd.terminal('python3')
+        end,
+        desc = 'New Python Shell',
+        mode = { 'n', 'v' },
+    },
+
+    -- Indenting
+    {
+        '<',
+        '<gv',
+        desc = 'Dedent line',
+        mode = 'v',
+        noremap = true,
+    },
+    {
+        '>',
+        '>gv',
+        desc = 'Indent line',
+        mode = 'v',
+        noremap = true,
+    },
+
+    -- Formatting
+    {
+        'W',
+        'gwip',
+        desc = 'Wrap paragraph',
+        mode = 'n',
+    },
+    {
+        '<leader>W',
+        'gw',
+        desc = 'Wrap paragraph',
+        mode = 'v',
+    },
+
+    -- Yanking & Pasting
+    {
+        'y.',
+        '<CMD> %y+ <CR>',
+        desc = 'Yank current buffer',
+        mode = 'n',
+    },
+    {
+        '<leader>p',
+        'p:let @+=@0<CR>:let @"=@0<CR>',
+        desc = 'Paste w/o replacing register',
+        mode = 'x',
+    },
+
+    -- Open QuickFix window
+    {
+        '<leader>oq',
+        '<CMD> copen <CR>',
+        desc = 'Open QuickFix',
+        mode = { 'n', 'v' },
+    },
+
+    -- cd to folder of current file
+    {
+        '<leader>wd',
+        '<CMD> lcd %:p:h<CR>',
+        desc = '`cd` to folder of current file',
+        mode = 'n',
+    },
+
+    -- Diagnostics keymaps
+    {
+        '[d',
+        vim.diagnostic.goto_prev,
+        desc = 'Go to previous diagnostic message',
+        mode = 'n',
+    },
+    {
+        ']d',
+        vim.diagnostic.goto_next,
+        desc = 'Go to next diagnostic message',
+        mode = 'n',
+    },
+    {
+        '<leader>of',
+        vim.diagnostic.open_float,
+        desc = 'Open floating diagnostic message',
+        mode = 'n',
+    },
+    {
+        '<leader>od',
+        vim.diagnostic.setloclist,
+        desc = 'Open Diagnostics',
+        mode = 'n',
+    },
+
+    -- Misc
+    {
+        '<leader>tc',
+        '<CMD> set list!<CR>',
+        desc = 'Toggle Listchars',
+        mode = 'n',
+    },
+    {
+        '<leader>tn',
+        '<CMD> set nu! <CR>',
+        desc = 'Toggle Line Numbers',
+        mode = 'n',
+    },
+    {
+        '<leader>tr',
+        '<CMD> set rnu! <CR>',
+        desc = 'Toggle Relative Numbers',
+        mode = 'n',
+    },
+    {
+        '<Esc>',
+        '<CMD> noh <CR>',
+        desc = 'Clear highlights',
+        mode = 'n',
+    },
+    {
+        '<Esc>',
+        vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true),
+        desc = 'Escape terminal mode',
+        mode = 't',
+        noremap = true,
+    },
     {
         '<leader>hv',
-        function() gitsigns.preview_hunk() end,
+        gitsigns.preview_hunk,
         desc = 'Preview hunk',
         { mode = 'n', },
     },
@@ -163,8 +317,8 @@ whichkey.add({
                 return 'hn'
             end
             vim.schedule(function() gitsigns.nav_hunk('next') end)
-            return '<Ignore>'
         end,
+        expr = true,
         desc = 'Jump to Next Hunk',
         { mode = 'n', },
     },
@@ -175,26 +329,26 @@ whichkey.add({
                 return 'hN'
             end
             vim.schedule(function() gitsigns.nav_hunk('prev') end)
-            return '<Ignore>'
         end,
+        expr = true,
         desc = 'Jump to Previous Hunk',
         { mode = 'n', },
     },
     {
         '<leader>td',
-        function() gitsigns.toggle_deleted() end,
+        gitsigns.preview_hunk_inline,
         desc = 'Toggle Deleted Lines',
         { mode = 'n', },
     },
     {
         '<leader>hr',
-        function() gitsigns.reset_hunk() end,
+        gitsigns.reset_hunk,
         desc = 'Reset Hunk',
         { mode = 'n', },
     },
     {
         '<leader>sb',
-        function() package.loaded.gitsigns.blame_line() end,
+        package.loaded.gitsigns.blame_line,
         desc = 'Show Git Blame',
         { mode = 'n', },
     },
@@ -214,11 +368,10 @@ whichkey.add({
     {
         '<leader>cr',
         function()
-            return ':IncRename ' .. vim.fn.expand('<cword>')
+            vim.lsp.buf.rename()
         end,
         desc = 'Code Rename',
         mode = 'n',
-        expr = true,
     },
     {
         '<leader>ti',
@@ -232,18 +385,6 @@ whichkey.add({
         desc = 'Toggle ScopeLines',
         mode = 'n',
     },
-    -- {
-    --     '<leader>gD',
-    --     function() vim.lsp.buf.declaration() end,
-    --     desc = 'Jump to Declaration',
-    --     mode = 'n'
-    -- },
-    -- {
-    --     '<leader>gd',
-    --     function() vim.lsp.buf.definition() end,
-    --     desc = 'Jump to Definition',
-    --     mode = 'n'
-    -- },
     {
         '<leader>gi',
         function() vim.lsp.buf.implementation() end,
@@ -389,3 +530,42 @@ whichkey.add({
         mode = { 'i', 'n' },
     },
 })
+
+
+M = {}
+
+-- LSP mappings for on_attach
+function M.setup_lsp(bufnr)
+    local lsp_maps = {
+        ["gD"]         = { "<CMD> lua vim.lsp.buf.declaration()<CR>", "Go to Declaration" },
+        ["<leader>gd"] = { "<CMD> lua vim.lsp.buf.definition()<CR>", "Go to Definition" },
+        ["K"]          = { "<CMD> lua vim.lsp.buf.hover()<CR>", "Hover" },
+        ["gi"]         = { "<CMD> lua vim.lsp.buf.implementation()<CR>", "Go to Implementation" },
+        ["<C-k>"]      = { "<CMD> lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
+        ["<space>wa"]  = { "<CMD> lua vim.lsp.buf.add_workspace_folder()<CR>", "Add Workspace Folder" },
+        ["<space>wr"]  = { "<CMD> lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove Workspace Folder" },
+        ["<space>wl"]  = { "<CMD> lua vim.lsp.buf.list_workspace_folders()<CR>", "List Workspace Folders" },
+        ["<space>D"]   = { "<CMD> lua vim.lsp.buf.type_definition()<CR>", "Type Definition" },
+        ["<space>rn"]  = { "<CMD> lua vim.lsp.buf.rename()<CR>", "Rename" },
+        ["<space>ca"]  = { "<CMD> lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+        ["gr"]         = { "<CMD> lua vim.lsp.buf.references()<CR>", "Go to References" },
+        ["<space>e"]   = { "<CMD> lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show Diagnostics" },
+        ["[d"]         = { "<CMD> lua vim.lsp.diagnostic.goto_prev()<CR>", "Previous Diagnostic" },
+        ["]d"]         = { "<CMD> lua vim.lsp.diagnostic.goto_next()<CR>", "Next Diagnostic" },
+        ["<space>q"]   = { "<CMD> lua vim.lsp.diagnostic.set_loclist()<CR>", "Set Location List" },
+        ["<space>f"]   = { "<CMD> lua vim.lsp.buf.format({ async = true })<CR>", "Format Buffer" },
+    }
+
+    -- Set the key mappings
+    for key, value in pairs(lsp_maps) do
+        local opts = {
+            noremap = true,
+            silent = true,
+            desc = value[2],
+        }
+        -- Pass the Lua command as a string
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', key, value[1], opts)
+    end
+end
+
+return M

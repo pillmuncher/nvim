@@ -4,7 +4,6 @@ return {
         { 'nvim-treesitter/nvim-treesitter-textobjects' },
         { 'nvim-treesitter/playground' },
     },
-    opts         = {},
     build        = ':TSUpdate',
     config       = function()
         vim.defer_fn(function()
@@ -14,12 +13,9 @@ return {
                     'bash',
                     'c',
                     'c_sharp',
-                    'clojure',
-                    'fennel',
                     'lua',
                     'markdown',
                     'python',
-                    'racket',
                     'vim',
                     'vimdoc',
                 },
@@ -105,6 +101,9 @@ return {
                         lint_events = { 'BufWrite', 'CursorHold' },
                     },
                 },
+                modules = {},
+                ignore_install = {},
+                sync_install = false,
             })
         end, 0)
     end,

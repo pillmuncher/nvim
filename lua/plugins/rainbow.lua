@@ -6,11 +6,13 @@ return {
                 [''] = 'rainbow-delimiters.strategy.global',
                 vim = 'rainbow-delimiters.strategy.local',
                 clojure = 'rainbow-delimiters.strategy.local',
+                python = 'rainbow-delimiters.strategy.global',
             },
             query = {
                 [''] = 'rainbow-delimiters',
                 lua = 'rainbow-blocks',
                 clojure = 'rainbow-delimiters',
+                python = 'rainbow-delimiters',
             },
             priority = {
                 [''] = 110,
@@ -26,5 +28,6 @@ return {
                 'RainbowDelimiterCyan',
             }
         })
-    end
+    end,
+    ft = { 'python', 'lua', 'clojure', 'vim' } -- Ensure it's loaded for Python
 }
