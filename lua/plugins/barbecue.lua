@@ -29,7 +29,7 @@ return {
         { 'nvim-tree/nvim-web-devicons' },
     },
     opts         = {
-        create_autocmd = false,
+        create_autocmd = true,
         show_dirname = false,
         show_basename = false,
         custom_section = get_venv,
