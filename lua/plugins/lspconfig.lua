@@ -32,7 +32,7 @@ return {
 
             pylsp = {},
             clangd = {},
-            csharp_ls = { filetypes = { 'cs' } },
+            omnisharp = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
             lua_ls = {
                 Lua = {
