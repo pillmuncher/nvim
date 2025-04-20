@@ -36,6 +36,8 @@ return {
                 'DiagnosticSignHint',
                 'DiagnosticSignInfo',
                 'DiagnosticSignWarn',
+                'GitSignsAdd',
+                'GitSignsAddLnInline',
                 'GitSignChange',
                 'GitSignsChange',
                 'GitSignsDelete',
