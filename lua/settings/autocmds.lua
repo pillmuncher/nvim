@@ -137,3 +137,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         })
     end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function()
+        require("coverage").load(true)
+    end,
+})
