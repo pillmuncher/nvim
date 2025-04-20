@@ -28,7 +28,7 @@ map({ 'n', 'v' }, '<Space>', '<Nop>', { desc = '' })
 -- -- unmap gc to remove annoying :checkhealth message:
 map('n', 'gc', '')
 --
-local comment = require('Comment')
+-- local comment = require('Comment')
 local commentapi = require('Comment.api')
 local gitsigns = require('gitsigns')
 local telescope = require('telescope')
@@ -249,13 +249,17 @@ whichkey.add({
     -- Diagnostics keymaps
     {
         '[d',
-        vim.diagnostic.goto_prev,
+        function()
+            vim.diagnostic.jump({ count = -1, float = true })
+        end,
         desc = 'Go to previous diagnostic message',
         mode = 'n',
     },
     {
         ']d',
-        vim.diagnostic.goto_next,
+        function()
+            vim.diagnostic.jump({ count = 1, float = true })
+        end,
         desc = 'Go to next diagnostic message',
         mode = 'n',
     },
@@ -353,7 +357,7 @@ whichkey.add({
         { mode = 'n', },
     },
     {
-        '<C-G>',
+        '<C-g>',
         '<CMD> LazyGit <CR>',
         desc = 'Open LazyGit',
         mode = 'n',
@@ -447,13 +451,15 @@ whichkey.add({
     },
     {
         '<leader>fw',
-        function() telescope.builtin.lsp_dynamic_workspace_symbols() end,
+        function() require('telescope.builtin').builtin.lsp_dynamic_workspace_symbols() end,
         desc = 'Find Workspace Symbols',
         mode = 'n'
     },
+
+
     {
         '<leader>fd',
-        function() telescope.builtin.lsp_document_symbols({ show_line = true }) end,
+        function() require('telescope.builtin').lsp_document_symbols({ show_line = true }) end,
         desc = 'Find Document Symbols',
         mode = 'n'
     },
@@ -488,7 +494,7 @@ whichkey.add({
         mode = 'n',
     },
     {
-        '<leader>fh',
+        '<leader>f?',
         '<CMD> Telescope help_tags <CR>',
         desc = 'Find Help',
         mode = 'n',
@@ -548,12 +554,12 @@ function M.setup_lsp(bufnr)
         ["<space>D"]   = { "<CMD> lua vim.lsp.buf.type_definition()<CR>", "Type Definition" },
         ["<space>rn"]  = { "<CMD> lua vim.lsp.buf.rename()<CR>", "Rename" },
         ["<space>ca"]  = { "<CMD> lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-        ["gr"]         = { "<CMD> lua vim.lsp.buf.references()<CR>", "Go to References" },
+        ["grr"]        = { "<CMD> lua vim.lsp.buf.references()<CR>", "Go to References" },
         ["<space>e"]   = { "<CMD> lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show Diagnostics" },
-        ["[d"]         = { "<CMD> lua vim.lsp.diagnostic.goto_prev()<CR>", "Previous Diagnostic" },
-        ["]d"]         = { "<CMD> lua vim.lsp.diagnostic.goto_next()<CR>", "Next Diagnostic" },
+        ["[d"]         = { "<CMD> lua vim.lsp.diagnostic.jump({count=-1,float=true})<CR>", "Previous Diagnostic" },
+        ["]d"]         = { "<CMD> lua vim.lsp.diagnostic.jump({count=1,float=true})<CR>", "Next Diagnostic" },
         ["<space>q"]   = { "<CMD> lua vim.lsp.diagnostic.set_loclist()<CR>", "Set Location List" },
-        ["<space>f"]   = { "<CMD> lua vim.lsp.buf.format({ async = true })<CR>", "Format Buffer" },
+        ["<space>ff"]  = { "<CMD> lua vim.lsp.buf.format({ async = true })<CR>", "Format Buffer" },
     }
 
     -- Set the key mappings

@@ -5,7 +5,8 @@ return {
     main = 'ibl',
     opts = {
         enabled = false,
-        indent = { char = '▏' },
+        -- indent = { char = '▏' },
+        indent = { char = '│' },
         scope = { enabled = false },
         whitespace = { remove_blankline_trail = true },
     },

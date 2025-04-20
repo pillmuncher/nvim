@@ -30,7 +30,7 @@ return {
 
         local servers = {
 
-            basedpyright = {},
+            pylsp = {},
             clangd = {},
             csharp_ls = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
