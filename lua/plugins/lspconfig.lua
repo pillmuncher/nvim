@@ -41,10 +41,7 @@ return {
         capabilities = vim.lsp.protocol.make_client_capabilities()
         local servers = {
             pyright = {},
-            ruff = {
-                -- enable = { "Pylint", "Pyflakes", "mccabe", }, -- Add more checks
-                line_length = 80,
-            },
+            ruff = {},
             clangd = {},
             omnisharp = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },

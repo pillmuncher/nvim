@@ -30,7 +30,7 @@ api.nvim_create_autocmd('FileType', {
 -- set textwidth for python
 api.nvim_create_autocmd('FileType', {
     pattern = 'python',
-    callback = function() vim.opt_local.textwidth = 80 end,
+    callback = function() vim.opt_local.textwidth = 88 end,
 })
 
 -- keep the winbar updated:
