@@ -37,11 +37,9 @@ return {
             end
             require("settings.mappings").setup_lsp(bufnr)
         end
-        local util = require('lspconfig.util')
         capabilities = vim.lsp.protocol.make_client_capabilities()
         local servers = {
             pyright = {},
-            ruff = {},
             clangd = {},
             omnisharp = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
