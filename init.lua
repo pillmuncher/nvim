@@ -29,3 +29,4 @@ require('settings.autocmds')
 
 -- make it look pretty:
 vim.cmd.colorscheme('mellifluous')
+

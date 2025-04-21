@@ -33,18 +33,6 @@ api.nvim_create_autocmd('FileType', {
     callback = function() vim.opt_local.textwidth = 88 end,
 })
 
--- keep the winbar updated:
--- api.nvim_create_autocmd({
---     'WinScrolled',
---     'WinResized',
---     'InsertLeave',
---     'CursorHold',
---     'BufWinEnter',
--- }, {
---     group = api.nvim_create_augroup('barbecue.updater', {}),
---     callback = function() require('barbecue.ui').update() end,
--- })
-
 -- make a little flash when yanking:
 api.nvim_create_autocmd('TextYankPost', {
     pattern = '*',
@@ -127,19 +115,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*.py",
     callback = function()
-        -- Run black formatter before saving the buffer
-        vim.fn.jobstart("black " .. vim.fn.shellescape(vim.fn.expand("%")), {
-            stdout_buffered = true,
-            on_exit = function(_, _, _)
-                -- Optionally, you can reload the file to see the changes
-                vim.cmd("edit")
-            end,
-        })
+        vim.fn.system({ "black", vim.fn.expand("%") })
     end,
 })
+
+-- 
 -- vim.api.nvim_create_autocmd("FileType", {
 --     pattern = "python",
 --     callback = function()
 --         require("coverage").load(true)
 --     end,
+-- })
+--
+-- keep the winbar updated:
+-- api.nvim_create_autocmd({
+--     'WinScrolled',
+--     'WinResized',
+--     'InsertLeave',
+--     'CursorHold',
+--     'BufWinEnter',
+-- }, {
+--     group = api.nvim_create_augroup('barbecue.updater', {}),
+--     callback = function() require('barbecue.ui').update() end,
 -- })
