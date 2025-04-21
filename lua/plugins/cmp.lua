@@ -9,8 +9,8 @@ return {
     lazy         = false,
     dependencies = {
         -- { "Olical/conjure" },
-        { 'L3MON4D3/LuaSnip',            build = "make install_jsregexp" },
         -- { 'PaterJason/cmp-conjure' },
+        { 'L3MON4D3/LuaSnip',            build = "make install_jsregexp" },
         { 'hrsh7th/cmp-nvim-lsp' },
         { 'rafamadriz/friendly-snippets' },
         { 'saadparwaiz1/cmp_luasnip' },
@@ -28,9 +28,9 @@ return {
 
         cmp.setup({
             sources = cmp.config.sources({
-                { name = 'buffer' },
-                -- { name = 'conjure' },
                 -- { name = 'clojure' },
+                -- { name = 'conjure' },
+                { name = 'buffer' },
                 { name = 'luasnip' },
                 { name = 'nvim_lsp' },
                 { name = 'nvim_lsp_signature_help' },

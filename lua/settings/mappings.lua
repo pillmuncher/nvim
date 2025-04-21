@@ -28,7 +28,6 @@ map({ 'n', 'v' }, '<Space>', '<Nop>', { desc = '' })
 -- -- unmap gc to remove annoying :checkhealth message:
 map('n', 'gc', '')
 --
--- local comment = require('Comment')
 local commentapi = require('Comment.api')
 local gitsigns = require('gitsigns')
 local telescope = require('telescope')
@@ -36,69 +35,90 @@ local whichkey = require('which-key')
 
 -- which-key config:
 whichkey.add({
-    {
-        '<leader>:',
-        function()
-            cmd('WhichKey ' .. vim.fn.input 'WhichKey: ')
-        end,
-        desc = 'WhichKey',
-        mode = 'n',
-    },
-    { '<leader>b', group = 'Buffer' },
-    { '<leader>c', group = 'Code' },
+
+    -- Groups
+    { '<leader>c', group = 'Close' },
+    { '<leader>d', group = 'Delete' },
     { '<leader>f', group = 'Find' },
-    { '<leader>h', group = 'Git Hunks' },
-    { '<leader>j', group = 'Jump' },
+    { '<leader>g', group = 'GoTo' },
+    { '<leader>n', group = 'New' },
     { '<leader>o', group = 'Open' },
+    { '<leader>r', group = 'Refactor' },
     { '<leader>s', group = 'Show' },
     { '<leader>t', group = 'Toggle' },
-    { '<leader>w', group = 'Workspace' },
+    { '<leader>u', group = 'Undo' },
+
+    -- Indenting
     {
-        '<C-#>',
-        function() commentapi.toggle.linewise.current() end,
-        desc = 'Toggle Comment',
-        mode = { 'i', 'n' },
+        '>',
+        '>gv',
+        desc = 'Indent line',
+        mode = 'v',
     },
+    {
+        '<',
+        '<gv',
+        desc = 'Dedent line',
+        mode = 'v',
+    },
+
+    -- Clear Highlights
+    {
+        '<Esc>',
+        '<CMD> noh <CR>',
+        desc = 'Clear highlights',
+        mode = 'n',
+    },
+
+    -- make Shift-Up/Down keys not behave stupid in visual mode
+    {
+        '<S-Down>',
+        '<Down>',
+        desc = '',
+        mode = 'nv',
+        silent = true,
+    },
+    {
+        '<S-Up>',
+        '<Up>',
+        desc = '',
+        mode = 'nv',
+        silent = true,
+    },
+
+    -- Commenting
     {
         '<C-#>',
         '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
         desc = 'Toggle Comment',
         mode = 'v',
     },
-
-    -- make Shift-Up/Down keys not behave stupid in visual mode
     {
-        '<S-Up>',
-        '<Up>',
-        desc = '',
-        mode = { 'n', 'v' },
-        silent = true,
+        '<C-#>',
+        function() commentapi.toggle.linewise.current() end,
+        desc = 'Toggle Comment',
+        mode = 'in',
+    },
+
+    -- Window Manipulation
+    {
+        '<M-Down>',
+        '<CMD> wincmd k <CR>:resize +2 <CR>',
+        desc = 'Increase upper window size',
+        mode = 'n',
     },
     {
-        '<S-Down>',
-        '<Down>',
-        desc = '',
-        mode = { 'n', 'v' },
-        silent = true,
+        '<M-Up>',
+        '<CMD> wincmd k <CR>:resize -2 <CR>',
+        desc = 'Increase lower window size',
+        mode = 'n',
     },
 
     -- Window navigation
     {
-        '<C-PageUp>',
-        '<CMD> bprev! <CR>',
-        desc = 'Change to previous buffer',
-        mode = 'n',
-    },
-    {
-        '<C-PageDown>',
-        '<CMD> bnext! <CR>',
-        desc = 'Change to next buffer',
-        mode = 'n',
-    },
-    {
-        '<C-Up>',
-        '<C-W>k',
-        desc = 'Change to window above',
+        '<C-Left>',
+        '<C-W>h',
+        desc = 'Change to window on the left',
         mode = 'n',
     },
     {
@@ -108,9 +128,9 @@ whichkey.add({
         mode = 'n',
     },
     {
-        '<C-Left>',
-        '<C-W>h',
-        desc = 'Change to window on the left',
+        '<C-Up>',
+        '<C-W>k',
+        desc = 'Change to window above',
         mode = 'n',
     },
     {
@@ -120,91 +140,97 @@ whichkey.add({
         mode = 'n',
     },
 
-    -- Window manipulation
+    -- Buffer navigation
     {
-        '<M-Up>',
-        '<CMD> wincmd k <CR>:resize -2 <CR>',
-        desc = 'Increase lower window size',
+        '<C-PageDown>',
+        '<CMD> bnext! <CR>',
+        desc = 'Change to next buffer',
         mode = 'n',
     },
     {
-        '<M-Down>',
-        '<CMD> wincmd k <CR>:resize +2 <CR>',
-        desc = 'Increase upper window size',
+        '<C-PageUp>',
+        '<CMD> bprev! <CR>',
+        desc = 'Change to previous buffer',
         mode = 'n',
     },
 
-    -- Buffer Management
+    -- Different Shells
     {
-        '<leader>bb',
-        '<CMD> enew <CR>',
-        desc = 'New Buffer',
-        mode = 'n',
-    },
-    {
-        '<leader>bc',
-        '<CMD> bd <CR>',
-        desc = 'Close Current Buffer',
-        mode = 'n',
-    },
 
-    -- Close window if only one window exists, else close buffer
-    {
-        '<C-D>',
-        function()
-            if #vim.api.nvim_list_wins() > 1 then
-                vim.api.nvim_win_close(0, true)
-            else
-                vim.cmd('bd')
-            end
-        end,
-        desc = 'Close window',
-        mode = { 'i', 'n', 'v', 't' },
-    },
-
-    -- Shell Terminal
-    {
-        '<C-T>',
-        function()
-            vim.cmd.split()
-            vim.cmd.startinsert()
-            vim.cmd.terminal()
-        end,
-        desc = 'New Shell',
-        mode = { 'n', 'v' },
-    },
-
-    -- Python Terminal
-    {
-        '<C-P>',
+        '<C-p>',
         function()
             vim.cmd.split()
             vim.cmd.startinsert()
             vim.cmd.terminal('python3')
         end,
         desc = 'New Python Shell',
-        mode = { 'n', 'v' },
+        mode = 'nv',
+    },
+    {
+
+        '<C-t>',
+        function()
+            vim.cmd.split()
+            vim.cmd.startinsert()
+            vim.cmd.terminal()
+        end,
+        desc = 'New Shell',
+        mode = 'nv',
+    },
+    {
+        '<Esc>',
+        vim.api.nvim_replace_termcodes('<C-\\><C-N>',
+            true,
+            true,
+            true),
+        desc = 'Escape terminal mode',
+        mode = 't',
     },
 
-    -- Indenting
+    -- Different TUIs
     {
-        '<',
-        '<gv',
-        desc = 'Dedent line',
-        mode = 'v',
-        noremap = true,
+        '<C-n>',
+        '<CMD> NvimTreeToggle <CR>',
+        desc = 'OpenExplorer',
+        mode = 'in',
     },
     {
-        '>',
-        '>gv',
-        desc = 'Indent line',
-        mode = 'v',
-        noremap = true,
+        '<C-u>',
+        '<CMD> UndotreeToggle <CR>',
+        desc = 'Toggle UndoTree',
+        mode = 'in',
+    },
+    {
+        '<C-g>',
+        '<CMD> LazyGit <CR>',
+        desc = 'Open LazyGit',
+        mode = 'n',
+    },
+    {
+        '<C-D>',
+        function()
+            if #vim.api.nvim_list_wins() > 1 then
+                vim.api.nvim_win_close(0,
+                    true)
+            else
+                vim.cmd('bd')
+            end
+        end,
+        desc = 'Close window',
+        mode = 'invt',
+    },
+
+    -- WhichKey Command
+    {
+        '<leader><leader>',
+        function() cmd('WhichKey ' .. vim.fn.input 'WhichKey: ') end,
+        desc = 'WhichKey',
+        mode = 'n',
     },
 
     -- Formatting
     {
-        'W',
+        '<leader>W',
         'gwip',
         desc = 'Wrap paragraph',
         mode = 'n',
@@ -216,252 +242,37 @@ whichkey.add({
         mode = 'v',
     },
 
-    -- Yanking & Pasting
-    {
-        'y.',
-        '<CMD> %y+ <CR>',
-        desc = 'Yank current buffer',
-        mode = 'n',
-    },
-    {
-        '<leader>p',
-        'p:let @+=@0<CR>:let @"=@0<CR>',
-        desc = 'Paste w/o replacing register',
-        mode = 'x',
-    },
 
-    -- Open QuickFix window
     {
-        '<leader>oq',
-        '<CMD> copen <CR>',
-        desc = 'Open QuickFix',
-        mode = { 'n', 'v' },
-    },
-
-    -- cd to folder of current file
-    {
-        '<leader>wd',
-        '<CMD> lcd %:p:h<CR>',
-        desc = '`cd` to folder of current file',
-        mode = 'n',
-    },
-
-    -- Diagnostics keymaps
-    {
-        '[d',
-        function()
-            vim.diagnostic.jump({ count = -1, float = true })
-        end,
-        desc = 'Go to previous diagnostic message',
-        mode = 'n',
-    },
-    {
-        ']d',
-        function()
-            vim.diagnostic.jump({ count = 1, float = true })
-        end,
-        desc = 'Go to next diagnostic message',
-        mode = 'n',
-    },
-    {
-        '<leader>of',
-        vim.diagnostic.open_float,
-        desc = 'Open floating diagnostic message',
-        mode = 'n',
-    },
-    {
-        '<leader>od',
-        vim.diagnostic.setloclist,
-        desc = 'Open Diagnostics',
-        mode = 'n',
-    },
-
-    -- Misc
-    {
-        '<leader>tc',
-        '<CMD> set list!<CR>',
-        desc = 'Toggle Listchars',
-        mode = 'n',
-    },
-    {
-        '<leader>tn',
-        '<CMD> set nu! <CR>',
-        desc = 'Toggle Line Numbers',
-        mode = 'n',
-    },
-    {
-        '<leader>tr',
-        '<CMD> set rnu! <CR>',
-        desc = 'Toggle Relative Numbers',
-        mode = 'n',
-    },
-    {
-        '<Esc>',
-        '<CMD> noh <CR>',
-        desc = 'Clear highlights',
-        mode = 'n',
-    },
-    {
-        '<Esc>',
-        vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true),
-        desc = 'Escape terminal mode',
-        mode = 't',
-        noremap = true,
-    },
-    {
-        '<leader>hv',
-        gitsigns.preview_hunk,
-        desc = 'Preview hunk',
-        { mode = 'n', },
-    },
-    {
-        '<leader>hn',
-        function()
-            if vim.wo.diff then
-                return 'hn'
-            end
-            vim.schedule(function() gitsigns.nav_hunk('next') end)
-        end,
-        expr = true,
-        desc = 'Jump to Next Hunk',
-        { mode = 'n', },
-    },
-    {
-        '<leader>hN',
-        function()
-            if vim.wo.diff then
-                return 'hN'
-            end
-            vim.schedule(function() gitsigns.nav_hunk('prev') end)
-        end,
-        expr = true,
-        desc = 'Jump to Previous Hunk',
-        { mode = 'n', },
-    },
-    {
-        '<leader>td',
-        gitsigns.preview_hunk_inline,
-        desc = 'Toggle Deleted Lines',
-        { mode = 'n', },
-    },
-    {
-        '<leader>hr',
-        gitsigns.reset_hunk,
-        desc = 'Reset Hunk',
-        { mode = 'n', },
-    },
-    {
-        '<leader>sb',
-        package.loaded.gitsigns.blame_line,
-        desc = 'Show Git Blame',
-        { mode = 'n', },
-    },
-    {
-        '<C-g>',
-        '<CMD> LazyGit <CR>',
-        desc = 'Open LazyGit',
-        mode = 'n',
-    },
-    {
-        '<leader>ft',
-        function()
-            telescope.extensions.git_worktree.git_worktrees()
-        end,
-        desc = 'Find Git Worktree',
-    },
-    {
-        '<leader>cr',
-        function()
-            vim.lsp.buf.rename()
-        end,
-        desc = 'Code Rename',
-        mode = 'n',
-    },
-    {
-        '<leader>ti',
-        '<CMD> IBLToggle <CR>',
-        desc = 'Toggle IndentLines',
-        mode = 'n',
-    },
-    {
-        '<leader>ts',
-        '<CMD> IBLToggleScope <CR>',
-        desc = 'Toggle ScopeLines',
-        mode = 'n',
-    },
-    {
-        '<leader>gi',
-        function() vim.lsp.buf.implementation() end,
-        desc = 'Jump to Implementation',
-        mode = 'n'
-    },
-    {
-        '<leader>gt',
-        function() vim.lsp.buf.type_definition() end,
-        desc = 'Jump to Type',
-        mode = 'n'
-    },
-    {
-        '<leader>or',
-        function() vim.lsp.buf.references() end,
-        desc = 'Open References',
-        mode = 'n'
-    },
-    {
-        '<leader>sd',
-        function() vim.lsp.buf.hover() end,
-        desc = 'Show Documentation',
-        mode = 'n'
-    },
-    {
-        '<leader>ca',
+        '<leader>xa',
         function() vim.lsp.buf.code_action() end,
         desc = 'Code Action',
-        mode = 'n'
+        mode = 'n',
     },
     {
-        '<leader>cf',
+        '<leader>cb',
+        '<CMD> bd <CR>',
+        desc = 'Close Current Buffer',
+        mode = 'n',
+    },
+    {
+        '<leader>rf',
         function() vim.lsp.buf.format({ async = true }) end,
-        desc = 'Code Format',
-        mode = 'n'
+        desc = 'Format',
+        mode = 'n',
     },
     {
-        '<leader>ss',
-        function() vim.lsp.buf.signature_help() end,
-        desc = 'Show Signature',
-        mode = 'n'
-    },
-    {
-        '<leader>wa',
-        function() vim.lsp.buf.add_workspace_folder() end,
-        desc = 'New Workspace Folder',
-        mode = 'n'
-    },
-    {
-        '<leader>sw',
-        function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-        desc = 'Show Workspace Folders',
-        mode = 'n'
-    },
-    {
-        '<leader>wr',
-        function() vim.lsp.buf.remove_workspace_folder() end,
-        desc = 'Delete Workspace Folders',
-        mode = 'n'
-    },
-    {
-        '<leader>fw',
-        function() require('telescope.builtin').builtin.lsp_dynamic_workspace_symbols() end,
-        desc = 'Find Workspace Symbols',
-        mode = 'n'
+        '<leader>rn',
+        function() vim.lsp.buf.rename() end,
+        desc = 'Rename',
+        mode = 'n',
     },
 
-
     {
-        '<leader>fd',
-        function() require('telescope.builtin').lsp_document_symbols({ show_line = true }) end,
-        desc = 'Find Document Symbols',
-        mode = 'n'
+        '<leader>f?',
+        '<CMD> Telescope help_tags <CR>',
+        desc = 'Find Help',
+        mode = 'n',
     },
     {
         '<leader>fa',
@@ -482,6 +293,12 @@ whichkey.add({
         mode = 'n',
     },
     {
+        '<leader>fd',
+        function() require('telescope.builtin').lsp_document_symbols({ show_line = true }) end,
+        desc = 'Find Document Symbols',
+        mode = 'n',
+    },
+    {
         '<leader>ff',
         '<CMD> Telescope find_files <CR>',
         desc = 'Find File',
@@ -491,12 +308,6 @@ whichkey.add({
         '<leader>fg',
         '<CMD> Telescope git_files <CR>',
         desc = 'Find Git File',
-        mode = 'n',
-    },
-    {
-        '<leader>f?',
-        '<CMD> Telescope help_tags <CR>',
-        desc = 'Find Help',
         mode = 'n',
     },
     {
@@ -512,28 +323,227 @@ whichkey.add({
         mode = 'n',
     },
     {
-        '<leader>fx',
-        '<CMD> Telescope live_grep <CR>',
-        desc = 'Find Regex',
-        mode = 'n',
-    },
-    {
         '<leader>fs',
         '<CMD> Telescope git_status <CR>',
         desc = 'Git Status',
         mode = 'n',
     },
     {
-        '<C-N>',
-        '<CMD> NvimTreeToggle <CR>',
-        desc = 'OpenExplorer',
-        mode = { 'i', 'n' },
+        '<leader>ft',
+        function() telescope.extensions.git_worktree.git_worktrees() end,
+        desc = 'Find Git Worktree',
     },
     {
-        '<C-U>',
-        '<CMD> UndotreeToggle <CR>',
-        desc = 'Toggle UndoTree',
-        mode = { 'i', 'n' },
+        '<leader>fw',
+        function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,
+        desc = 'Find Workspace Symbols',
+        mode = 'n',
+    },
+    {
+        '<leader>fx',
+        '<CMD> Telescope live_grep <CR>',
+        desc = 'Find Regex',
+        mode = 'n',
+    },
+
+    {
+        '<leader>g.',
+        '<CMD> lcd %:p:h<CR>',
+        desc = '`cd` to folder of current file',
+        mode = 'n',
+    },
+    {
+        '<leader>gi',
+        function() vim.lsp.buf.implementation() end,
+        desc = 'GoTo Implementation',
+        mode = 'n',
+    },
+    {
+        '<leader>gt',
+        function() vim.lsp.buf.type_definition() end,
+        desc = 'GoTo to Type Definition',
+        mode = 'n',
+    },
+
+    {
+        '<leader>gn',
+        function()
+            if not vim.wo.diff then
+                vim.schedule(function() gitsigns.nav_hunk('next') end)
+            end
+        end,
+        expr = true,
+        desc = 'GoTo Next Hunk',
+        mode = 'n',
+    },
+    {
+
+        '<leader>gN',
+        function()
+            if not vim.wo.diff then
+                vim.schedule(function() gitsigns.nav_hunk('prev') end)
+            end
+        end,
+        expr = true,
+        desc = 'GoTo Previous Hunk',
+        mode = 'n',
+    },
+
+    {
+        '<leader>uh',
+        gitsigns.reset_hunk,
+        desc = 'Reset Hunk',
+        mode = 'n',
+    },
+    {
+        '<leader>sh',
+        gitsigns.preview_hunk,
+        desc = 'Show Hunk',
+        mode = 'n',
+    },
+
+    {
+        '<leader>nb',
+        '<CMD> enew <CR>',
+        desc = 'New Buffer',
+        mode = 'n',
+    },
+
+    {
+        '<leader>od',
+        vim.diagnostic.setloclist,
+        desc = 'Open Diagnostics',
+        mode = 'n',
+    },
+    {
+        '<leader>of',
+        vim.diagnostic.open_float,
+        desc = 'Open floating diagnostic message',
+        mode = 'n',
+    },
+    {
+        '<leader>oq',
+        '<CMD> copen <CR>',
+        desc = 'Open QuickFix',
+        mode = 'nv',
+    },
+    {
+        '<leader>or',
+        function() vim.lsp.buf.references() end,
+        desc = 'Open References',
+        mode = 'n',
+    },
+
+    {
+        '<leader>p',
+        'p:let @+=@0<CR>:let @"=@0<CR>',
+        desc = 'Paste w/o replacing register',
+        mode = 'x',
+    },
+
+    {
+        '<leader>sb',
+        package.loaded.gitsigns.blame_line,
+        desc = 'Show Git Blame',
+        mode = 'n',
+    },
+    {
+        '<leader>sd',
+        function() vim.lsp.buf.hover() end,
+        desc = 'Show Documentation',
+        mode = 'n',
+    },
+    {
+        '<leader>ss',
+        function() vim.lsp.buf.signature_help() end,
+        desc = 'Show Signature',
+        mode = 'n',
+    },
+    {
+        '<leader>sw',
+        function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+        desc = 'Show Workspace Folders',
+        mode = 'n',
+    },
+
+    {
+        '<leader>tc',
+        '<CMD> set list!<CR>',
+        desc = 'Toggle Listchars',
+        mode = 'n',
+    },
+    {
+        '<leader>td',
+        gitsigns.preview_hunk_inline,
+        desc = 'Toggle Deleted Lines',
+        mode = 'n',
+    },
+    {
+        '<leader>tn',
+        '<CMD> set nu! <CR>',
+        desc = 'Toggle Line Numbers',
+        mode = 'n',
+    },
+    {
+        '<leader>tr',
+        '<CMD> set rnu! <CR>',
+        desc = 'Toggle Relative Numbers',
+        mode = 'n',
+    },
+    {
+        '<leader>ti',
+        '<CMD> IBLToggle <CR>',
+        desc = 'Toggle IndentLines',
+        mode = 'n',
+    },
+    {
+        '<leader>ts',
+        '<CMD> IBLToggleScope <CR>',
+        desc = 'Toggle ScopeLines',
+        mode = 'n',
+    },
+
+    {
+        '<leader>nw',
+        function() vim.lsp.buf.add_workspace_folder() end,
+        desc = 'New Workspace Folder',
+        mode = 'n',
+    },
+    {
+        '<leader>dw',
+        function() vim.lsp.buf.remove_workspace_folder() end,
+        desc = 'Delete Workspace Folders',
+        mode = 'n',
+    },
+
+    {
+        '[d',
+        function()
+            vim.diagnostic.jump({
+                count = -1,
+                float = true
+            })
+        end,
+        desc = 'Go to previous diagnostic message',
+        mode = 'n',
+    },
+    {
+        ']d',
+        function()
+            vim.diagnostic.jump({
+                count = 1,
+                float = true
+            })
+        end,
+        desc = 'Go to next diagnostic message',
+        mode = 'n',
+    },
+
+    {
+        'y.',
+        '<CMD> %y+ <CR>',
+        desc = 'Yank current buffer',
+        mode = 'n',
     },
 })
 

@@ -1,22 +1,17 @@
 return {
     'nvim-neotest/neotest',
     dependencies = {
-        'nvim-neotest/neotest-python',
+        'Issafalcon/neotest-dotnet',
         'nvim-neotest/neotest-plenary',
+        'nvim-neotest/neotest-python',
         'nvim-neotest/neotest-vim-test',
-        'andythigpen/nvim-coverage',
         'nvim-neotest/nvim-nio',
+        'rcasia/neotest-bash',
     },
     config = function()
         require('neotest').setup({
             adapters = {
                 require('neotest-plenary'),
-                -- require('neotest-python')({
-                --     dap = { justMyCode = false },
-                --     python = function()
-                --         return vim.fn.system("pdm info --python-path"):gsub("%s+$", "")
-                --     end,
-                -- }),
                 require('neotest-python')({
                     dap = { justMyCode = true },
                     verbose = true, -- This will print out more debug information.

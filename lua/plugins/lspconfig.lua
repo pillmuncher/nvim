@@ -1,8 +1,3 @@
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = require('cmp_nvim_lsp').default_capabilities(
-    vim.lsp.protocol.make_client_capabilities()
-)
-
 return {
     'neovim/nvim-lspconfig',
     lazy = false,
@@ -14,23 +9,42 @@ return {
         { 'williamboman/mason-lspconfig.nvim', dependencies = 'williamboman/mason.nvim' },
         { 'williamboman/mason.nvim',           opts = {} },
     },
-    on_attach = function(client, bufnr)
-        if client.server_capabilities['documentSymbolProvider'] then
-            require('nvim-navic').attach(client, bufnr)
-        end
-        require("settings.mappings").setup_lsp(bufnr)
-    end,
     config = function()
+        -- fix stupid "position_encoding param" error message
+        -- for telescope.builtin.lsp_document_symbols:
+        local notify_original = vim.notify
+        vim.notify = function(msg, ...)
+            if
+                msg
+                and (
+                    msg:match 'position_encoding param is required'
+                    or msg:match 'Defaulting to position encoding of the first client'
+                    or msg:match 'multiple different client offset_encodings'
+                )
+            then
+                return
+            end
+            return notify_original(msg, ...)
+        end
+        -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+        local capabilities = require('cmp_nvim_lsp').default_capabilities(
+            vim.lsp.protocol.make_client_capabilities()
+        )
+
         local on_attach = function(client, bufnr)
             if client.server_capabilities['documentSymbolProvider'] then
                 require('nvim-navic').attach(client, bufnr)
             end
             require("settings.mappings").setup_lsp(bufnr)
         end
-
+        local util = require('lspconfig.util')
+        capabilities = vim.lsp.protocol.make_client_capabilities()
         local servers = {
-
-            pylsp = {},
+            pyright = {},
+            ruff = {
+                -- enable = { "Pylint", "Pyflakes", "mccabe", }, -- Add more checks
+                line_length = 80,
+            },
             clangd = {},
             omnisharp = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
@@ -51,12 +65,13 @@ return {
 
         mason_lspconfig.setup_handlers({
             function(server_name)
-                require('lspconfig')[server_name].setup({
+                local server_config = servers[server_name] or {}
+                local config = vim.tbl_deep_extend("force", {
                     capabilities = capabilities,
-                    on_attach = on_attach, -- ✅ this is now wired in
-                    settings = servers[server_name],
-                    filetypes = (servers[server_name] or {}).filetypes,
-                })
+                    on_attach = on_attach,
+                }, server_config)
+
+                require('lspconfig')[server_name].setup(config)
             end,
         })
     end
