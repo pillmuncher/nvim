@@ -247,7 +247,7 @@ whichkey.add({
         '<leader>xa',
         function() vim.lsp.buf.code_action() end,
         desc = 'Code Action',
-        mode = 'n',
+        mode = 'nv',
     },
     {
         '<leader>cb',
@@ -256,18 +256,53 @@ whichkey.add({
         mode = 'n',
     },
     {
+        "<leader>re",
+        mode = 'nv',
+        function() require('refactoring').refactor('Extract Function') end,
+        expr = true
+    },
+    {
+        "<leader>rv",
+        mode = 'nv',
+        function() require('refactoring').refactor('Extract Variable') end,
+        expr = true
+    },
+    {
+        "<leader>rI",
+        mode = 'nv',
+        function() require('refactoring').refactor('Inline Function') end,
+        expr = true
+    },
+    {
+        "<leader>ri",
+        mode = 'nv',
+        function() require('refactoring').refactor('Inline Variable') end,
+        expr = true
+    },
+    {
+        "<leader>rbb",
+        function() require('refactoring').refactor('Extract Block') end,
+        mode = 'nv',
+        expr = true
+    },
+    {
         '<leader>rf',
         function() vim.lsp.buf.format({ async = true }) end,
         desc = 'Format',
-        mode = 'n',
+        mode = 'nvx',
     },
     {
         '<leader>rn',
         function() vim.lsp.buf.rename() end,
         desc = 'Rename',
-        mode = 'n',
+        mode = 'nvx',
     },
-
+    {
+        '<leader>rr',
+        function() require('telescope').extensions.refactoring.refactors() end,
+        desc = 'Refactor',
+        mode = 'nvx',
+    },
     {
         '<leader>f?',
         '<CMD> Telescope help_tags <CR>',
@@ -438,7 +473,7 @@ whichkey.add({
         '<leader>p',
         'p:let @+=@0<CR>:let @"=@0<CR>',
         desc = 'Paste w/o replacing register',
-        mode = 'x',
+        mode = 'v',
     },
 
     {
