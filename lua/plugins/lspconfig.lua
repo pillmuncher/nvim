@@ -10,7 +10,7 @@ return {
         { 'williamboman/mason.nvim',           opts = {} },
     },
     config = function()
-        -- fix stupid "position_encoding param" error message
+        -- Fix "position_encoding param" error message
         -- for telescope.builtin.lsp_document_symbols:
         local notify_original = vim.notify
         vim.notify = function(msg, ...)
@@ -26,20 +26,29 @@ return {
             end
             return notify_original(msg, ...)
         end
+
         -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
         local capabilities = require('cmp_nvim_lsp').default_capabilities(
             vim.lsp.protocol.make_client_capabilities()
         )
 
+        -- Common on_attach function
         local on_attach = function(client, bufnr)
             if client.server_capabilities['documentSymbolProvider'] then
                 require('nvim-navic').attach(client, bufnr)
             end
             require("settings.mappings").setup_lsp(bufnr)
         end
-        capabilities = vim.lsp.protocol.make_client_capabilities()
+
+        vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+            vim.lsp.diagnostic.on_publish_diagnostics, {
+                virtual_text = true, -- ensure this is true to show inline diagnostics
+                signs = true,        -- ensure this is true to show gutter signs
+                update_in_insert = false,
+            }
+        )
+        -- Define the LSP servers to set up
         local servers = {
-            pyright = {},
             clangd = {},
             omnisharp = { filetypes = { 'cs' } },
             html = { filetypes = { 'html', 'twig', 'hbs' } },
@@ -50,8 +59,41 @@ return {
                     diagnostics = { globals = { 'vim' } }
                 },
             },
+            pylsp = {
+                -- cmd = { vim.env.VIRTUAL_ENV .. "/bin/pylsp" },
+                settings = {
+                    pylsp = {
+                        plugins = {
+                            black = { enabled = true },
+                            pylsp_mypy = {
+                                enabled = true,
+                                live_mode = true,
+                                strict = true,
+                                overrides = {
+                                    "--check-untyped-defs", "--ignore-missing-imports", ".",
+                                },
+                                -- executable = vim.fn.getenv("VIRTUAL_ENV") .. "/bin/mypy",
+                            },
+                            rope = { enabled = true },
+                            rope_autoimport = { enabled = true },
+                            rope_completion = { enabled = true },
+                            rope_refactor = { enabled = true },
+                            pycodestyle = { enabled = false },
+                            pyflakes = { enabled = false },
+                            flake8 = { enabled = false },
+                        },
+                        diagnostics = {
+                            enable = true,                                -- make sure diagnostics are enabled
+                            types = {
+                                'error', 'warning', 'information', 'hint' -- this ensures all types are shown
+                            },
+                        },
+                    },
+                }
+            }
         }
 
+        -- Set up Mason with the LSP servers
         local mason_lspconfig = require('mason-lspconfig')
         mason_lspconfig.setup({
             ensure_installed = vim.tbl_keys(servers),
