@@ -60,7 +60,6 @@ return {
                 },
             },
             pylsp = {
-                -- cmd = { vim.env.VIRTUAL_ENV .. "/bin/pylsp" },
                 settings = {
                     pylsp = {
                         plugins = {
@@ -70,9 +69,11 @@ return {
                                 live_mode = true,
                                 strict = true,
                                 overrides = {
-                                    "--check-untyped-defs", "--ignore-missing-imports", ".",
-                                },
-                                -- executable = vim.fn.getenv("VIRTUAL_ENV") .. "/bin/mypy",
+                                    "--explicit-package-bases",
+                                    "--check-untyped-defs",
+                                    "--namespace-packages",
+                                    ".",
+                                }
                             },
                             rope = { enabled = true },
                             rope_autoimport = { enabled = true },
