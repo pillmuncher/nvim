@@ -117,12 +117,10 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --         end, { desc = "Format current buffer with LSP" })
 --     end,
 -- })
--- vim.api.nvim_create_autocmd("BufWritePre", {
---     pattern = "*.py",
---     callback = function()
---         vim.fn.system({ "black", vim.fn.expand("%") })
---     end,
--- })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.py",
+    callback = function() require("conform").format() end,
+})
 
 --
 -- vim.api.nvim_create_autocmd("FileType", {

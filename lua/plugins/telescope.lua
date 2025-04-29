@@ -15,6 +15,7 @@ return {
                 return vim.fn.executable 'make' == 1
             end,
         },
+        { 'ThePrimeagen/refactoring.nvim' },
     },
     config       = function()
         -- Enable telescope fzf native and git-worktree, if installed
