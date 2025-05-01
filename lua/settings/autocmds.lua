@@ -2,48 +2,58 @@
 local api = vim.api
 
 -- close terminal window on <c-d>
-api.nvim_create_autocmd('TermOpen', {
-    pattern = '*',
-    callback = function()
-        vim.keymap.set('t', '<c-d>', '<CMD> bd! <CR>', { buffer = 0 })
-    end,
+api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
+	callback = function()
+		vim.keymap.set("t", "<c-d>", "<CMD> bd! <CR>", { buffer = 0 })
+	end,
 })
 
 -- dont list quickfix buffers
-api.nvim_create_autocmd('FileType', {
-    pattern = 'qf',
-    callback = function() vim.opt_local.buflisted = false end,
+api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		vim.opt_local.buflisted = false
+	end,
 })
 
 -- set textwidth for lua
-api.nvim_create_autocmd('FileType', {
-    pattern = 'lua',
-    callback = function() vim.opt_local.textwidth = 98 end,
+api.nvim_create_autocmd("FileType", {
+	pattern = "lua",
+	callback = function()
+		vim.opt_local.textwidth = 98
+	end,
 })
 
 -- set textwidth for csharp
-api.nvim_create_autocmd('FileType', {
-    pattern = 'cs',
-    callback = function() vim.opt_local.textwidth = 98 end,
+api.nvim_create_autocmd("FileType", {
+	pattern = "cs",
+	callback = function()
+		vim.opt_local.textwidth = 98
+	end,
 })
 
 -- set textwidth for python
-api.nvim_create_autocmd('FileType', {
-    pattern = 'python',
-    callback = function() vim.opt_local.textwidth = 88 end,
+api.nvim_create_autocmd("FileType", {
+	pattern = "python",
+	callback = function()
+		vim.opt_local.textwidth = 88
+	end,
 })
 
 -- make a little flash when yanking:
-api.nvim_create_autocmd('TextYankPost', {
-    pattern = '*',
-    group = api.nvim_create_augroup('YankHighlight', { clear = true }),
-    callback = function() vim.highlight.on_yank() end,
+api.nvim_create_autocmd("TextYankPost", {
+	pattern = "*",
+	group = api.nvim_create_augroup("YankHighlight", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
 })
 
 -- remove trainilng whitespace:
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    command = "%s/\\s\\+$//e"
+	pattern = "*",
+	command = "%s/\\s\\+$//e",
 })
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --     pattern = "*",
@@ -117,10 +127,10 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --         end, { desc = "Format current buffer with LSP" })
 --     end,
 -- })
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.py",
-    callback = function() require("conform").format() end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--     pattern = "*.py",
+--     callback = function() require("conform").format() end,
+-- })
 
 --
 -- vim.api.nvim_create_autocmd("FileType", {
