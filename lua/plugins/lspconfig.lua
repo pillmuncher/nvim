@@ -108,7 +108,7 @@ return {
 				settings = {},
 			},
 			clangd = {},
-			omnisharp = { filetypes = { "cs" } },
+			-- omnisharp = { filetypes = { "cs" } },
 			html = { filetypes = { "html", "twig", "hbs" } },
 			lua_ls = {
 				Lua = {

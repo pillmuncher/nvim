@@ -2,7 +2,7 @@ return {
 	"xiyaowong/transparent.nvim",
 	-- Optional, you don't have to run setup.
 	-- table: default groups
-	enabled = false,
+	enabled = true,
 	config = function()
 		require("transparent").setup({
 			groups = {
@@ -43,7 +43,7 @@ return {
 				"GitSignsChange",
 				"GitSignsDelete",
 				"SignColumn",
-				"StatusLine",
+				-- "StatusLine",
 				"StatusLineNC",
 			},
 			-- table: groups you don't want to clear
