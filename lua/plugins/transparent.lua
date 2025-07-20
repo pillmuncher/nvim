@@ -44,7 +44,7 @@ return {
 				"GitSignsDelete",
 				"SignColumn",
 				-- "StatusLine",
-				"StatusLineNC",
+				-- "StatusLineNC",
 			},
 			-- table: groups you don't want to clear
 			exclude_groups = {},
