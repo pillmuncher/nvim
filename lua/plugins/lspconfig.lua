@@ -1,19 +1,3 @@
-local function set_python_path(path)
-	local clients = vim.lsp.get_clients({
-		bufnr = vim.api.nvim_get_current_buf(),
-		name = "pyright",
-	})
-	for _, client in ipairs(clients) do
-		if client.settings then
-			client.settings.python = vim.tbl_deep_extend("force", client.settings.python, { pythonPath = path })
-		else
-			client.config.settings =
-				vim.tbl_deep_extend("force", client.config.settings, { python = { pythonPath = path } })
-		end
-		client.notify("workspace/didChangeConfiguration", { settings = nil })
-	end
-end
-
 return {
 	"neovim/nvim-lspconfig",
 	lazy = false,
@@ -26,46 +10,24 @@ return {
 		{ "williamboman/mason.nvim", opts = {} },
 	},
 	config = function()
-		-- Fix "position_encoding param" error message
-		-- for telescope.builtin.lsp_document_symbols:
-		local notify_original = vim.notify
-		vim.notify = function(msg, ...)
-			if
-				msg
-				and (
-					msg:match("position_encoding param is required")
-					or msg:match("Defaulting to position encoding of the first client")
-					or msg:match("multiple different client offset_encodings")
-				)
-			then
-				return
-			end
-			return notify_original(msg, ...)
-		end
+		local lspconfig = require("lspconfig")
 
-		-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+		-- nvim-cmp capabilities
 		local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-		-- Common on_attach function
-		local on_attach = function(client, bufnr)
-			if client.server_capabilities["documentSymbolProvider"] then
+		-- Common on_attach
+		local function on_attach(client, bufnr)
+			if client.server_capabilities.documentSymbolProvider then
 				require("nvim-navic").attach(client, bufnr)
 			end
 			require("settings.mappings").setup_lsp(bufnr)
 		end
 
-		vim.diagnostic.config({
-			virtual_text = true,
-			signs = true,
-			update_in_insert = false,
-		})
-
-		-- Define the LSP servers to set up
 		local servers = {
 			pyright = {
 				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
-				root_dir = require("lspconfig.util").root_pattern("pyproject.toml"),
+				root_dir = lspconfig.util.root_pattern("pyproject.toml", ".git"),
 				root_markers = {
 					"pyproject.toml",
 					"setup.py",
@@ -75,40 +37,23 @@ return {
 					"pyrightconfig.json",
 					".git",
 				},
-				settings = {
-					python = {
-						analysis = {
-							autoSearchPaths = true,
-							useLibraryCodeForTypes = true,
-							diagnosticMode = "openFilesOnly",
-						},
-					},
-				},
+				-- DO NOT set `settings` here — let Pyright read pyrightconfig.json
 				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
 					vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightOrganizeImports", function()
 						client:exec_cmd({
 							command = "pyright.organizeimports",
 							arguments = { vim.uri_from_bufnr(bufnr) },
 						})
-					end, {
-						desc = "Organize Imports",
-					})
-					vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightSetPythonPath", set_python_path, {
-						desc = "Reconfigure pyright with the provided python path",
-						nargs = 1,
-						complete = "file",
-					})
+					end, { desc = "Organize Imports" })
 				end,
 			},
 			ruff = {
-				cmd = { "ruff", "server" },
+				cmd = { "ruff", "server", "--config", vim.fn.getcwd() .. "/pyproject.toml" },
 				filetypes = { "python" },
-				root_dir = require("lspconfig.util").root_pattern("pyproject.toml", "ruff.toml", ".ruff.toml", ".git"),
-				root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
-				settings = {},
+				root_dir = lspconfig.util.root_pattern("pyproject.toml", "ruff.toml", ".ruff.toml", ".git"),
 			},
 			clangd = {},
-			-- omnisharp = { filetypes = { "cs" } },
 			html = { filetypes = { "html", "twig", "hbs" } },
 			lua_ls = {
 				Lua = {
@@ -117,64 +62,18 @@ return {
 					diagnostics = { globals = { "vim" } },
 				},
 			},
-			-- pylsp = {
-			--     settings = {
-			--         pylsp = {
-			--             plugins = {
-			--                 black = { enabled = true },
-			--                 pylsp_mypy = {
-			--                     enabled = true,
-			--                     strict = true,
-			--                     live_mode = false,
-			--                     overrides = {
-			--                         "--check-untyped-defs",
-			--                         "--explicit-package-bases",
-			--                         "--namespace-packages",
-			--                         ".",
-			--                     },
-			--                 },
-			--                 pycodestyle = { enabled = false },
-			--                 pyflakes = { enabled = false },
-			--                 flake8 = { enabled = false },
-			--                 pylsp_rope = { enabled = true },
-			--                 rope_autoimport = { enabled = true },
-			--                 rope_completion = { enabled = true },
-			--                 rope_refactor = { enabled = true },
-			--             },
-			--             diagnostics = {
-			--                 enable = true,
-			--                 types = {
-			--                     'error', 'warning', 'information', 'hint' -- this ensures all types are shown
-			--                 },
-			--             },
-			--         },
-			--     },
-			--     -- on_new_config = function(new_config, _)
-			--     --     local mypy_path = os.getenv("MYPYPATH")
-			--     --     if mypy_path then
-			--     --         new_config.cmd_env = {
-			--     --             MYPYPATH = mypy_path,
-			--     --         }
-			--     --     end
-			--     -- end,
-			-- },
 		}
 
-		-- Set up Mason with the LSP servers
-		local mason_lspconfig = require("mason-lspconfig")
-		mason_lspconfig.setup({
+		require("mason-lspconfig").setup({
 			ensure_installed = vim.tbl_keys(servers),
 			automatic_enable = true,
 		})
 
-		-- After mason_lspconfig.setup(...)
-		for server_name, server_config in pairs(servers) do
-			local config = vim.tbl_deep_extend("force", {
+		for name, cfg in pairs(servers) do
+			lspconfig[name].setup(vim.tbl_deep_extend("force", {
 				capabilities = capabilities,
 				on_attach = on_attach,
-			}, server_config)
-
-			require("lspconfig")[server_name].setup(config)
+			}, cfg))
 		end
 	end,
 }

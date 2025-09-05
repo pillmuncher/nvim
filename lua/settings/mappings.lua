@@ -623,6 +623,16 @@ whichkey.add({
 		desc = "Yank current buffer",
 		mode = "n",
 	},
+
+	{
+		"<C-l>",
+		function()
+			vim.diagnostic.setloclist({ open = true })
+			vim.cmd("lopen") -- ensure loclist window opens
+		end,
+		mode = "n",
+		desc = "Open diagnostics in loclist",
+	},
 })
 
 M = {}
