@@ -626,6 +626,13 @@ whichkey.add({
 
 	{
 		"<C-l>",
+		"<CMD> AerialToggle! <CR>",
+		mode = "n",
+		desc = "Open Navigation",
+	},
+
+	{
+		"<C-o>",
 		function()
 			vim.diagnostic.setloclist({ open = true })
 			vim.cmd("lopen") -- ensure loclist window opens
