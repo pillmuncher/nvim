@@ -161,9 +161,9 @@ whichkey.add({
 
 		"<C-p>",
 		function()
-			vim.cmd.split()
-			vim.cmd.startinsert()
-			vim.cmd.terminal("python3")
+			cmd.split()
+			cmd.startinsert()
+			cmd.terminal("python3")
 		end,
 		desc = "New Python Shell",
 		mode = "nv",
@@ -172,9 +172,9 @@ whichkey.add({
 
 		"<C-t>",
 		function()
-			vim.cmd.split()
-			vim.cmd.startinsert()
-			vim.cmd.terminal()
+			cmd.split()
+			cmd.startinsert()
+			cmd.terminal()
 		end,
 		desc = "New Shell",
 		mode = "nv",
@@ -635,7 +635,7 @@ whichkey.add({
 		"<C-o>",
 		function()
 			vim.diagnostic.setloclist({ open = true })
-			vim.cmd("lopen") -- ensure loclist window opens
+			cmd("lopen") -- ensure loclist window opens
 		end,
 		mode = "n",
 		desc = "Open diagnostics in loclist",

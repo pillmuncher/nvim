@@ -1,6 +1,15 @@
 -- be more concise:
 local api = vim.api
 
+-- Configure folding for Python files using Treesitter in Neovim
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "python",
+	callback = function()
+		vim.opt_local.foldmethod = "expr"
+		vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+	end,
+})
+
 -- close terminal window on <c-d>
 api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
