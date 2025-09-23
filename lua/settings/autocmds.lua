@@ -5,11 +5,18 @@ local api = vim.api
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
+		vim.opt_local.foldenable = true
 		vim.opt_local.foldmethod = "expr"
 		vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+		vim.opt_local.foldlevel = 0
+		vim.cmd("normal! zx")
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+	pattern = "*.py",
+	command = "normal! zx",
+})
 -- close terminal window on <c-d>
 api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
