@@ -105,7 +105,7 @@ opt.smartindent = true -- Use smart indent if there is no indent file.
 opt.foldenable = true -- Don't fold by default.
 opt.foldmethod = "expr" -- Allow folding on indents.
 opt.foldexpr = "nvim_treesitter#foldexpr()"
-opt.foldlevel = 0 -- Don't fold by default.
+opt.foldlevel = 99 -- Don't fold by default.
 
 -- 15 diff mode
 --
