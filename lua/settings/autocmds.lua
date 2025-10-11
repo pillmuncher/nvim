@@ -37,7 +37,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
 	callback = function()
-		vim.opt_local.textwidth = 98
+		vim.opt_local.textwidth = 99
 	end,
 })
 
@@ -45,7 +45,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
 	pattern = "cs",
 	callback = function()
-		vim.opt_local.textwidth = 98
+		vim.opt_local.textwidth = 99
 	end,
 })
 
@@ -53,7 +53,7 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
-		vim.opt_local.textwidth = 88
+		vim.opt_local.textwidth = 99
 	end,
 })
 
