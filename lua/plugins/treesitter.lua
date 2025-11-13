@@ -13,6 +13,8 @@ return {
 					"bash",
 					"c",
 					"c_sharp",
+					"clojure",
+					"fennel",
 					"lua",
 					"markdown",
 					"python",

@@ -49,6 +49,14 @@ api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- set textwidth for clojure
+api.nvim_create_autocmd("FileType", {
+	pattern = "clojure",
+	callback = function()
+		vim.opt_local.textwidth = 99
+	end,
+})
+
 -- set textwidth for python
 api.nvim_create_autocmd("FileType", {
 	pattern = "python",
@@ -167,3 +175,19 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --     group = api.nvim_create_augroup('barbecue.updater', {}),
 --     callback = function() require('barbecue.ui').update() end,
 -- })
+--
+-- triggers CursorHold event faster
+-- vim.opt.updatetime = 200
+--
+-- require("barbecue").setup({
+-- 	create_autocmd = false, -- prevent barbecue from updating itself automatically
+-- })
+vim.api.nvim_create_autocmd("BufReadPost", {
+	pattern = "*.clj",
+	callback = function()
+		local root = require("lspconfig.util").find_git_ancestor(vim.fn.expand("%:p"))
+		if root then
+			vim.cmd("cd " .. root)
+		end
+	end,
+})
