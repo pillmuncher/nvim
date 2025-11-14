@@ -33,38 +33,6 @@ api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- set textwidth for lua
-api.nvim_create_autocmd("FileType", {
-	pattern = "lua",
-	callback = function()
-		vim.opt_local.textwidth = 99
-	end,
-})
-
--- set textwidth for csharp
-api.nvim_create_autocmd("FileType", {
-	pattern = "cs",
-	callback = function()
-		vim.opt_local.textwidth = 99
-	end,
-})
-
--- set textwidth for clojure
-api.nvim_create_autocmd("FileType", {
-	pattern = "clojure",
-	callback = function()
-		vim.opt_local.textwidth = 99
-	end,
-})
-
--- set textwidth for python
-api.nvim_create_autocmd("FileType", {
-	pattern = "python",
-	callback = function()
-		vim.opt_local.textwidth = 99
-	end,
-})
-
 -- make a little flash when yanking:
 api.nvim_create_autocmd("TextYankPost", {
 	pattern = "*",

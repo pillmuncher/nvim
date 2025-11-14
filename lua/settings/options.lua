@@ -84,7 +84,7 @@ opt.clipboard = "unnamedplus,unnamed" -- which register yank uses
 -- 12 editing text
 --
 opt.undofile = true -- Always keep an undo file.
-opt.textwidth = 80 -- Break line @ last Space before char 80.
+opt.textwidth = 99 -- Break line @ last Space before char 80.
 opt.formatoptions:append("rn1") -- Set format options.
 opt.showmatch = true -- Briefly jump to a paren once it's balanced.
 opt.matchpairs:append("<:>") -- Use % to jump between pairs.
