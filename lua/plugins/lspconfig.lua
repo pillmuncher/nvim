@@ -10,9 +10,29 @@ return {
 		{ "williamboman/mason.nvim", opts = {} },
 	},
 	config = function()
-		-- in your plugin spec or a separate Lua module loaded after lazy.nvim loads mason/lspconfig
+		local notify_orig = vim.notify
+		vim.notify = function() end -- temporarily suppress notifications
 
-		-- attach navic on any LSP client with documentSymbolProvider
+		local lspconfig = require("lspconfig")
+
+		-- setup servers
+		lspconfig.pyright.setup({
+			settings = {
+				python = {
+					analysis = {
+						autoSearchPaths = true,
+						useLibraryCodeForTypes = true,
+					},
+				},
+			},
+		})
+		lspconfig.ruff.setup({})
+		lspconfig.clojure_lsp.setup({})
+
+		-- restore notifications
+		vim.notify = notify_orig
+
+		-- attach navic on any LSP client
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -21,8 +41,5 @@ return {
 				end
 			end,
 		})
-		vim.lsp.enable("clojure_lsp")
-		vim.lsp.enable("pyright")
-		vim.lsp.enable("ruff")
 	end,
 }

@@ -59,7 +59,7 @@ opt.splitright = true -- Splits are opened to the right of the current window.
 
 -- 7 multiple tab pages
 --
-opt.showtabline = 0 -- Always show tabline, even if only one tab.
+opt.showtabline = 0 -- Never show tabline.
 
 -- 8 terminal
 --
@@ -68,7 +68,7 @@ opt.titlestring = "%(%{hostname()}:%F%)\\ %(%M%)"
 
 -- 9 using the mouse
 --
-opt.mouse = "ar" -- list of flags for using the mouse
+opt.mouse = "a" -- list of flags for using the mouse
 
 -- 10 messages and info
 --
@@ -88,7 +88,7 @@ opt.textwidth = 99 -- Break line @ last Space before char 80.
 opt.formatoptions:append("rn1") -- Set format options.
 opt.showmatch = true -- Briefly jump to a paren once it's balanced.
 opt.matchpairs:append("<:>") -- Use % to jump between pairs.
-opt.joinspaces = true -- Use two spaces when joining lines around a '.'
+opt.joinspaces = false -- Use two spaces when joining lines around a '.'
 opt.completeopt = "menuone,longest,preview"
 
 -- 13 tabs and indenting
@@ -122,9 +122,12 @@ opt.autowrite = false -- Never write a file unless I request it.
 opt.autowriteall = false -- NEVER.
 opt.autoread = false -- Don't automatically re-read changed files.
 opt.patchmode = "" -- Keep oldest version if a file, append .old.
-opt.backupdir = vim.fn.expand( -- Always write backup file.
-	"$XDG_STATE_HOME/nvim/backup//"
-)
+-- Always write backup file:
+local backup_dir = vim.fn.expand("$XDG_STATE_HOME/nvim/backup//")
+if vim.fn.isdirectory(backup_dir) == 0 then
+	vim.fn.mkdir(backup_dir, "p")
+end
+opt.backupdir = backup_dir
 
 -- 18 the swap file
 --

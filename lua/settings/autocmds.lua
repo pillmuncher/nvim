@@ -159,3 +159,17 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 		end
 	end,
 })
+
+-- Create an augroup for soft wrapping in text-focused files
+vim.api.nvim_create_augroup("TextSoftWrap", { clear = true })
+
+-- Autocmd for markdown and org files
+vim.api.nvim_create_autocmd("FileType", {
+	group = "TextSoftWrap",
+	pattern = { "markdown", "org" },
+	callback = function()
+		vim.opt_local.wrap = true -- enable soft wrap
+		vim.opt_local.linebreak = true -- wrap at word boundaries
+		vim.opt_local.textwidth = 0 -- optional, disable hard line breaks
+	end,
+})
