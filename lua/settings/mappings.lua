@@ -345,6 +345,18 @@ whichkey.add({
 	{ "<leader>ts", "<CMD>IBLToggleScope<CR>", desc = "Toggle scope lines" },
 
 	-- ========================================================================
+	-- IncRename
+	-- ========================================================================
+	{
+		"<leader>rn",
+		function()
+			return ":IncRename " .. vim.fn.expand("<cword>")
+		end,
+		desc = "Rename symbol",
+		mode = "n",
+		expr = true,
+	},
+	-- ========================================================================
 	-- Undo
 	-- ========================================================================
 
@@ -385,7 +397,10 @@ function M.setup_lsp(bufnr)
 	-- Code actions and refactoring
 	map_lsp("<leader>ca", vim.lsp.buf.code_action, "Code actions")
 	map_lsp("<leader>xa", vim.lsp.buf.code_action, "Code actions (alt)")
-	map_lsp("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+	-- map_lsp("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+	-- vim.keymap.set("n", "<leader>rn", function()
+	-- 	return ":IncRename " .. vim.fn.expand("<cword>")
+	-- end, { buffer = bufnr, desc = "Rename symbol", noremap = true, silent = true, expr = true })
 	map_lsp("<leader>rf", function()
 		vim.lsp.buf.format({ async = true })
 	end, "Format buffer")

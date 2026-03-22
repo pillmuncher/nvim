@@ -173,3 +173,15 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.textwidth = 0 -- optional, disable hard line breaks
 	end,
 })
+
+-- Autocmd for buffer mappings
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		require("settings.mappings").setup_lsp(args.buf)
+	end,
+})
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		require("settings.mappings").setup_lsp(args.buf)
+	end,
+})
