@@ -1,419 +1,425 @@
--- be more concise:
-local map = vim.keymap.set
+-- lua/settings/mappings.lua
 local cmd = vim.cmd
 
 -- ============================================================================
 -- Command Abbreviations (fix common typos)
 -- ============================================================================
 local abbrevs = {
-	q = { "Q" },
-	qa = { "QA", "Qa", "qA" },
-	w = { "W" },
-	wa = { "WA", "Wa", "wA" },
-	wq = { "WQ", "Wq", "wQ" },
-	wqa = { "WQA", "WQa", "WqA", "Wqa", "wQA", "wQa", "wqA" },
+    q = { "Q" },
+    qa = { "QA", "Qa", "qA" },
+    w = { "W" },
+    wa = { "WA", "Wa", "wA" },
+    wq = { "WQ", "Wq", "wQ" },
+    wqa = { "WQA", "WQa", "WqA", "Wqa", "wQA", "wQa", "wqA" },
 }
-
 for correct, typos in pairs(abbrevs) do
-	for _, typo in ipairs(typos) do
-		cmd.cnoreabbrev(typo, correct)
-	end
+    for _, typo in ipairs(typos) do
+        cmd.cnoreabbrev(typo, correct)
+    end
 end
 
 -- ============================================================================
--- Basic Mappings
+-- Plugin APIs
 -- ============================================================================
-
--- Leader is space, set to Nop to prevent conflicts
-map({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
-
--- Unmap 'gc' to remove checkhealth warning (Comment.nvim handles this)
-map("n", "gc", "")
-
--- ============================================================================
--- Load Plugin APIs
--- ============================================================================
-local commentapi = require("Comment.api")
 local gitsigns = require("gitsigns")
 local telescope = require("telescope")
 local whichkey = require("which-key")
 
 -- ============================================================================
--- Which-Key Configuration
--- Global mappings only - LSP buffer-local mappings are in M.setup_lsp()
+-- Which-Key
 -- ============================================================================
 whichkey.add({
 
-	-- ========================================================================
-	-- Group Labels
-	-- ========================================================================
-	{ "<leader>c", group = "Close" },
-	{ "<leader>d", group = "Delete/Workspace" },
-	{ "<leader>f", group = "Find" },
-	{ "<leader>g", group = "GoTo" },
-	{ "<leader>n", group = "New" },
-	{ "<leader>o", group = "Open" },
-	{ "<leader>r", group = "Refactor/Format" },
-	{ "<leader>s", group = "Show" },
-	{ "<leader>t", group = "Toggle" },
-	{ "<leader>u", group = "Undo" },
+    -- Group labels
+    { "<leader>b", group = "Buffer" },
+    { "<leader>c", group = "Code" },
+    { "<leader>d", group = "Diagnostics" },
+    { "<leader>f", group = "Find" },
+    { "<leader>g", group = "Git/GoTo" },
+    { "<leader>n", group = "New" },
+    { "<leader>o", group = "Open" },
+    { "<leader>r", group = "Refactor" },
+    { "<leader>s", group = "Symbols/Show" },
+    { "<leader>t", group = "Toggle" },
+    { "<leader>w", group = "Workspace" },
 
-	-- ========================================================================
-	-- Visual Mode Enhancements
-	-- ========================================================================
+    -- ========================================================================
+    -- Visual mode
+    -- ========================================================================
+    { ">", ">gv", desc = "Indent and keep selection", mode = "v" },
+    { "<", "<gv", desc = "Dedent and keep selection", mode = "v" },
+    { "<S-Down>", "<Down>", desc = "", mode = { "n", "v" }, silent = true },
+    { "<S-Up>", "<Up>", desc = "", mode = { "n", "v" }, silent = true },
 
-	-- Keep selection after indenting
-	{ ">", ">gv", desc = "Indent and keep selection", mode = "v" },
-	{ "<", "<gv", desc = "Dedent and keep selection", mode = "v" },
+    -- ========================================================================
+    -- Basic operations
+    -- ========================================================================
+    { "<Esc>", "<CMD>noh<CR>", desc = "Clear search highlights", mode = "n" },
+    { "y.", "<CMD>%y+<CR>", desc = "Yank entire buffer", mode = "n" },
+    { "<leader>p", 'p:let @+=@0<CR>:let @"=@0<CR>', desc = "Paste without replacing register", mode = "v" },
 
-	-- Fix Shift+Arrow behavior in visual mode
-	{ "<S-Down>", "<Down>", desc = "", mode = { "n", "v" }, silent = true },
-	{ "<S-Up>", "<Up>", desc = "", mode = { "n", "v" }, silent = true },
+    -- ========================================================================
+    -- Text formatting
+    -- ========================================================================
+    { "<leader>W", "gwip", desc = "Wrap paragraph", mode = "n" },
+    { "<leader>W", "gw", desc = "Wrap selection", mode = "v" },
 
-	-- ========================================================================
-	-- Basic Operations
-	-- ========================================================================
+    -- ========================================================================
+    -- Commenting (Ctrl+/)
+    -- ========================================================================
+    {
+        "<C-#>",
+        "gcc",
+        desc = "Toggle comment",
+        mode = { "i", "n" },
+        remap = true,
+    },
+    {
+        "<C-#>",
+        "gc",
+        desc = "Toggle comment",
+        mode = "v",
+        remap = true,
+    },
 
-	{ "<Esc>", "<CMD>noh<CR>", desc = "Clear search highlights", mode = "n" },
-	{ "y.", "<CMD>%y+<CR>", desc = "Yank entire buffer to clipboard", mode = "n" },
-	{ "<leader>p", 'p:let @+=@0<CR>:let @"=@0<CR>', desc = "Paste without replacing register", mode = "v" },
+    -- ========================================================================
+    -- Window navigation (Ctrl+Arrow)
+    -- ========================================================================
+    { "<C-Left>", "<C-W>h", desc = "Window left", mode = "n" },
+    { "<C-Down>", "<C-W>j", desc = "Window below", mode = "n" },
+    { "<C-Up>", "<C-W>k", desc = "Window above", mode = "n" },
+    { "<C-Right>", "<C-W>l", desc = "Window right", mode = "n" },
 
-	-- ========================================================================
-	-- Text Formatting
-	-- ========================================================================
+    -- Window resizing (Alt+Arrow) — normal mode only, no cmp conflict
+    {
+        "<M-Down>",
+        function()
+            local w = vim.fn.winnr()
+            vim.cmd("wincmd k | resize +2")
+            vim.cmd(w .. "wincmd w")
+        end,
+        desc = "Divider down",
+        mode = "n",
+    },
+    {
+        "<M-Up>",
+        function()
+            local w = vim.fn.winnr()
+            vim.cmd("wincmd k | resize -2")
+            vim.cmd(w .. "wincmd w")
+        end,
+        desc = "Divider up",
+        mode = "n",
+    },
 
-	{ "<leader>W", "gwip", desc = "Wrap paragraph", mode = "n" },
-	{ "<leader>W", "gw", desc = "Wrap selection", mode = "v" },
+    -- ========================================================================
+    -- Buffer navigation
+    -- ========================================================================
+    { "<C-PageDown>", "<CMD>bnext!<CR>", desc = "Next buffer", mode = "n" },
+    { "<C-PageUp>", "<CMD>bprev!<CR>", desc = "Previous buffer", mode = "n" },
 
-	-- ========================================================================
-	-- Commenting (Ctrl+#)
-	-- ========================================================================
+    -- ========================================================================
+    -- Buffer operations
+    -- ========================================================================
+    { "<leader>bd", "<CMD>bd<CR>", desc = "Delete buffer", mode = "n" },
+    { "<leader>bn", "<CMD>enew<CR>", desc = "New buffer", mode = "n" },
 
-	{
-		"<C-#>",
-		'<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
-		desc = "Toggle comment",
-		mode = "v",
-	},
-	{
-		"<C-#>",
-		function()
-			commentapi.toggle.linewise.current()
-		end,
-		desc = "Toggle comment",
-		mode = { "i", "n" },
-	},
+    -- ========================================================================
+    -- Terminal — startinsert AFTER terminal opens
+    -- ========================================================================
+    {
+        "<C-t>",
+        function()
+            cmd.split()
+            cmd.terminal()
+            vim.cmd("startinsert")
+        end,
+        desc = "New terminal (shell)",
+        mode = { "n", "v" },
+    },
+    {
+        "<Esc>",
+        vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
+        desc = "Exit terminal mode",
+        mode = "t",
+    },
 
-	-- ========================================================================
-	-- Window Management
-	-- ========================================================================
+    -- ========================================================================
+    -- TUI applications
+    -- ========================================================================
+    { "<C-n>", "<CMD>NvimTreeToggle<CR>", desc = "Toggle file explorer", mode = { "i", "n" } },
+    { "<C-u>", "<CMD>UndotreeToggle<CR>", desc = "Toggle undo tree", mode = { "i", "n" } },
+    { "<C-g>", "<CMD>LazyGit<CR>", desc = "Toggle LazyGit", mode = "n" },
+    { "<C-l>", "<CMD>AerialToggle!<CR>", desc = "Toggle code outline", mode = "n" },
+    { "<C-j>", "<CMD>Telescope jumplist<CR>", desc = "Open jumplist", mode = "n" },
+    {
+        "<C-o>",
+        function()
+            vim.diagnostic.setloclist({ open = true })
+            cmd("lopen")
+        end,
+        desc = "Open diagnostics in loclist",
+    },
 
-	-- Window navigation (Ctrl + Arrow keys)
-	{ "<C-Left>", "<C-W>h", desc = "Move to left window", mode = "n" },
-	{ "<C-Down>", "<C-W>j", desc = "Move to window below", mode = "n" },
-	{ "<C-Up>", "<C-W>k", desc = "Move to window above", mode = "n" },
-	{ "<C-Right>", "<C-W>l", desc = "Move to right window", mode = "n" },
+    {
+        "<C-p>",
+        function()
+            cmd.split()
+            cmd.terminal("python3")
+            vim.cmd("startinsert")
+        end,
+        desc = "Open Python REPL",
+        mode = "n", -- not insert, so no cmp conflict
+    },
+    -- Close window/buffer intelligently
+    {
+        "<C-d>",
+        function()
+            local wins = vim.tbl_filter(function(w)
+                return vim.api.nvim_win_get_config(w).relative == ""
+            end, vim.api.nvim_list_wins())
+            if #wins > 1 then
+                vim.api.nvim_win_close(0, true)
+            else
+                vim.cmd("bd")
+            end
+        end,
+        desc = "Close window or buffer",
+        mode = { "n", "v", "t" },
+    },
+    -- ========================================================================
+    -- Which-Key search
+    -- ========================================================================
+    {
+        "<leader><leader>",
+        function()
+            cmd("WhichKey " .. vim.fn.input("WhichKey: "))
+        end,
+        desc = "Search WhichKey",
+        mode = "n",
+    },
 
-	-- Window resizing (Alt + Arrow keys) - moves divider without changing focus
-	{
-		"<M-Down>",
-		function()
-			local winnr = vim.fn.winnr()
-			vim.cmd("wincmd k")
-			vim.cmd("resize +2")
-			vim.cmd(winnr .. "wincmd w")
-		end,
-		desc = "Move horizontal divider down",
-		mode = "n",
-	},
-	{
-		"<M-Up>",
-		function()
-			local winnr = vim.fn.winnr()
-			vim.cmd("wincmd k")
-			vim.cmd("resize -2")
-			vim.cmd(winnr .. "wincmd w")
-		end,
-		desc = "Move horizontal divider up",
-		mode = "n",
-	},
+    -- ========================================================================
+    -- Find (Telescope)
+    -- ========================================================================
+    { "<leader>f?", "<CMD>Telescope help_tags<CR>", desc = "Find help" },
+    {
+        "<leader>fa",
+        "<CMD>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+        desc = "Find any file (hidden too)",
+    },
+    { "<leader>fb", "<CMD>Telescope buffers<CR>", desc = "Find buffer" },
+    { "<leader>fc", "<CMD>Telescope git_commits<CR>", desc = "Find git commit" },
+    {
+        "<leader>fd",
+        function()
+            require("telescope.builtin").lsp_document_symbols({ show_line = true })
+        end,
+        desc = "Find document symbols",
+    },
+    { "<leader>ff", "<CMD>Telescope find_files<CR>", desc = "Find file" },
+    { "<leader>fg", "<CMD>Telescope git_files<CR>", desc = "Find git-tracked file" },
+    { "<leader>fm", "<CMD>Telescope marks<CR>", desc = "Find marks" },
+    { "<leader>fr", "<CMD>Telescope oldfiles<CR>", desc = "Find recent files" },
+    { "<leader>fs", "<CMD>Telescope git_status<CR>", desc = "Find git status files" },
+    {
+        "<leader>ft",
+        function()
+            telescope.extensions.git_worktree.git_worktrees()
+        end,
+        desc = "Find git worktree",
+    },
+    {
+        "<leader>fw",
+        function()
+            require("telescope.builtin").lsp_dynamic_workspace_symbols()
+        end,
+        desc = "Find workspace symbols",
+    },
+    { "<leader>fx", "<CMD>Telescope live_grep<CR>", desc = "Find text (live grep)" },
 
-	-- Close window/buffer intelligently
-	{
-		"<C-D>",
-		function()
-			if #vim.api.nvim_list_wins() > 1 then
-				vim.api.nvim_win_close(0, true)
-			else
-				vim.cmd("bd")
-			end
-		end,
-		desc = "Close window or buffer",
-		mode = { "i", "n", "v", "t" },
-	},
+    -- ========================================================================
+    -- Git / GoTo
+    -- ========================================================================
+    { "<leader>g.", "<CMD>lcd %:p:h<CR>", desc = "cd to current file's dir" },
+    { "<leader>gb", gitsigns.blame_line, desc = "Git blame line" },
+    { "<leader>gh", gitsigns.preview_hunk, desc = "Git hunk diff" },
+    { "<leader>gd", gitsigns.preview_hunk_inline, desc = "Git hunk inline (deleted)" },
+    { "<leader>gu", gitsigns.reset_hunk, desc = "Undo (reset) git hunk" },
+    {
+        "<leader>gn",
+        function()
+            if not vim.wo.diff then
+                vim.schedule(function()
+                    gitsigns.nav_hunk("next")
+                end)
+            end
+        end,
+        desc = "Next git hunk",
+    },
+    {
+        "<leader>gN",
+        function()
+            if not vim.wo.diff then
+                vim.schedule(function()
+                    gitsigns.nav_hunk("prev")
+                end)
+            end
+        end,
+        desc = "Prev git hunk",
+    },
 
-	-- ========================================================================
-	-- Buffer Navigation
-	-- ========================================================================
+    -- ========================================================================
+    -- Diagnostics
+    -- ========================================================================
+    {
+        "[d",
+        function()
+            vim.diagnostic.jump({ count = -1, float = true })
+        end,
+        desc = "Previous diagnostic",
+    },
+    {
+        "]d",
+        function()
+            vim.diagnostic.jump({ count = 1, float = true })
+        end,
+        desc = "Next diagnostic",
+    },
+    { "<leader>dd", vim.diagnostic.open_float, desc = "Diagnostic float" },
+    { "<leader>dl", vim.diagnostic.setloclist, desc = "Diagnostic loclist" },
 
-	{ "<C-PageDown>", "<CMD>bnext!<CR>", desc = "Next buffer", mode = "n" },
-	{ "<C-PageUp>", "<CMD>bprev!<CR>", desc = "Previous buffer", mode = "n" },
+    -- ========================================================================
+    -- Open
+    -- ========================================================================
+    { "<leader>oq", "<CMD>copen<CR>", desc = "Open quickfix", mode = { "n", "v" } },
 
-	-- ========================================================================
-	-- Terminal
-	-- ========================================================================
+    -- ========================================================================
+    -- Toggle
+    -- ========================================================================
+    { "<leader>tc", "<CMD>set list!<CR>", desc = "Toggle listchars" },
+    { "<leader>tn", "<CMD>set nu!<CR>", desc = "Toggle line numbers" },
+    { "<leader>tr", "<CMD>set rnu!<CR>", desc = "Toggle relative numbers" },
+    { "<leader>ti", "<CMD>IBLToggle<CR>", desc = "Toggle indent lines" },
+    { "<leader>ts", "<CMD>IBLToggleScope<CR>", desc = "Toggle scope lines" },
 
-	{
-		"<C-t>",
-		function()
-			cmd.split()
-			cmd.startinsert()
-			cmd.terminal()
-		end,
-		desc = "New terminal (shell)",
-		mode = { "n", "v" },
-	},
-	{
-		"<C-p>",
-		function()
-			cmd.split()
-			cmd.startinsert()
-			cmd.terminal("python3")
-		end,
-		desc = "New terminal (Python REPL)",
-		mode = { "n", "v" },
-	},
-	{
-		"<Esc>",
-		vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
-		desc = "Exit terminal mode",
-		mode = "t",
-	},
-
-	-- ========================================================================
-	-- TUI Applications
-	-- ========================================================================
-
-	{ "<C-n>", "<CMD>NvimTreeToggle<CR>", desc = "Toggle file explorer", mode = { "i", "n" } },
-	{ "<C-u>", "<CMD>UndotreeToggle<CR>", desc = "Toggle undo tree", mode = { "i", "n" } },
-	{ "<C-g>", "<CMD>LazyGit<CR>", desc = "Open LazyGit", mode = "n" },
-	{ "<C-l>", "<CMD>AerialToggle!<CR>", desc = "Toggle code outline", mode = "n" },
-
-	-- ========================================================================
-	-- WhichKey
-	-- ========================================================================
-
-	{
-		"<leader><leader>",
-		function()
-			cmd("WhichKey " .. vim.fn.input("WhichKey: "))
-		end,
-		desc = "Search WhichKey",
-		mode = "n",
-	},
-
-	-- ========================================================================
-	-- Close/Buffer Operations
-	-- ========================================================================
-
-	{ "<leader>cb", "<CMD>bd<CR>", desc = "Close current buffer", mode = "n" },
-
-	-- ========================================================================
-	-- Find (Telescope)
-	-- ========================================================================
-
-	{ "<leader>f?", "<CMD>Telescope help_tags<CR>", desc = "Find help" },
-	{
-		"<leader>fa",
-		"<CMD>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-		desc = "Find any file (including hidden)",
-	},
-	{ "<leader>fb", "<CMD>Telescope buffers<CR>", desc = "Find buffer" },
-	{ "<leader>fc", "<CMD>Telescope git_commits<CR>", desc = "Find git commit" },
-	{
-		"<leader>fd",
-		function()
-			require("telescope.builtin").lsp_document_symbols({ show_line = true })
-		end,
-		desc = "Find document symbols",
-	},
-	{ "<leader>ff", "<CMD>Telescope find_files<CR>", desc = "Find file" },
-	{ "<leader>fg", "<CMD>Telescope git_files<CR>", desc = "Find git-tracked file" },
-	{ "<leader>fm", "<CMD>Telescope marks<CR>", desc = "Find marks" },
-	{ "<leader>fr", "<CMD>Telescope oldfiles<CR>", desc = "Find recent files" },
-	{ "<leader>fs", "<CMD>Telescope git_status<CR>", desc = "Find files in git status" },
-	{
-		"<leader>ft",
-		function()
-			telescope.extensions.git_worktree.git_worktrees()
-		end,
-		desc = "Find git worktree",
-	},
-	{
-		"<leader>fw",
-		function()
-			require("telescope.builtin").lsp_dynamic_workspace_symbols()
-		end,
-		desc = "Find workspace symbols",
-	},
-	{ "<leader>fx", "<CMD>Telescope live_grep<CR>", desc = "Find text (live grep)" },
-
-	-- ========================================================================
-	-- GoTo Navigation
-	-- ========================================================================
-
-	{ "<leader>g.", "<CMD>lcd %:p:h<CR>", desc = "CD to current file's directory" },
-
-	-- Git hunks
-	{
-		"<leader>gn",
-		function()
-			if not vim.wo.diff then
-				vim.schedule(function()
-					gitsigns.nav_hunk("next")
-				end)
-			end
-		end,
-		desc = "GoTo next git hunk",
-	},
-	{
-		"<leader>gN",
-		function()
-			if not vim.wo.diff then
-				vim.schedule(function()
-					gitsigns.nav_hunk("prev")
-				end)
-			end
-		end,
-		desc = "GoTo previous git hunk",
-	},
-
-	-- Diagnostics
-	{
-		"[d",
-		function()
-			vim.diagnostic.jump({ count = -1, float = true })
-		end,
-		desc = "Previous diagnostic",
-	},
-	{
-		"]d",
-		function()
-			vim.diagnostic.jump({ count = 1, float = true })
-		end,
-		desc = "Next diagnostic",
-	},
-
-	-- ========================================================================
-	-- New (Create)
-	-- ========================================================================
-
-	{ "<leader>nb", "<CMD>enew<CR>", desc = "New buffer" },
-
-	-- ========================================================================
-	-- Open (Diagnostics, QuickFix, etc.)
-	-- ========================================================================
-
-	{ "<leader>od", vim.diagnostic.setloclist, desc = "Open diagnostics (loclist)" },
-	{ "<leader>of", vim.diagnostic.open_float, desc = "Open diagnostic float" },
-	{ "<leader>oq", "<CMD>copen<CR>", desc = "Open quickfix list", mode = { "n", "v" } },
-	{
-		"<C-o>",
-		function()
-			vim.diagnostic.setloclist({ open = true })
-			cmd("lopen")
-		end,
-		desc = "Open diagnostics in loclist",
-	},
-
-	-- ========================================================================
-	-- Show (Documentation, Blame, etc.)
-	-- ========================================================================
-
-	{ "<leader>sb", gitsigns.blame_line, desc = "Show git blame" },
-	{ "<leader>sh", gitsigns.preview_hunk, desc = "Show git hunk diff" },
-
-	-- ========================================================================
-	-- Toggle
-	-- ========================================================================
-
-	{ "<leader>tc", "<CMD>set list!<CR>", desc = "Toggle listchars" },
-	{ "<leader>td", gitsigns.preview_hunk_inline, desc = "Toggle deleted lines (git)" },
-	{ "<leader>tn", "<CMD>set nu!<CR>", desc = "Toggle line numbers" },
-	{ "<leader>tr", "<CMD>set rnu!<CR>", desc = "Toggle relative numbers" },
-	{ "<leader>ti", "<CMD>IBLToggle<CR>", desc = "Toggle indent lines" },
-	{ "<leader>ts", "<CMD>IBLToggleScope<CR>", desc = "Toggle scope lines" },
-
-	-- ========================================================================
-	-- IncRename
-	-- ========================================================================
-	{
-		"<leader>rn",
-		function()
-			return ":IncRename " .. vim.fn.expand("<cword>")
-		end,
-		desc = "Rename symbol",
-		mode = "n",
-		expr = true,
-	},
-	-- ========================================================================
-	-- Undo
-	-- ========================================================================
-
-	{ "<leader>uh", gitsigns.reset_hunk, desc = "Undo (reset) git hunk" },
+    -- ========================================================================
+    -- Refactor
+    -- ========================================================================
+    {
+        "<leader>rn",
+        function()
+            return ":IncRename " .. vim.fn.expand("<cword>")
+        end,
+        desc = "Rename symbol",
+        mode = "n",
+        expr = true,
+    },
+    -- ========================================================================
+    -- Test (Neotest)
+    -- ========================================================================
+    { "<leader>T", group = "Test" },
+    {
+        "<leader>Tr",
+        function()
+            require("neotest").run.run()
+        end,
+        desc = "Run nearest test",
+    },
+    {
+        "<leader>TT",
+        function()
+            require("neotest").run.run(vim.fn.expand("%"))
+        end,
+        desc = "Run current file",
+    },
+    {
+        "<leader>Ts",
+        function()
+            require("neotest").run.stop()
+        end,
+        desc = "Stop test",
+    },
+    {
+        "<leader>Ta",
+        function()
+            require("neotest").run.attach()
+        end,
+        desc = "Attach to test",
+    },
+    {
+        "<leader>To",
+        function()
+            require("neotest").output.open({ enter = true })
+        end,
+        desc = "Open output",
+    },
+    {
+        "<leader>TO",
+        function()
+            require("neotest").output_panel.toggle()
+        end,
+        desc = "Toggle output panel",
+    },
+    {
+        "<leader>Tm",
+        function()
+            require("neotest").summary.toggle()
+        end,
+        desc = "Toggle summary",
+    },
 })
 
 -- ============================================================================
--- LSP Buffer-Local Mappings (called when LSP attaches to a buffer)
+-- LSP buffer-local mappings
 -- ============================================================================
--- These mappings only work in buffers with an attached LSP server.
--- They are buffer-local to prevent errors when calling LSP functions
--- in non-LSP buffers.
---
--- These will automatically appear in which-key menus because of the desc field!
--- ============================================================================
-
 local M = {}
 
 function M.setup_lsp(bufnr)
-	local map_lsp = function(keys, func, desc)
-		vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc, noremap = true, silent = true })
-	end
+    local lsp = function(keys, func, desc)
+        vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc, noremap = true, silent = true })
+    end
 
-	-- Navigation
-	map_lsp("gd", vim.lsp.buf.definition, "definition")
-	map_lsp("gD", vim.lsp.buf.declaration, "declaration")
-	map_lsp("gi", vim.lsp.buf.implementation, "implementation")
-	map_lsp("gr", vim.lsp.buf.references, "references")
-	map_lsp("<leader>gt", vim.lsp.buf.type_definition, "type definition")
-	map_lsp("<leader>gi", vim.lsp.buf.implementation, "implementation")
+    -- Navigation (unprefixed — standard vim-lsp convention)
+    lsp("gd", vim.lsp.buf.definition, "definition")
+    lsp("gD", vim.lsp.buf.declaration, "declaration")
+    lsp("gi", vim.lsp.buf.implementation, "implementation")
+    lsp("gr", vim.lsp.buf.references, "references")
+    lsp("K", vim.lsp.buf.hover, "Hover docs")
+    lsp("<C-k>", vim.lsp.buf.signature_help, "Signature help")
 
-	-- Documentation
-	map_lsp("K", vim.lsp.buf.hover, "Hover documentation")
-	map_lsp("<C-k>", vim.lsp.buf.signature_help, "Signature help")
-	map_lsp("<leader>sd", vim.lsp.buf.hover, "documentation (hover)")
-	map_lsp("<leader>ss", vim.lsp.buf.signature_help, "signature help")
+    -- <leader>g group (Git/GoTo)
+    lsp("<leader>gt", vim.lsp.buf.type_definition, "type definition")
 
-	-- Code actions and refactoring
-	map_lsp("<leader>ca", vim.lsp.buf.code_action, "Code actions")
-	map_lsp("<leader>xa", vim.lsp.buf.code_action, "Code actions (alt)")
-	-- map_lsp("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
-	-- vim.keymap.set("n", "<leader>rn", function()
-	-- 	return ":IncRename " .. vim.fn.expand("<cword>")
-	-- end, { buffer = bufnr, desc = "Rename symbol", noremap = true, silent = true, expr = true })
-	map_lsp("<leader>rf", function()
-		vim.lsp.buf.format({ async = true })
-	end, "Format buffer")
+    -- <leader>c group (Code)
+    lsp("<leader>ca", vim.lsp.buf.code_action, "Code actions")
 
-	-- References
-	map_lsp("<leader>or", vim.lsp.buf.references, "references")
+    -- Visual mode
+    vim.keymap.set("v", "<leader>ca", function()
+        local start = vim.fn.getpos("v")
+        local end_ = vim.fn.getpos(".")
+        vim.lsp.buf.code_action({
+            range = {
+                start = { start[2] - 1, math.max(0, start[3] - 1) },
+                ["end"] = { end_[2] - 1, end_[3] },
+            },
+        })
+    end, { buffer = bufnr, desc = "Code actions (visual)", noremap = true, silent = true })
+    lsp("<leader>cf", function()
+        vim.lsp.buf.format({ async = true })
+    end, "Format buffer")
 
-	-- Workspace folders
-	map_lsp("<leader>nw", vim.lsp.buf.add_workspace_folder, "workspace folder")
-	map_lsp("<leader>dw", vim.lsp.buf.remove_workspace_folder, "workspace folder")
-	map_lsp("<leader>sw", function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, "workspace folders")
+    -- <leader>s group (Symbols/Show)
+    lsp("<leader>sd", vim.lsp.buf.hover, "docs (hover)")
+    lsp("<leader>ss", vim.lsp.buf.signature_help, "signature help")
+    lsp("<leader>sr", vim.lsp.buf.references, "references")
+
+    -- <leader>w group (Workspace)
+    lsp("<leader>wa", vim.lsp.buf.add_workspace_folder, "add workspace folder")
+    lsp("<leader>wd", vim.lsp.buf.remove_workspace_folder, "remove workspace folder")
+    lsp("<leader>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, "list workspace folders")
 end
 
 return M

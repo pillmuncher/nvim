@@ -22,26 +22,25 @@ opt.smartcase = true -- Use smartcase unless uppercase letters are used in the r
 opt.scrolloff = 1 -- Keep 1 context line above and below the cursor.
 opt.wrap = false -- Don't display lines as wrapped.
 opt.sidescrolloff = 1 -- Only scroll sideways when one column from window frame.
-opt.lazyredraw = true -- Redraw only when we need to.
 opt.number = true -- Show line numbers.
 opt.relativenumber = true -- Show current line as 0.
 opt.listchars = { -- What to show on ':list'.
-	tab = "▸ ",
-	eol = "¬",
-	nbsp = "·",
-	trail = "·",
-	precedes = "<",
-	extends = ">",
+    tab = "▸ ",
+    eol = "¬",
+    nbsp = "·",
+    trail = "·",
+    precedes = "<",
+    extends = ">",
 }
 opt.fillchars = { -- status line, folds and filler line characters:
-	vert = "|", -- vertical split separators
-	fold = " ", -- folded lines
-	eob = " ", -- End Of Buffer area
-	diff = "-", -- diff changes
-	msgsep = "=", -- message separators
-	foldopen = "▾", -- open folds
-	foldsep = "|", -- fold separators
-	foldclose = "▸", -- closed folds
+    vert = "|", -- vertical split separators
+    fold = " ", -- folded lines
+    eob = " ", -- End Of Buffer area
+    diff = "-", -- diff changes
+    msgsep = "=", -- message separators
+    foldopen = "▾", -- open folds
+    foldsep = "|", -- fold separators
+    foldclose = "▸", -- closed folds
 }
 
 -- 5 syntax, highlighting and spelling
@@ -102,7 +101,7 @@ opt.smartindent = true -- Use smart indent if there is no indent file.
 
 -- 14 folding
 --
-opt.foldenable = true -- Don't fold by default.
+opt.foldenable = true -- Enable folding but open all folds by default.
 opt.foldmethod = "expr" -- Allow folding on indents.
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.foldlevel = 99 -- Don't fold by default.
@@ -118,14 +117,11 @@ opt.timeoutlen = 400 -- time in msec for 'timeout'
 --
 opt.fileformats = "unix,dos,mac" -- Try recognizing dos, unix, and mac line endings.
 opt.backup = true -- Always write backup file.
-opt.autowrite = false -- Never write a file unless I request it.
-opt.autowriteall = false -- NEVER.
 opt.autoread = false -- Don't automatically re-read changed files.
-opt.patchmode = "" -- Keep oldest version if a file, append .old.
 -- Always write backup file:
 local backup_dir = vim.fn.expand("$XDG_STATE_HOME/nvim/backup//")
 if vim.fn.isdirectory(backup_dir) == 0 then
-	vim.fn.mkdir(backup_dir, "p")
+    vim.fn.mkdir(backup_dir, "p")
 end
 opt.backupdir = backup_dir
 
@@ -154,11 +150,3 @@ opt.grepprg = "rg --vimgrep" -- Replace the default grep program with ripgrep.
 --
 opt.virtualedit = "block" -- Let cursor move past the last char in v mode.
 opt.signcolumn = "yes" -- When and how to draw the signcolumn.
-
--- disable luarocks:
--- opt.rocks.enabled = false
-
--- GUI options:
-
-opt.guifont = "Liga Hasklug Nerd Font:Light:14"
-vim.g.neovide_transparency = 0.707
