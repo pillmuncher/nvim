@@ -8,7 +8,7 @@ vim.g.python3_host_prog = "/home/mick/.local/state/nvim/venv/bin/python"
 
 -- bootstrap lazy.nvim:
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
