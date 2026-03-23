@@ -4,6 +4,10 @@ return {
         { "nvim-treesitter/nvim-treesitter-textobjects" },
     },
     build = ":TSUpdate",
+    -- Load treesitter when a buffer is read or a new file is created
+    event = { "BufReadPost", "BufNewFile" },
+    -- Load even earlier if we are about to write a file (e.g., via a script)
+    cmd = { "TSUpdate", "TSInstall" },
     config = function()
         require("nvim-treesitter.configs").setup({
             ensure_installed = {

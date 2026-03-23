@@ -26,11 +26,11 @@ local function get_venv_or_project()
 end
 
 return {
-    -- Colorscheme
+    -- Colorscheme: High priority to load immediately
     {
         "ramojus/mellifluous.nvim",
         lazy = false,
-        priority = 1000000,
+        priority = 1000,
         opts = {
             color_set = "mountain",
             neutral = true,
@@ -38,65 +38,56 @@ return {
         },
     },
 
-    -- Statusline
+    -- Statusline: Defer until UI is idle
     {
         "nvim-lualine/lualine.nvim",
-        lazy = false,
-        priority = 100000,
+        event = "VeryLazy",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "ramojus/mellifluous.nvim",
         },
-        opts = {
-            theme = "mellifluous",
-            extensions = {
-                "fzf",
-                "lazy",
-                "man",
-                "mason",
-                "nvim-dap-ui",
-                "nvim-tree",
-                "quickfix",
-                "symbols-outline",
-                "toggleterm",
-            },
-            options = {
-                component_separators = { left = "", right = "" },
-                section_separators = { left = "", right = "" },
-            },
-            sections = {
-                lualine_c = {
-                    { "filetype", icon_only = true, icon = { align = "right" } },
-                    {
-                        "filename",
-                        path = 4,
-                        file_status = true,
-                        newfile_status = true,
-                        symbols = { modified = "[✗]", readonly = "[]" },
-                    },
+        config = function()
+            require("lualine").setup({
+                options = {
+                    theme = "auto",
+                    component_separators = { left = "", right = "" },
+                    section_separators = { left = "", right = "" },
+                    globalstatus = true,
                 },
-                lualine_x = {
-                    "selectioncount",
-                    "searchcount",
-                    {
-                        function()
-                            return vim.fn.ObsessionStatus("●", "○")
-                        end,
-                        color = { fg = "#C3E88D" }, -- or whatever color fits your theme
+                sections = {
+                    lualine_a = { "mode" },
+                    lualine_b = { "branch", "diff", "diagnostics" },
+                    lualine_c = {
+                        { "filetype", icon_only = true, icon = { align = "right" } },
+                        {
+                            "filename",
+                            path = 4,
+                            file_status = true,
+                            newfile_status = true,
+                            symbols = { modified = "[✗]", readonly = "[]" },
+                        },
                     },
+                    lualine_x = {
+                        "selectioncount",
+                        "searchcount",
+                        {
+                            function()
+                                return vim.fn.ObsessionStatus("●", "○")
+                            end,
+                            color = { fg = "#C3E88D" },
+                        },
+                    },
+                    lualine_y = { "fileformat", "encoding" },
+                    lualine_z = { "progress", "location" },
                 },
-                lualine_y = { "fileformat", "encoding" },
-                lualine_z = { "progress", "location" },
-            },
-        },
+            })
+        end,
     },
 
     -- Winbar breadcrumbs
     {
         "utilyre/barbecue.nvim",
-        lazy = false,
-        priority = 100000,
-        name = "barbecue",
+        event = "VeryLazy",
         dependencies = {
             "ramojus/mellifluous.nvim",
             "SmiteshP/nvim-navic",
@@ -113,6 +104,8 @@ return {
     -- Transparent background
     {
         "xiyaowong/transparent.nvim",
+        lazy = false,
+        priority = 500,
         opts = {
             groups = {
                 "Comment",
@@ -152,7 +145,6 @@ return {
                 "GitSignsDelete",
                 "SignColumn",
             },
-            exclude_groups = {},
         },
     },
 
@@ -173,7 +165,6 @@ return {
                     clojure = "rainbow-delimiters",
                     python = "rainbow-delimiters",
                 },
-                priority = { [""] = 110, lua = 210 },
                 highlight = {
                     "RainbowDelimiterRed",
                     "RainbowDelimiterYellow",
@@ -190,6 +181,7 @@ return {
     -- Indent guides
     {
         "lukas-reineke/indent-blankline.nvim",
+        event = { "BufReadPost", "BufNewFile" },
         main = "ibl",
         opts = {
             enabled = false,

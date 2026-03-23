@@ -25,23 +25,29 @@ return {
             },
         },
     },
+
+    -- LSP UI Component
+    { "SmiteshP/nvim-navic", lazy = true },
+
+    -- LSP Config & Initialization
     {
         "williamboman/mason-lspconfig.nvim",
-        dependencies = { "williamboman/mason.nvim" },
+        dependencies = {
+            "williamboman/mason.nvim",
+            "SmiteshP/nvim-navic",
+        },
         opts = {
             ensure_installed = { "pyright", "ruff", "clangd", "html", "lua_ls" },
             automatic_installation = true,
             automatic_enable = false,
         },
-    },
+        config = function(_, opts)
+            -- 1. Setup mason-lspconfig
+            require("mason-lspconfig").setup(opts)
 
-    -- LSP UI
-    { "SmiteshP/nvim-navic", lazy = true },
-    {
-        dir = vim.fn.stdpath("config"),
-        name = "native-lsp",
-        lazy = false,
-        config = function()
+            -- 2. Enable servers natively (Neovim 0.10+)
+            -- Note: clojure_lsp is enabled here but not managed by Mason above,
+            -- which is perfectly fine if you manage it externally.
             vim.lsp.enable({
                 "clangd",
                 "clojure_lsp",
@@ -51,13 +57,18 @@ return {
                 "ruff",
             })
 
+            -- 3. Setup buffer-local mappings and Navic on attach
             vim.api.nvim_create_autocmd("LspAttach", {
+                group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
                 callback = function(args)
                     local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if client.server_capabilities.documentSymbolProvider then
-                        require("nvim-navic").attach(client, args.buf)
+                    local bufnr = args.buf
+
+                    if client and client.server_capabilities.documentSymbolProvider then
+                        require("nvim-navic").attach(client, bufnr)
                     end
-                    require("settings.mappings").setup_lsp(args.buf)
+
+                    require("settings.mappings").setup_lsp(bufnr)
                 end,
             })
         end,
