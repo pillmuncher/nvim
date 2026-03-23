@@ -37,7 +37,7 @@ return {
             "SmiteshP/nvim-navic",
         },
         opts = {
-            ensure_installed = { "pyright", "ruff", "clangd", "html", "lua_ls" },
+            ensure_installed = { "pyright", "ruff", "clangd", "html", "lua_ls", "omnisharp" },
             automatic_installation = true,
             automatic_enable = false,
         },
@@ -53,6 +53,7 @@ return {
                 "clojure_lsp",
                 "html",
                 "lua_ls",
+                "OmniSharp",
                 "pyright",
                 "ruff",
             })

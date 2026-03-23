@@ -13,14 +13,33 @@ local function get_project_name()
     return name ~= "" and (name .. " ") or ""
 end
 
-local function get_venv_or_project()
-    if vim.fn.filereadable("project.clj") == 1 then
-        return get_project_name()
+local function get_csharp_project_name()
+    local path = vim.fn.expand("%:p:h")
+    while path ~= "/" do
+        local csproj = vim.fn.glob(path .. "/*.csproj")
+        if csproj ~= "" then
+            local name = vim.fn.fnamemodify(csproj, ":t:r")
+            vim.notify("csproj found: " .. name) -- temporary debug
+            return name .. " "
+        end
+        path = vim.fn.fnamemodify(path, ":h")
     end
+    vim.notify("no csproj found") -- temporary debug
+    return ""
+end
+
+local function get_venv_or_project()
     local venv = vim.env.VIRTUAL_ENV
     if venv then
         local params = vim.split(venv, "-", { plain = true })
         return params[#params] .. " "
+    end
+    if vim.fn.filereadable("project.clj") == 1 then
+        return get_project_name()
+    end
+    local csharp = get_csharp_project_name()
+    if csharp ~= "" then
+        return csharp
     end
     return ""
 end
