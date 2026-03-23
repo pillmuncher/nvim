@@ -1,15 +1,16 @@
 local function set_python_path(command)
-    local clients = vim.lsp.get_clients({
-        bufnr = vim.api.nvim_get_current_buf(),
-        name = "pyright",
-    })
-    for _, client in ipairs(clients) do
-        if client.settings then
-            client.settings.python = vim.tbl_deep_extend("force", client.settings.python, { pythonPath = command.args })
-        else
-            client.config.settings =
-                vim.tbl_deep_extend("force", client.config.settings, { python = { pythonPath = command.args } })
-        end
+    for _, client in
+        ipairs(vim.lsp.get_clients({
+            bufnr = vim.api.nvim_get_current_buf(),
+            name = "pyright",
+        }))
+    do
+        client.settings = vim.tbl_deep_extend(
+            "force",
+            client.settings or client.config.settings or {},
+            { python = { pythonPath = command.args } }
+        )
+
         client:notify("workspace/didChangeConfiguration", { settings = nil })
     end
 end
