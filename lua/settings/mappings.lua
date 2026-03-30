@@ -24,6 +24,7 @@ end
 local gitsigns = require("gitsigns")
 local telescope = require("telescope")
 local whichkey = require("which-key")
+local neotest = require("neotest")
 
 -- ============================================================================
 -- Which-Key
@@ -319,54 +320,59 @@ whichkey.add({
     -- Test (Neotest)
     -- ========================================================================
     { "<leader>T", group = "Test" },
+
     {
         "<leader>Tr",
         function()
-            require("neotest").run.run()
+            neotest.run.run()
         end,
         desc = "Run nearest test",
     },
     {
+        "<leader>TA",
+        function()
+            local state = require("test_state")
+            state.running = true
+            state.passed = 0
+            state.failed = 0
+            local timer = vim.loop.new_timer()
+            timer:start(
+                0,
+                500,
+                vim.schedule_wrap(function()
+                    if not state.running then
+                        timer:stop()
+                        timer:close()
+                    end
+                    vim.cmd("redrawstatus")
+                end)
+            )
+            vim.defer_fn(function()
+                require("neotest").run.run(vim.fn.getcwd())
+            end, 300)
+        end,
+        desc = "Run all tests",
+    },
+    {
         "<leader>TT",
         function()
-            require("neotest").run.run(vim.fn.expand("%"))
+            neotest.run.run(vim.fn.expand("%"))
         end,
         desc = "Run current file",
     },
     {
         "<leader>Ts",
         function()
-            require("neotest").run.stop()
+            neotest.run.stop()
         end,
         desc = "Stop test",
     },
     {
         "<leader>Ta",
         function()
-            require("neotest").run.attach()
+            neotest.run.attach()
         end,
         desc = "Attach to test",
-    },
-    {
-        "<leader>To",
-        function()
-            require("neotest").output.open({ enter = true })
-        end,
-        desc = "Open output",
-    },
-    {
-        "<leader>TO",
-        function()
-            require("neotest").output_panel.toggle()
-        end,
-        desc = "Toggle output panel",
-    },
-    {
-        "<leader>Tm",
-        function()
-            require("neotest").summary.toggle()
-        end,
-        desc = "Toggle summary",
     },
 })
 

@@ -19,12 +19,10 @@ local function get_csharp_project_name()
         local csproj = vim.fn.glob(path .. "/*.csproj")
         if csproj ~= "" then
             local name = vim.fn.fnamemodify(csproj, ":t:r")
-            vim.notify("csproj found: " .. name) -- temporary debug
             return name .. " "
         end
         path = vim.fn.fnamemodify(path, ":h")
     end
-    vim.notify("no csproj found") -- temporary debug
     return ""
 end
 
@@ -57,14 +55,11 @@ return {
         },
     },
 
-    -- Statusline: Defer until UI is idle
+    -- Lualine progress component
     {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-            "ramojus/mellifluous.nvim",
-        },
+        dependencies = { "nvim-tree/nvim-web-devicons", "ramojus/mellifluous.nvim" },
         config = function()
             require("lualine").setup({
                 options = {
@@ -91,6 +86,44 @@ return {
                         "searchcount",
                         {
                             function()
+                                local ok, state = pcall(require, "test_state")
+                                if not ok then
+                                    return ""
+                                end
+                                if state.running then
+                                    return "⟳  testing"
+                                end
+                                if state.passed == 0 and state.failed == 0 then
+                                    return ""
+                                end
+                                local parts = {}
+                                if state.passed > 0 then
+                                    table.insert(parts, "✓ " .. state.passed)
+                                end
+                                if state.failed > 0 then
+                                    table.insert(parts, "✗ " .. state.failed)
+                                end
+                                return table.concat(parts, " ")
+                            end,
+                            color = function()
+                                local ok, state = pcall(require, "test_state")
+                                if not ok then
+                                    return {}
+                                end
+                                if state.running then
+                                    return { fg = "#FFCB6B" }
+                                end
+                                if state.failed > 0 then
+                                    return { fg = "#F07178" }
+                                end
+                                if state.passed > 0 then
+                                    return { fg = "#C3E88D" }
+                                end
+                                return {}
+                            end,
+                        },
+                        {
+                            function()
                                 return vim.fn.ObsessionStatus("●", "○")
                             end,
                             color = { fg = "#C3E88D" },
@@ -102,7 +135,6 @@ return {
             })
         end,
     },
-
     -- Winbar breadcrumbs
     {
         "utilyre/barbecue.nvim",

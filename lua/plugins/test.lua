@@ -1,50 +1,81 @@
+package.loaded["test_state"] = {
+    running = false,
+    passed = 0,
+    failed = 0,
+}
+
 return {
-    -- Test runner
     {
         "nvim-neotest/neotest",
         dependencies = {
-            "Issafalcon/neotest-dotnet",
             "nvim-neotest/neotest-python",
-            "nvim-neotest/neotest-vim-test",
+            "Issafalcon/neotest-dotnet",
             "nvim-neotest/nvim-nio",
-            "rcasia/neotest-bash",
-            "vim-test/vim-test",
         },
         opts = function()
             return {
                 adapters = {
-                    require("neotest-python")({ verbose = true, runner = "pytest" }),
-                    require("neotest-dotnet"),
-                    require("neotest-bash"),
-                    require("neotest-vim-test")({
-                        ignore_file_types = { "python", "vim", "lua" },
+                    require("neotest-python")({
+                        args = { "--cov=." },
+                        runner = "pytest",
+                        coverage = true,
                     }),
+                    require("neotest-dotnet"),
                 },
-                quickfix = { enabled = true, open = false },
-                output = { enabled = true, open_on_run = true },
+                consumers = {
+                    coverage_autoload = function(client)
+                        client.listeners.results = function(_, results, partial)
+                            if partial then
+                                return
+                            end
+                            local state = require("test_state")
+                            local passed, failed = 0, 0
+                            for _, r in pairs(results) do
+                                if r.status == "passed" then
+                                    passed = passed + 1
+                                elseif r.status == "failed" then
+                                    failed = failed + 1
+                                end
+                            end
+                            state.passed = passed
+                            state.failed = failed
+                            state.running = false
+                            vim.defer_fn(function()
+                                local coverage = require("coverage")
+                                coverage.load(true)
+                                coverage.show()
+                            end, 2000)
+                        end
+                    end,
+                },
+                output = { enabled = true, open_on_run = false },
+                quickfix = { enabled = true },
                 diagnostic = { enabled = true },
-                signs = { enabled = true, priority = 40 },
+                signs = { enabled = true },
             }
         end,
     },
-
-    -- Coverage display
     {
         "andythigpen/nvim-coverage",
-        version = "*",
         dependencies = { "nvim-lua/plenary.nvim" },
-        opts = {
-            auto_reload = true,
-            commands = true,
-            highlights = {
-                covered = { fg = "#C3E88D" },
-                uncovered = { fg = "#F07178" },
-            },
-            signs = {
-                covered = { hl = "CoverageCovered", text = "▎" },
-                uncovered = { hl = "CoverageUncovered", text = "▎" },
-            },
-            summary = { min_coverage = 80.0 },
-        },
+        config = function()
+            require("coverage").setup({
+                auto_reload = true,
+                commands = true,
+                lang = {
+                    python = {
+                        coverage_file = vim.fn.getcwd() .. "/.coverage",
+                    },
+                },
+                signs = {
+                    covered = { hl = "CoverageCovered", text = "▎" },
+                    uncovered = { hl = "CoverageUncovered", text = "▎" },
+                },
+                highlights = {
+                    covered = { fg = "#C3E88D" },
+                    uncovered = { fg = "#F07178" },
+                },
+            })
+        end,
     },
 }
