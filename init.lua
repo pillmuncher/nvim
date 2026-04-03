@@ -4,7 +4,7 @@ vim.g.maplocalleader = " "
 
 -- prevent Python plugins from using a currently active virtualenv:
 -- Use a dedicated Neovim venv to avoid conflicts with project dependencies.
-vim.g.python3_host_prog = "/home/mick/.local/state/nvim/venv/bin/python"
+vim.g.python3_host_prog = "~/.local/state/nvim/venv/bin/python"
 
 -- bootstrap lazy.nvim:
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -28,11 +28,7 @@ require("settings.options")
 require("settings.mappings")
 require("settings.autocmds")
 
-local hostname = vim.fn.hostname()
-local host_config = vim.fn.stdpath("config") .. "/lua/hosts/" .. hostname .. ".lua"
-if vim.fn.filereadable(host_config) == 1 then
-    require("hosts." .. hostname)
-end
+require("hosts." .. (vim.fn.hostname():match("^[^.]+") or ""))
 
 -- make it look pretty:
 vim.cmd.colorscheme("mellifluous")
