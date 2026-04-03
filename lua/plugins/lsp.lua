@@ -61,7 +61,7 @@ return {
             -- 3. Setup buffer-local mappings and Navic on attach
             vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function(args)
-                    local client_id = args.data and args.data.client_id or args.client_id
+                    local client_id = args.data and args.data.client_id
                     if not client_id then
                         return
                     end
@@ -71,7 +71,11 @@ return {
                         return
                     end
 
-                    -- your existing logic here
+                    require("settings.mappings").setup_lsp(args.buf)
+
+                    if client.server_capabilities.documentSymbolProvider then
+                        require("nvim-navic").attach(client, args.buf)
+                    end
                 end,
             })
         end,

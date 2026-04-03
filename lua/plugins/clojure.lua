@@ -12,6 +12,7 @@ return {
             vim.fn.mkdir(log_dir, "p")
             vim.g["conjure#log#file_name"] = ".conjure-%d.log"
             vim.g["conjure#log#path"] = log_dir
+            vim.g["conjure#filetypes"] = { "clojure", "fennel", "hy" } -- exclude python
         end,
     },
 }

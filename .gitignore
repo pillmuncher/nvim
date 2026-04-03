@@ -51,3 +51,4 @@ Thumbs.db
 # Generated files
 lazy-lock.json
 lazyvim.json
+neovim.vim
