@@ -78,6 +78,7 @@ whichkey.add({
         mode = "t",
     },
     { "y.", "<CMD>%y+<CR>", desc = "Yank entire buffer", mode = "n" },
+    { "<C-.>", "gc", desc = "Toggle comment", mode = "v", remap = true },
     { "<C-#>", "gc", desc = "Toggle comment", mode = "v", remap = true },
     { "<C-#>", "gcc", desc = "Toggle comment", mode = { "i", "n" }, remap = true },
     { "<S-Down>", "<Down>", mode = { "n", "v" }, silent = true },
