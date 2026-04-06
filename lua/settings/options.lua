@@ -97,7 +97,6 @@ opt.softtabstop = -1 -- Use shiftwidth many Spaces when pressing <Tab> or <BS>.
 opt.tabstop = 4 --
 opt.shiftround = true -- Rounds indent to a multiple of shiftwidth.
 opt.expandtab = true -- Insert Spaces instead of Tab.
-opt.smartindent = true -- Use smart indent if there is no indent file.
 
 -- 14 folding
 --
