@@ -103,7 +103,7 @@ opt.smartindent = true -- Use smart indent if there is no indent file.
 --
 opt.foldenable = true -- Enable folding but open all folds by default.
 opt.foldmethod = "expr" -- Allow folding on indents.
-opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldlevel = 99 -- Don't fold by default.
 
 -- 15 diff mode
