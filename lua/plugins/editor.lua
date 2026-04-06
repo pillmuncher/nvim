@@ -13,7 +13,13 @@ return {
         dependencies = {
             { "echasnovski/mini.icons", version = "*" },
         },
-        opts = {},
+        config = function()
+            local wk = require("which-key")
+            wk.setup({})
+            wk.add({
+                { "gc", hidden = true },
+            })
+        end,
     },
 
     -- Incremental rename
