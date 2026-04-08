@@ -6,6 +6,108 @@ local whichkey = require("which-key")
 local neotest = require("neotest")
 local coverage = require("coverage")
 local aerial = require("aerial")
+local function native_swap(is_next)
+    local node = vim.treesitter.get_node()
+    while node and not (node:type():find("parameter") or node:type():find("argument")) do
+        node = node:parent()
+    end
+
+    if node then
+        local target = is_next and node:next_sibling() or node:prev_sibling()
+        -- Skip commas in the AST
+        if target and target:type() == "," then
+            target = is_next and target:next_sibling() or target:prev_sibling()
+        end
+
+        if target then
+            -- NATIVE REPLACEMENT FOR ts_utils.swap_nodes
+            local bufnr = vim.api.nvim_get_current_buf()
+            local r1, c1, r2, c2 = node:range()
+            local tr1, tc1, tr2, tc2 = target:range()
+
+            local text1 = vim.api.nvim_buf_get_text(bufnr, r1, c1, r2, c2, {})
+            local text2 = vim.api.nvim_buf_get_text(bufnr, tr1, tc1, tr2, tc2, {})
+
+            -- Swap the text in the buffer (Order matters to avoid range shifts)
+            if is_next then
+                vim.api.nvim_buf_set_text(bufnr, tr1, tc1, tr2, tc2, text1)
+                vim.api.nvim_buf_set_text(bufnr, r1, c1, r2, c2, text2)
+            else
+                vim.api.nvim_buf_set_text(bufnr, r1, c1, r2, c2, text2)
+                vim.api.nvim_buf_set_text(bufnr, tr1, tc1, tr2, tc2, text1)
+            end
+
+            -- Move cursor to follow the swap
+            vim.api.nvim_win_set_cursor(0, { tr1 + 1, tc1 })
+        end
+    end
+end
+-- Native Selection (Uses core Neovim 0.12.0 range logic)
+local function ts_select(capture, v_mode)
+    return function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local lang = vim.bo.filetype
+        local node = vim.treesitter.get_node()
+        if not node then
+            return
+        end
+
+        -- Hard-coded Lua Fallback for 'vif' / 'vaf'
+        -- This is a "brute force" fix because the Lua queries are currently broken in 0.12.0
+        if lang == "lua" and capture:find("function") then
+            local current = node
+            while current and current:type() ~= "function_definition" do
+                current = current:parent()
+            end
+            if current then
+                local s_r, s_c, e_r, e_c = current:range()
+                if capture == "@function.inner" then
+                    -- Select everything between 'function(...)' and 'end'
+                    vim.api.nvim_win_set_cursor(0, { s_r + 2, 0 }) -- Start on line after 'function'
+                    vim.cmd("normal! V")
+                    vim.api.nvim_win_set_cursor(0, { e_r, 0 }) -- End on line before 'end'
+                else
+                    -- Select the whole function
+                    vim.api.nvim_win_set_cursor(0, { s_r + 1, s_c })
+                    vim.cmd("normal! V")
+                    vim.api.nvim_win_set_cursor(0, { e_r + 1, e_c })
+                end
+                return
+            end
+        end
+
+        -- Standard Logic for Python and other languages
+        local query = vim.treesitter.query.get(lang, "textobjects")
+        if not query then
+            return
+        end
+
+        local root = node:tree():root()
+        local cursor_row = vim.api.nvim_win_get_cursor(0)[1] - 1
+        local start_row, start_col, end_row, end_col
+
+        for id, match_node in query:iter_captures(root, bufnr, 0, -1) do
+            if query.captures[id] == capture:gsub("^@", "") then
+                local s_r, s_c, e_r, e_c = match_node:range()
+                if cursor_row >= s_r and cursor_row <= e_r then
+                    if not start_row or (s_r >= start_row and e_r <= end_row) then
+                        start_row, start_col, end_row, end_col = s_r, s_c, e_r, e_c
+                    end
+                end
+            end
+        end
+
+        if start_row then
+            local mode = vim.api.nvim_get_mode().mode
+            if mode:sub(1, 1):lower() == "v" or mode:sub(1, 1) == "\22" then
+                vim.cmd("normal! " .. mode:sub(1, 1))
+            end
+            vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
+            vim.cmd("normal! " .. (v_mode or "v"))
+            vim.api.nvim_win_set_cursor(0, { end_row + 1, math.max(0, end_col - 1) })
+        end
+    end
+end
 
 -- ============================================================================
 -- Telescope: silence missing position_encoding warning (Neovim 0.11+ / Telescope bug)
@@ -194,12 +296,32 @@ whichkey.add({
     },
     { "<leader>dd", vim.diagnostic.open_float, desc = "Diagnostic float" },
     { "<leader>dl", vim.diagnostic.setloclist, desc = "Diagnostic loclist" },
-})
-
--- ============================================================================
--- Find (Telescope)
--- ============================================================================
-whichkey.add({
+    {
+        "<leader>a",
+        function()
+            native_swap(true)
+        end,
+        desc = "Swap next parameter",
+    },
+    {
+        "<leader>A",
+        function()
+            native_swap(false)
+        end,
+        desc = "Swap prev parameter",
+    },
+    -- ============================================================================
+    -- Treesitter Native Logic (0.12.0 core API)
+    -- ============================================================================
+    { "af", ts_select("@function.outer", "V"), desc = "Function (outer)", mode = { "x", "o" } },
+    { "if", ts_select("@function.inner", "V"), desc = "Function (inner)", mode = { "x", "o" } },
+    { "ac", ts_select("@class.outer", "v"), desc = "Class (outer)", mode = { "x", "o" } },
+    { "ic", ts_select("@class.inner", "v"), desc = "Class (inner)", mode = { "x", "o" } },
+    { "aa", ts_select("@parameter.outer", "v"), desc = "Parameter (outer)", mode = { "x", "o" } },
+    { "ia", ts_select("@parameter.inner", "v"), desc = "Parameter (inner)", mode = { "x", "o" } },
+    -- ============================================================================
+    -- Find (Telescope)
+    -- ============================================================================
     { "<leader>f/", "<CMD>Telescope command_history<CR>", desc = "Command history" },
     { "<leader>f?", "<CMD>Telescope help_tags<CR>", desc = "Find help" },
     { "<leader>fD", "<CMD>Telescope diagnostics<CR>", desc = "Find diagnostics" },
@@ -224,40 +346,32 @@ whichkey.add({
     },
     { "<leader>fx", "<CMD>Telescope live_grep<CR>", desc = "Live grep" },
     { "<leader>fz", "<CMD>Telescope spell_suggest<CR>", desc = "Spell suggest" },
-})
 
--- ============================================================================
--- GoTo
--- ============================================================================
-whichkey.add({
+    -- ============================================================================
+    -- GoTo
+    -- ============================================================================
     { "<leader>g.", "<CMD>lcd %:p:h<CR>", desc = "cd to current file's dir" },
     { "[[", aerial.prev, desc = "Previous symbol" },
     { "]]", aerial.next, desc = "Next symbol" },
-})
 
--- ============================================================================
--- Open
--- ============================================================================
-whichkey.add({
+    -- ============================================================================
+    -- Open
+    -- ============================================================================
     { "<leader>oq", "<CMD>copen<CR>", desc = "Open quickfix", mode = { "n", "v" } },
     { "<leader>os", "<CMD>Obsession<CR>", desc = "Toggle session tracking" },
-})
 
--- ============================================================================
--- Toggle
--- ============================================================================
-whichkey.add({
+    -- ============================================================================
+    -- Toggle
+    -- ============================================================================
     { "<leader>tc", "<CMD>set list!<CR>", desc = "Toggle listchars" },
     { "<leader>ti", "<CMD>IBLToggle<CR>", desc = "Toggle indent lines" },
     { "<leader>tn", "<CMD>set nu!<CR>", desc = "Toggle line numbers" },
     { "<leader>tr", "<CMD>set rnu!<CR>", desc = "Toggle relative numbers" },
     { "<leader>ts", "<CMD>IBLToggleScope<CR>", desc = "Toggle scope lines" },
-})
 
--- ============================================================================
--- Git
--- ============================================================================
-whichkey.add({
+    -- ============================================================================
+    -- Git
+    -- ============================================================================
     { "<leader>GB", gitsigns.stage_buffer, desc = "Stage buffer" },
     { "<leader>GI", gitsigns.preview_hunk_inline, desc = "Hunk inline" },
     {
@@ -287,19 +401,15 @@ whichkey.add({
     { "<leader>Gs", gitsigns.stage_hunk, desc = "Stage hunk" },
     { "<leader>Gt", gitsigns.toggle_current_line_blame, desc = "Toggle blame" },
     { "<leader>Gu", gitsigns.reset_hunk, desc = "Reset hunk" },
-})
 
--- ============================================================================
--- Show
--- ============================================================================
-whichkey.add({
+    -- ============================================================================
+    -- Show
+    -- ============================================================================
     { "<leader>Sd", vim.diagnostic.open_float, desc = "Diagnostics float" },
-})
 
--- ============================================================================
--- Test (Neotest)
--- ============================================================================
-whichkey.add({
+    -- ============================================================================
+    -- Test (Neotest)
+    -- ============================================================================
     {
         "<leader>TA",
         function()

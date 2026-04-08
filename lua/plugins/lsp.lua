@@ -53,7 +53,7 @@ return {
                 "clojure_lsp",
                 "html",
                 "lua_ls",
-                "OmniSharp",
+                "omnisharp",
                 "pyright",
                 "ruff",
             })

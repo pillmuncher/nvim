@@ -117,3 +117,18 @@ api.nvim_create_autocmd("CursorHold", {
         require("barbecue.ui").update()
     end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function(args)
+        local bufnr = args.buf
+        -- Force syntax on if treesitter is having a mid-life crisis
+        vim.bo[bufnr].syntax = "on"
+
+        pcall(function()
+            if vim.treesitter.language.get_lang(vim.bo[bufnr].filetype) then
+                vim.treesitter.start(bufnr)
+                -- If start() succeeds, it will override the 'syntax = on'
+            end
+        end)
+    end,
+})
