@@ -1,11 +1,5 @@
 -- lua/settings/mappings.lua
 local cmd = vim.cmd
-local gitsigns = require("gitsigns")
-local telescope = require("telescope")
-local whichkey = require("which-key")
-local neotest = require("neotest")
-local coverage = require("coverage")
-local aerial = require("aerial")
 local function native_swap(is_next)
     local node = vim.treesitter.get_node()
     while node and not (node:type():find("parameter") or node:type():find("argument")) do
@@ -57,7 +51,7 @@ local function ts_select(capture, v_mode)
         if lang == "lua" and capture:find("function") then
             local current = node
             while current and current:type() ~= "function_definition" do
-                current = current:parent()
+                current = current:parent() --[[@as TSNode]]
             end
             if current then
                 local s_r, s_c, e_r, e_c = current:range()
@@ -113,6 +107,7 @@ end
 -- Telescope: silence missing position_encoding warning (Neovim 0.11+ / Telescope bug)
 -- ============================================================================
 local orig_make_position_params = vim.lsp.util.make_position_params
+---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.util.make_position_params = function(window, encoding)
     window = window or vim.api.nvim_get_current_win()
     if not encoding then
@@ -143,7 +138,7 @@ end
 -- ============================================================================
 -- Which-Key Groups
 -- ============================================================================
-whichkey.add({
+require("which-key").add({
     { "<leader>b", group = "Buffer" },
     { "<leader>c", group = "Code" },
     { "<leader>d", group = "Diagnostics" },
@@ -294,7 +289,13 @@ whichkey.add({
         end,
         desc = "Next diagnostic",
     },
-    { "<leader>dd", vim.diagnostic.open_float, desc = "Diagnostic float" },
+    {
+        "<leader>dd",
+        function()
+            vim.diagnostic.open_float()
+        end,
+        desc = "Diagnostic float",
+    },
     { "<leader>dl", vim.diagnostic.setloclist, desc = "Diagnostic loclist" },
     {
         "<leader>a",
@@ -340,7 +341,7 @@ whichkey.add({
     {
         "<leader>ft",
         function()
-            telescope.extensions.git_worktree.git_worktrees()
+            require("telescope").extensions.git_worktree.git_worktrees()
         end,
         desc = "Find git worktree",
     },
@@ -351,8 +352,20 @@ whichkey.add({
     -- GoTo
     -- ============================================================================
     { "<leader>g.", "<CMD>lcd %:p:h<CR>", desc = "cd to current file's dir" },
-    { "[[", aerial.prev, desc = "Previous symbol" },
-    { "]]", aerial.next, desc = "Next symbol" },
+    {
+        "[[",
+        function()
+            require("aerial").prev()
+        end,
+        desc = "Previous symbol",
+    },
+    {
+        "]]",
+        function()
+            require("aerial").next()
+        end,
+        desc = "Next symbol",
+    },
 
     -- ============================================================================
     -- Open
@@ -372,40 +385,88 @@ whichkey.add({
     -- ============================================================================
     -- Git
     -- ============================================================================
-    { "<leader>GB", gitsigns.stage_buffer, desc = "Stage buffer" },
-    { "<leader>GI", gitsigns.preview_hunk_inline, desc = "Hunk inline" },
+    {
+        "<leader>GB",
+        function()
+            require("gitsigns").stage_buffer()
+        end,
+        desc = "Stage buffer",
+    },
+    {
+        "<leader>GI",
+        function()
+            require("gitsigns").preview_hunk_inline()
+        end,
+        desc = "Hunk inline",
+    },
     {
         "<leader>GN",
         function()
             if not vim.wo.diff then
                 vim.schedule(function()
-                    gitsigns.nav_hunk("prev")
+                    require("gitsigns").nav_hunk("prev")
                 end)
             end
         end,
         desc = "Prev hunk",
     },
-    { "<leader>Gb", gitsigns.blame_line, desc = "Blame line" },
-    { "<leader>Gh", gitsigns.preview_hunk, desc = "Hunk diff" },
+    {
+        "<leader>Gb",
+        function()
+            require("gitsigns").blame_line()
+        end,
+        desc = "Blame line",
+    },
+    {
+        "<leader>Gh",
+        function()
+            require("gitsigns").preview_hunk()
+        end,
+        desc = "Hunk diff",
+    },
     {
         "<leader>Gn",
         function()
             if not vim.wo.diff then
                 vim.schedule(function()
-                    gitsigns.nav_hunk("next")
+                    require("gitsigns").nav_hunk("next")
                 end)
             end
         end,
         desc = "Next hunk",
     },
-    { "<leader>Gs", gitsigns.stage_hunk, desc = "Stage hunk" },
-    { "<leader>Gt", gitsigns.toggle_current_line_blame, desc = "Toggle blame" },
-    { "<leader>Gu", gitsigns.reset_hunk, desc = "Reset hunk" },
+    {
+        "<leader>Gs",
+        function()
+            require("gitsigns").stage_hunk()
+        end,
+        desc = "Stage hunk",
+    },
+    {
+        "<leader>Gt",
+        function()
+            require("gitsigns").toggle_current_line_blame()
+        end,
+        desc = "Toggle blame",
+    },
+    {
+        "<leader>Gu",
+        function()
+            require("gitsigns").reset_hunk()
+        end,
+        desc = "Reset hunk",
+    },
 
     -- ============================================================================
     -- Show
     -- ============================================================================
-    { "<leader>Sd", vim.diagnostic.open_float, desc = "Diagnostics float" },
+    {
+        "<leader>Sd",
+        function()
+            vim.diagnostic.open_float()
+        end,
+        desc = "Diagnostics float",
+    },
 
     -- ============================================================================
     -- Test (Neotest)
@@ -418,6 +479,7 @@ whichkey.add({
             state.passed = 0
             state.failed = 0
             local timer = vim.uv.new_timer()
+            assert(timer, "Failed to create timer")
             timer:start(
                 0,
                 500,
@@ -430,41 +492,97 @@ whichkey.add({
                 end)
             )
             vim.defer_fn(function()
-                neotest.run.run(vim.fn.getcwd())
+                require("neotest").run.run(vim.fn.getcwd())
             end, 300)
         end,
         desc = "Run all tests",
     },
-    { "<leader>TC", coverage.toggle, desc = "Toggle coverage" },
+    {
+        "<leader>TC",
+        function()
+            require("coverage").toggle()
+        end,
+        desc = "Toggle coverage",
+    },
     {
         "<leader>TF",
         function()
-            neotest.jump.prev({ status = "failed" })
+            require("neotest").jump.prev({ status = "failed" })
         end,
         desc = "Previous failed test",
     },
-    { "<leader>TL", coverage.load, desc = "Load coverage" },
-    { "<leader>TS", coverage.summary, desc = "Coverage summary" },
+    {
+        "<leader>TL",
+        function()
+            require("coverage").load(true)
+        end,
+        desc = "Load coverage",
+    },
+    {
+        "<leader>TS",
+        function()
+            require("coverage").summary()
+        end,
+        desc = "Coverage summary",
+    },
     {
         "<leader>TT",
         function()
-            neotest.run.run(vim.fn.expand("%"))
+            require("neotest").run.run(vim.fn.expand("%"))
         end,
         desc = "Run current file",
     },
-    { "<leader>Ta", neotest.run.attach, desc = "Attach to test" },
+    {
+        "<leader>Ta",
+        function()
+            require("neotest").run.attach()
+        end,
+        desc = "Attach to test",
+    },
     {
         "<leader>Tf",
         function()
-            neotest.jump.next({ status = "failed" })
+            require("neotest").jump.next({ status = "failed" })
         end,
         desc = "Next failed test",
     },
-    { "<leader>Tm", neotest.summary.toggle, desc = "Toggle test summary" },
-    { "<leader>To", neotest.output.open, desc = "Test output" },
-    { "<leader>Tp", neotest.output_panel.toggle, desc = "Toggle output panel" },
-    { "<leader>Tr", neotest.run.run, desc = "Run nearest test" },
-    { "<leader>Ts", neotest.run.stop, desc = "Stop test" },
+    {
+        "<leader>Tm",
+        function()
+            require("neotest").summary.toggle()
+        end,
+        desc = "Toggle test summary",
+    },
+    {
+        "<leader>To",
+        function()
+            require("neotest").output.open()
+        end,
+        desc = "Test output",
+    },
+    {
+        "<leader>Tp",
+        function()
+            require("neotest").output_panel.toggle()
+        end,
+        desc = "Toggle output panel",
+    },
+    {
+        "<leader>Tr",
+        function()
+            require("neotest").run.run()
+        end,
+        desc = "Run nearest test",
+    },
+    {
+        "<leader>Ts",
+        function()
+            require("neotest").run.stop()
+        end,
+        desc = "Stop test",
+    },
+    { "<leader>W", "gwip", desc = "Wrap paragraph", mode = "n" },
+    { "<leader>W", "gw", desc = "Wrap selection", mode = "v" },
 })
 
 -- ============================================================================
@@ -473,10 +591,7 @@ whichkey.add({
 local M = {}
 
 function M.setup_lsp(bufnr)
-    local wk = require("which-key")
-    local tb = require("telescope.builtin")
-
-    wk.add({
+    require("which-key").add({
         { "<C-k>", vim.lsp.buf.signature_help, desc = "Signature help", buffer = bufnr },
         { "<leader>Sh", vim.lsp.buf.hover, desc = "Hover docs", buffer = bufnr },
         { "<leader>Ss", vim.lsp.buf.signature_help, desc = "Signature help", buffer = bufnr },
@@ -508,6 +623,7 @@ function M.setup_lsp(bufnr)
         {
             "<leader>cr",
             function()
+                ---@diagnostic disable-next-line: redundant-return-value
                 return ":IncRename " .. vim.fn.expand("<cword>")
             end,
             desc = "Rename symbol",
@@ -517,7 +633,7 @@ function M.setup_lsp(bufnr)
         {
             "<leader>fd",
             function()
-                tb.lsp_document_symbols({ show_line = true })
+                require("telescope.builtin").lsp_document_symbols({ show_line = true })
             end,
             desc = "Find document symbols",
             buffer = bufnr,
@@ -526,14 +642,16 @@ function M.setup_lsp(bufnr)
         {
             "<leader>sd",
             function()
-                tb.lsp_document_symbols({ show_line = true })
+                require("telescope.builtin").lsp_document_symbols({ show_line = true })
             end,
             desc = "Document symbols",
             buffer = bufnr,
         },
         {
             "<leader>sw",
-            tb.lsp_dynamic_workspace_symbols,
+            function()
+                require("telescope.builtin").lsp_dynamic_workspace_symbols()
+            end,
             desc = "Workspace symbols",
             buffer = bufnr,
         },
