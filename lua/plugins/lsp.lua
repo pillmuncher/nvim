@@ -44,17 +44,9 @@ return {
             automatic_enable = false,
         },
         config = function(_, opts)
-            -- 1. Setup mason-lspconfig
             require("mason-lspconfig").setup(opts)
-
-            -- 2. Enable servers natively (Neovim 0.10+)
-            -- Note: clojure_lsp is enabled here but not managed by Mason above,
-            -- which is perfectly fine if you manage it externally.
             vim.lsp.enable(opts.ensure_installed)
             require("mason-tool-installer").setup({
-
-                -- a list of all tools you want to ensure are installed upon
-                -- start
                 ensure_installed = {
                     { "clj-kondo" },
                     { "cljfmt" },
@@ -104,26 +96,6 @@ return {
                     ["mason-null-ls"] = false,
                     ["mason-nvim-dap"] = false,
                 },
-            })
-            -- 3. Setup buffer-local mappings and Navic on attach
-            vim.api.nvim_create_autocmd("LspAttach", {
-                callback = function(args)
-                    local client_id = args.data and args.data.client_id
-                    if not client_id then
-                        return
-                    end
-
-                    local client = vim.lsp.get_client_by_id(client_id)
-                    if not client then
-                        return
-                    end
-
-                    require("settings.mappings").setup_lsp(args.buf)
-
-                    if client.server_capabilities.documentSymbolProvider then
-                        require("nvim-navic").attach(client, args.buf)
-                    end
-                end,
             })
         end,
     },

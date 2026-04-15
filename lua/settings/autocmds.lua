@@ -132,3 +132,23 @@ vim.api.nvim_create_autocmd("FileType", {
         end)
     end,
 })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client_id = args.data and args.data.client_id
+        if not client_id then
+            return
+        end
+
+        local client = vim.lsp.get_client_by_id(client_id)
+        if not client then
+            return
+        end
+
+        require("settings.mappings").setup_lsp(args.buf)
+
+        if client.server_capabilities.documentSymbolProvider then
+            require("nvim-navic").attach(client, args.buf)
+        end
+    end,
+})
