@@ -2,8 +2,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- prevent Python plugins from using a currently active virtualenv:
--- Use a dedicated Neovim venv to avoid conflicts with project dependencies.
+-- Use a dedicated Neovim venv to avoid conflicts with system or project dependencies.
 vim.g.python3_host_prog = "~/.local/state/nvim/venv/bin/python"
 
 -- bootstrap lazy.nvim:

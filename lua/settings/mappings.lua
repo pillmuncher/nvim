@@ -1,4 +1,3 @@
--- lua/settings/mappings.lua
 local cmd = vim.cmd
 local function native_swap(is_next)
     local node = vim.treesitter.get_node()
