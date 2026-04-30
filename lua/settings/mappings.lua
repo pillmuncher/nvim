@@ -140,13 +140,14 @@ end
 require("which-key").add({
     { "<leader>b", group = "Buffer" },
     { "<leader>c", group = "Code" },
-    { "<leader>d", group = "Diagnostics" },
+    { "<leader>d", group = "Debug" },
     { "<leader>f", group = "Find" },
     { "<leader>g", group = "GoTo" },
     { "<leader>o", group = "Open" },
     { "<leader>s", group = "Symbols" },
     { "<leader>t", group = "Toggle" },
     { "<leader>w", group = "Workspace" },
+    { "<leader>D", group = "Diagnostics" },
     { "<leader>G", group = "Git" },
     { "<leader>S", group = "Show" },
     { "<leader>T", group = "Test" },
@@ -289,26 +290,28 @@ require("which-key").add({
         desc = "Next diagnostic",
     },
     {
-        "<leader>dd",
+        "<leader>Dd",
         function()
             vim.diagnostic.open_float()
         end,
         desc = "Diagnostic float",
     },
-    { "<leader>dl", vim.diagnostic.setloclist, desc = "Diagnostic loclist" },
+    { "<leader>Dl", vim.diagnostic.setloclist, desc = "Diagnostic loclist" },
     {
-        "<leader>a",
+        "<leader>cs",
         function()
             native_swap(true)
         end,
-        desc = "Swap next parameter",
+        desc = "Swap with next parameter",
+        mode = "n",
     },
     {
-        "<leader>A",
+        "<leader>cS",
         function()
             native_swap(false)
         end,
-        desc = "Swap prev parameter",
+        desc = "Swap with previous parameter",
+        mode = "n",
     },
     -- ============================================================================
     -- Treesitter Native Logic (0.12.0 core API)
@@ -457,17 +460,6 @@ require("which-key").add({
     },
 
     -- ============================================================================
-    -- Show
-    -- ============================================================================
-    {
-        "<leader>Sd",
-        function()
-            vim.diagnostic.open_float()
-        end,
-        desc = "Diagnostics float",
-    },
-
-    -- ============================================================================
     -- Test (Neotest)
     -- ============================================================================
     {
@@ -582,6 +574,55 @@ require("which-key").add({
     },
     { "<leader>W", "gwip", desc = "Wrap paragraph", mode = "n" },
     { "<leader>W", "gw", desc = "Wrap selection", mode = "v" },
+
+    {
+        "<F5>",
+        function()
+            require("dap").continue()
+        end,
+        desc = "Debug: Continue / Start",
+        mode = "n",
+    },
+    {
+        "<F10>",
+        function()
+            require("dap").step_over()
+        end,
+        desc = "Debug: Step Over",
+        mode = "n",
+    },
+    {
+        "<F11>",
+        function()
+            require("dap").step_into()
+        end,
+        desc = "Debug: Step Into",
+        mode = "n",
+    },
+    {
+        "<F12>",
+        function()
+            require("dap").step_out()
+        end,
+        desc = "Debug: Step Out",
+        mode = "n",
+    },
+    {
+        "<Leader>Db",
+        function()
+            require("dap").toggle_breakpoint()
+        end,
+        desc = "Debug: Toggle Breakpoint",
+        mode = "n",
+    },
+    {
+        "<Leader>DB",
+        function()
+            require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+        end,
+        desc = "Debug: Conditional Breakpoint",
+        mode = "n",
+    },
 })
 
 -- ============================================================================
