@@ -1,9 +1,18 @@
 return {
     cmd = { "lua-language-server" },
-    filetypes = { "lua" },
-    root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
+    filetypes = {
+        "lua",
+    },
+    root_markers = {
+        ".luarc.json",
+        ".luarc.jsonc",
+        ".git",
+    },
     settings = {
         Lua = {
+            runtime = {
+                version = "LuaJIT",
+            },
             workspace = {
                 checkThirdParty = false,
                 library = {
@@ -14,7 +23,6 @@ return {
             telemetry = { enable = false },
             diagnostics = {
                 globals = { "vim" },
-                disable = { "undefined-global" },
             },
             format = {
                 enable = true,

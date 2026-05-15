@@ -1,5 +1,10 @@
 return {
     cmd = { "vscode-html-language-server", "--stdio" },
-    filetypes = { "html" },
-    root_markers = { ".git" },
+    filetypes = {
+        "html",
+        "xhtml",
+    },
+    root_markers = {
+        ".git",
+    },
 }

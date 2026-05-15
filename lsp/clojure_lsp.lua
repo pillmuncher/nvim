@@ -1,5 +1,15 @@
 return {
     cmd = { "clojure-lsp" },
-    filetypes = { "clojure" },
-    root_markers = { "deps.edn", "project.clj", ".git" },
+    filetypes = {
+        "clojure",
+        "clj",
+        "cljs",
+        "cljc",
+        "edn",
+    },
+    root_markers = {
+        "deps.edn",
+        "project.clj",
+        ".git",
+    },
 }

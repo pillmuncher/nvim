@@ -11,20 +11,23 @@ local function set_python_path(command)
             { python = { pythonPath = command.args } }
         )
 
-        client:notify("workspace/didChangeConfiguration", { settings = nil })
+        client.notify("workspace/didChangeConfiguration", { settings = nil })
     end
 end
 
 return {
     cmd = { "pyright-langserver", "--stdio" },
-    filetypes = { "python" },
+    filetypes = {
+        "python",
+    },
     root_markers = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
         "Pipfile",
+        "pyproject.toml",
         "pyrightconfig.json",
+        "requirements.txt",
+        "ruff.toml",
+        "setup.cfg",
+        "setup.py",
         ".git",
     },
     capabilities = {
